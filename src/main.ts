@@ -1205,6 +1205,10 @@ function showNewspaperModal(edition: NewspaperEdition | null): void {
   if (newsSideHeadline) newsSideHeadline.textContent = edition.sideArticle.headline;
   if (newsSideLead) newsSideLead.textContent = edition.sideArticle.lead;
   if (newsGossip) newsGossip.textContent = edition.gossipSnippet;
+  if (newsWeatherHumor) newsWeatherHumor.textContent = edition.weatherForecastHumor;
+  const newsPriceEl = document.getElementById('news-price');
+  if (newsPriceEl) newsPriceEl.textContent = edition.price;
+
   if (btnNewsContinue) {
     const st = engine.getState();
     btnNewsContinue.textContent = st.isYearEndPhase
