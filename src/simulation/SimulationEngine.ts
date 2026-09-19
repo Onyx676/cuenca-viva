@@ -330,21 +330,26 @@ export class SimulationEngine {
 
     this.recalculateAllocations();
 
-    // 8. Eventos de la estación
-    const evCheck = this.eventSys.checkAndTriggerEvents(st);
-    st.currentSeasonEvents = evCheck.records;
-    st.activeInteractiveEvent = evCheck.interactiveEvent;
+    // 8. Eventos de la estación (A partir del Turno 2 para que el Turno 1 permita al jugador explorar y entender el tablero)
+    if (st.turn > 1) {
+      const evCheck = this.eventSys.checkAndTriggerEvents(st);
+      st.currentSeasonEvents = evCheck.records;
+      st.activeInteractiveEvent = evCheck.interactiveEvent;
 
-    // Aplicar efectos directos de eventos no interactivos
-    for (const evRecord of st.currentSeasonEvents) {
-      const fx = evRecord.event.effects;
-      if (fx?.moneyBonus) st.money += fx.moneyBonus;
-      if (fx?.moneyPenalty) st.money = Math.max(0, st.money - fx.moneyPenalty);
-      if (fx?.trustBonus) st.publicTrust = Math.min(100, st.publicTrust + fx.trustBonus);
-      if (fx?.trustPenalty) st.publicTrust = Math.max(0, st.publicTrust - fx.trustPenalty);
-      if (fx?.basinHealthBonus) st.basinHealth = Math.min(100, st.basinHealth + fx.basinHealthBonus);
-      if (fx?.basinHealthPenalty) st.basinHealth = Math.max(0, st.basinHealth - fx.basinHealthPenalty);
-      if (fx?.waterQualityPenalty) st.waterQuality = Math.max(10, st.waterQuality + fx.waterQualityPenalty);
+      // Aplicar efectos directos de eventos no interactivos
+      for (const evRecord of st.currentSeasonEvents) {
+        const fx = evRecord.event.effects;
+        if (fx?.moneyBonus) st.money += fx.moneyBonus;
+        if (fx?.moneyPenalty) st.money = Math.max(0, st.money - fx.moneyPenalty);
+        if (fx?.trustBonus) st.publicTrust = Math.min(100, st.publicTrust + fx.trustBonus);
+        if (fx?.trustPenalty) st.publicTrust = Math.max(0, st.publicTrust - fx.trustPenalty);
+        if (fx?.basinHealthBonus) st.basinHealth = Math.min(100, st.basinHealth + fx.basinHealthBonus);
+        if (fx?.basinHealthPenalty) st.basinHealth = Math.max(0, st.basinHealth - fx.basinHealthPenalty);
+        if (fx?.waterQualityPenalty) st.waterQuality = Math.max(10, st.waterQuality + fx.waterQualityPenalty);
+      }
+    } else {
+      st.currentSeasonEvents = [];
+      st.activeInteractiveEvent = null;
     }
 
     // 9. Previsión climática de la próxima estación
