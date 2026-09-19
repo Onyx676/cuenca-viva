@@ -1,57 +1,57 @@
 [
   {
     "id": "lluvia_extraordinaria",
-    "name": "Crecida por Lluvia Torrencial",
+    "name": "Crecida por Lluvia Torrencial en la Cumbre",
     "type": "CLIMATE",
-    "description": "Un temporal persistente generó un pulso extraordinario de agua que baja velozmente desde la precordillera.",
+    "description": "Una fuerte tormenta en la montaña generó una bajada rápida de agua por el río hacia el embalse.",
     "conditions": {
       "climateStates": ["WET", "VERY_WET"],
-      "probability": 0.40
+      "probability": 0.45
     },
     "isInteractive": true,
     "options": [
       {
         "id": "liberar_preventivo",
-        "label": "🌊 Liberar agua del embalse preventivamente",
-        "description": "Abre compuertas para amortiguar el pico de crecida. Evita inundaciones pero reduce la reserva superficial almacenada.",
+        "label": "🌊 Abrir compuertas del embalse preventivamente",
+        "description": "Deja pasar agua para hacer lugar en la presa. Evita desbordes pero suelta reserva acumulada.",
         "effects": {
-          "reservoirDelta": -15,
+          "reservoirDelta": -12,
           "floodDamageAvoided": true,
-          "trustDelta": 2
+          "trustDelta": 3
         },
-        "consequenceText": "El embalse amortiguó la crecida sin daños aguas abajo, sacrificando 15 unidades de reserva."
+        "consequenceText": "El embalse amortiguó la crecida sin inundaciones aguas abajo, soltando 12 gotas de reserva."
       },
       {
         "id": "retener_todo",
-        "label": "🛡️ Retener el agua al máximo en la presa",
-        "description": "Conserva toda el agua para el verano, pero arriesga desbordes e inundaciones si la presa se llena.",
+        "label": "🛡️ Retener toda el agua en la presa",
+        "description": "Guarda cada gota para el verano, pero arriesga que el agua sobrepase la presa e inunde campos.",
         "effects": {
           "reservoirDelta": 15,
           "floodDamageAvoided": false,
-          "trustDelta": -8,
-          "moneyDelta": -20
+          "trustDelta": -6,
+          "moneyDelta": -15
         },
-        "consequenceText": "El agua sobrepasó la capacidad de retención y generó anegamientos en campos agrícolas. Costó $20 en reparaciones."
+        "consequenceText": "El agua desbordó los bordes e inundó campos de cultivo vecinos. Costó $15 en reparaciones."
       },
       {
         "id": "drenaje_sostenible",
-        "label": "🌱 Activar drenaje urbano e infiltración",
-        "description": "Utiliza la infraestructura verde y microreservorios para absorber el impacto sin perder agua.",
+        "label": "🌱 Activar zanjas de infiltración y drenaje verde",
+        "description": "Aprovecha obras de drenaje para absorber el agua de lluvia y mandarla bajo tierra.",
         "requiresUpgrade": "captacion_lluvia",
         "effects": {
-          "aquiferDelta": 10,
+          "aquiferDelta": 12,
           "floodDamageAvoided": true,
           "trustDelta": 6
         },
-        "consequenceText": "¡Tus obras de drenaje sostenible capturaron el exceso, recargando el acuífero sin sufrir daños!"
+        "consequenceText": "¡Tus obras de drenaje capturaron la crecida y recargaron el agua subterránea sin daños!"
       }
     ]
   },
   {
     "id": "sequia_severa",
-    "name": "Alerta de Sequía Severa",
+    "name": "Alerta de Sol Fuerte y Río Bajo",
     "type": "CLIMATE",
-    "description": "Meses sin precipitaciones redujeron los ríos al mínimo. Es urgente definir una estrategia ante la escasez.",
+    "description": "Meses sin lluvias redujeron el caudal del río al mínimo. Es urgente coordinar el agua disponible.",
     "conditions": {
       "climateStates": ["DRY", "VERY_DRY"],
       "probability": 0.45
@@ -60,69 +60,357 @@
     "options": [
       {
         "id": "restriccion_riego",
-        "label": "🌾 Aplicar restricciones al riego agrícola",
-        "description": "Prioriza el agua potable y el río. El agro reduce temporalmente su consumo.",
+        "label": "🌾 Don Jacinto: Riego nocturno y cuidado estricto",
+        "description": "Los agricultores riegan de noche para evitar la evaporación del sol y protegen el río.",
         "effects": {
-          "trustDelta": -4,
-          "agriDamage": 0.15,
-          "basinHealthDelta": 4
+          "trustDelta": -2,
+          "basinHealthDelta": 5
         },
-        "consequenceText": "Se protegió el abastecimiento humano y el caudal del río. El agro asumió una pérdida controlada."
+        "consequenceText": "Se mantuvo el río con caudal vivo. Don Jacinto asumió un esfuerzo pero salvó su siembra."
       },
       {
         "id": "agotar_embalse",
-        "label": "🌊 Extraer agua de reserva del embalse",
-        "description": "Mantiene el suministro completo de todos los sectores utilizando el agua superficial almacenada.",
+        "label": "🌊 Usar reservas de emergencia del embalse",
+        "description": "Abre las válvulas de fondo para que nadie sienta la escasez este mes.",
         "effects": {
-          "reservoirDelta": -25,
+          "reservoirDelta": -20,
           "trustDelta": 4
         },
-        "consequenceText": "Todos los sectores continuaron produciendo, pero el embalse quedó al borde de su nivel crítico."
+        "consequenceText": "Todos los sectores siguieron funcionando normalmente, pero el embalse quedó en su nivel mínimo."
       },
       {
         "id": "bombear_acuifero",
-        "label": "💧 Bombeo extraordinario de pozos subterráneos",
-        "description": "Extrae agua del acuífero para cubrir el déficit sin tocar el embalse.",
+        "label": "💧 Encender bombas de agua subterránea de emergencia",
+        "description": "Saca agua de los pozos profundos para ayudar a la superficie.",
         "effects": {
-          "aquiferDelta": -18,
+          "aquiferDelta": -15,
           "moneyDelta": -10,
           "trustDelta": 2
         },
-        "consequenceText": "Se cubrió el consumo, pero el nivel freático subterráneo bajó notablemente y el bombeo costó $10 en energía."
+        "consequenceText": "Se cubrió el consumo, pero el nivel de los pozos bajó y la electricidad de bombeo costó $10."
       }
     ]
   },
   {
     "id": "falla_saneamiento",
-    "name": "Falla en el Sistema de Tratamiento",
+    "name": "Falla en los Filtros de Aguas Residuales",
     "type": "HUMAN_CONDITIONAL",
-    "description": "Se detectaron descargas con alta carga orgánica cerca de las tomas de agua del valle medio.",
+    "description": "Una cañería rota cerca de la ciudad arriesga volcar agua sucia al curso del río.",
     "conditions": {
-      "probability": 0.30
+      "probability": 0.35
     },
     "isInteractive": true,
     "options": [
       {
         "id": "reparacion_urgente",
-        "label": "🔧 Reparación técnica urgente e inmediata",
-        "description": "Contrata cuadrillas y reactivos para neutralizar la contaminación antes de que llegue al delta.",
+        "label": "🔧 Cuadrilla de reparación inmediata",
+        "description": "Contrata técnicos de emergencia para arreglar la rotura antes de que llegue al agua del río.",
         "effects": {
-          "moneyDelta": -20,
-          "waterQualityDelta": -3,
+          "moneyDelta": -15,
+          "waterQualityDelta": -2,
           "trustDelta": 4
         },
-        "consequenceText": "Se contuvo el incidente rápidamente con una inversión de emergencia de $20."
+        "consequenceText": "¡Problema solucionado en pocas horas! El agua del río se mantuvo limpia con un costo de $15."
       },
       {
         "id": "dilucion_rio",
-        "label": "🌊 Diluir con mayor caudal del río",
-        "description": "Suelta agua limpia de la presa para diluir los contaminantes sin gastar dinero.",
+        "label": "🌊 Soltar agua de la presa para diluir la suciedad",
+        "description": "Suelta agua limpia para que la corriente limpie el tramo sin gastar presupuesto.",
         "effects": {
-          "reservoirDelta": -12,
-          "waterQualityDelta": -8,
+          "reservoirDelta": -10,
+          "waterQualityDelta": -6,
           "trustDelta": -3
         },
-        "consequenceText": "El caudal diluyó el efluente pero se consumió agua de la presa y la calidad del río cayó temporalmente."
+        "consequenceText": "El río diluyó los residuos pero perdiste 10 gotas del embalse y el agua perdió pureza temporalmente."
+      }
+    ]
+  },
+  {
+    "id": "jacinto_festival",
+    "name": "🌾 El Gran Desafío del Maíz de Don Jacinto",
+    "type": "SECTOR_DILEMMA",
+    "description": "Don Jacinto quiere expandir el cultivo de maíz para la Fiesta Provincial de la Cosecha y pide más agua.",
+    "conditions": {
+      "seasons": ["SPRING", "SUMMER"],
+      "probability": 0.40
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "apoyo_jacinto",
+        "label": "🌽 Otorgar agua extra para la siembra récord",
+        "description": "Asigna 10 gotas del embalse al campo. Si la cosecha triunfa, el pueblo recaudará buenos fondos.",
+        "effects": {
+          "reservoirDelta": -10,
+          "moneyDelta": 20,
+          "trustDelta": 4
+        },
+        "consequenceText": "¡Cosecha histórica! Don Jacinto ganó el premio mayor y la feria generó $20 de ganancias."
+      },
+      {
+        "id": "riego_eficiente_jacinto",
+        "label": "💧 Exigir riego tecnificado por goteo",
+        "description": "Permite regar más parcelas pero exige no derrochar ni una gota en canales abiertos.",
+        "requiresUpgrade": "riego_eficiente",
+        "effects": {
+          "moneyDelta": 15,
+          "trustDelta": 6
+        },
+        "consequenceText": "¡Gracias a las mangueras de goteo, la cosecha fue enorme sin gastar agua de la presa!"
+      },
+      {
+        "id": "priorizar_reserva",
+        "label": "🛑 Cuidar las reservas y mantener el cupo normal",
+        "description": "Explica a los productores que el agua del embalse debe guardarse por precaución.",
+        "effects": {
+          "trustDelta": -3,
+          "reservoirDelta": 5
+        },
+        "consequenceText": "Don Jacinto protestó un poco, pero las reservas del embalse quedaron intactas y seguras."
+      }
+    ]
+  },
+  {
+    "id": "sofia_aniversario",
+    "name": "🏙️ El Aniversario de la Ciudad y las Fuentes de la Plaza",
+    "type": "SECTOR_DILEMMA",
+    "description": "La Alcaldesa Sofía prepara el festejo del aniversario de la ciudad y los vecinos piden prender las fuentes de agua.",
+    "conditions": {
+      "probability": 0.38
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "fuentes_activas",
+        "label": "🎉 Habilitar las fuentes durante el fin de semana",
+        "description": "Usa un poco de agua de la red para que los chicos y familias disfruten la fiesta.",
+        "effects": {
+          "reservoirDelta": -6,
+          "trustDelta": 6
+        },
+        "consequenceText": "¡La plaza fue una fiesta! La gente bailó alrededor del agua y la aprobación ciudadana subió."
+      },
+      {
+        "id": "campana_educativa",
+        "label": "📚 Celebrar con una Expo de Cuidado del Agua",
+        "description": "Organiza una feria escolar sobre el ciclo hídrico y regala plantines nativos.",
+        "effects": {
+          "moneyDelta": -5,
+          "trustDelta": 5,
+          "basinHealthDelta": 3
+        },
+        "consequenceText": "Los estudiantes presentaron maquetas hermosas y todos aprendieron a cuidar el agua."
+      },
+      {
+        "id": "ahorro_estricto",
+        "label": "🚫 Suspender juegos de agua para ahorrar al máximo",
+        "description": "Recuerda a los vecinos que cada gota cuenta y prohíbe el uso ornamental.",
+        "effects": {
+          "trustDelta": -4,
+          "reservoirDelta": 4
+        },
+        "consequenceText": "Ahorraste agua, aunque los vecinos se quejaron de que la intendencia es un poco aburrida."
+      }
+    ]
+  },
+  {
+    "id": "ferrada_molienda",
+    "name": "👷‍♂️ Demanda de Enfriamiento en la Mina",
+    "type": "SECTOR_DILEMMA",
+    "description": "El Ing. Ferrada descubrió una veta rica de cobre, pero los molinos necesitan enfriarse para no trabarse.",
+    "conditions": {
+      "probability": 0.36
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "enfriamiento_mina",
+        "label": "⚙️ Autorizar agua adicional para acelerar la producción",
+        "description": "Entrega caudal extra a cambio de mayores regalías económicas para el valle.",
+        "effects": {
+          "reservoirDelta": -8,
+          "moneyDelta": 25,
+          "trustDelta": 2
+        },
+        "consequenceText": "La mina batió récords de extracción y aportó $25 en regalías a las arcas de la cuenca."
+      },
+      {
+        "id": "recirculacion_mina",
+        "label": "♻️ Activar circuito cerrado de recirculación de agua",
+        "description": "Reutiliza el agua de lavado de rocas sin pedir agua fresca del río.",
+        "requiresUpgrade": "recirculacion_minera",
+        "effects": {
+          "moneyDelta": 20,
+          "basinHealthDelta": 4,
+          "trustDelta": 5
+        },
+        "consequenceText": "¡Tu planta de recirculación minera operó al 100%! Máxima producción sin quitarle agua al río."
+      },
+      {
+        "id": "freno_mina",
+        "label": "🛑 Operar a velocidad normal sin agua extra",
+        "description": "Exige a la mina no exceder su dotación para no quitarle agua a otros usuarios.",
+        "effects": {
+          "trustDelta": -2
+        },
+        "consequenceText": "Ferrada refunfuñó pero mantuvo el ritmo seguro sin recalentar motores ni gastar reservas."
+      }
+    ]
+  },
+  {
+    "id": "clara_carpincho",
+    "name": "🦫 Alerta en el Humedal: Pipo y las Aves Piden Ayuda",
+    "type": "ECOSYSTEM_DILEMMA",
+    "description": "Bancos de arena en el delta dejaron a varios pececitos y patos silvestres en charcos aislados.",
+    "conditions": {
+      "probability": 0.38
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "pulso_ecologico",
+        "label": "🌊 Soltar un pulso ecológico de agua fresca",
+        "description": "Abre la presa suavemente para conectar las lagunas del humedal con el río.",
+        "effects": {
+          "reservoirDelta": -7,
+          "basinHealthDelta": 8,
+          "trustDelta": 4
+        },
+        "consequenceText": "¡Pipo el Carpincho chapotea feliz! El agua reconectó las lagunas y los pececitos volvieron al río."
+      },
+      {
+        "id": "canal_biofiltro",
+        "label": "🌿 Conectar meandros y totoras naturales",
+        "description": "Usa la restauración de riberas para retener humedad sin gastar agua de la presa.",
+        "requiresUpgrade": "restauracion_riberas",
+        "effects": {
+          "basinHealthDelta": 10,
+          "trustDelta": 6
+        },
+        "consequenceText": "¡Las riberas restauradas protegieron el humedal naturalmente como una esponja viva!"
+      },
+      {
+        "id": "dejar_ciclo",
+        "label": "⏳ Dejar que el ciclo natural continúe",
+        "description": "Espera a la próxima lluvia para que el nivel se recupere solo.",
+        "effects": {
+          "basinHealthDelta": -6,
+          "trustDelta": -3
+        },
+        "consequenceText": "El humedal perdió vegetación y los vecinos amantes de las aves criticaron la falta de empatía."
+      }
+    ]
+  },
+  {
+    "id": "berta_calor",
+    "name": "🐄 Vacas Sedientas en la Granja de Doña Berta",
+    "type": "SECTOR_DILEMMA",
+    "description": "Un mediodía muy caluroso calentó los bebederos de los corrales y el ganado busca sombra.",
+    "conditions": {
+      "seasons": ["SUMMER", "SPRING"],
+      "probability": 0.37
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "agua_fresca_berta",
+        "label": "🥛 Renovar los piletones con agua fresca",
+        "description": "Manda un refuerzo de agua a los corrales para refrescar a las vacas lecheras.",
+        "effects": {
+          "reservoirDelta": -5,
+          "moneyDelta": 12,
+          "trustDelta": 3
+        },
+        "consequenceText": "Las vacas descansaron frescas y la producción de leche y quesos aumentó, sumando $12."
+      },
+      {
+        "id": "bebederos_sombra",
+        "label": "🌳 Colocar mallas de sombra y bebederos térmicos",
+        "description": "Inversión en infraestructura que mantiene el agua fresca sin gastar litros de más.",
+        "effects": {
+          "moneyDelta": -8,
+          "trustDelta": 5
+        },
+        "consequenceText": "Buena inversión: los animales están frescos y los bebederos ya no se evaporan con el sol."
+      }
+    ]
+  },
+  {
+    "id": "fugas_red_ciudad",
+    "name": "🔍 Fugas Ocultas en Cañerías de la Ciudad",
+    "type": "HUMAN_CONDITIONAL",
+    "description": "Vecinos detectaron humedad en el pavimento: viejas tuberías están perdiendo agua potable bajo tierra.",
+    "conditions": {
+      "probability": 0.35
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "reparar_canerias",
+        "label": "🛠️ Reparación rápida con cuadrilla municipal",
+        "description": "Invierte en arreglar las cañerías rotas para recuperar presión y no perder agua.",
+        "effects": {
+          "moneyDelta": -12,
+          "trustDelta": 5,
+          "reservoirDelta": 4
+        },
+        "consequenceText": "¡Tuberías reparadas! La presión de las casas mejoró y se frenó la pérdida subterránea."
+      },
+      {
+        "id": "sensores_red",
+        "label": "📡 Activar sectorización con sensores inteligentes",
+        "description": "Aísla las fugas automáticamente con tecnología de válvulas de presión.",
+        "requiresUpgrade": "reparacion_fugas",
+        "effects": {
+          "trustDelta": 7,
+          "reservoirDelta": 8
+        },
+        "consequenceText": "¡Tu red inteligente detectó y selló la fuga en minutos! Ahorraste 8 gotas sin costo extra."
+      },
+      {
+        "id": "postergar_fuga",
+        "label": "⏳ Postergar el arreglo para el año que viene",
+        "description": "Ahorra el dinero por ahora y mantén el suministro como está.",
+        "effects": {
+          "trustDelta": -4,
+          "aquiferDelta": -6
+        },
+        "consequenceText": "El agua se siguió perdiendo bajo el asfalto y los vecinos protestaron por el bache en la calle."
+      }
+    ]
+  },
+  {
+    "id": "flamencos_turismo",
+    "name": "🦩 Llegada de Flamencos y Aves Migratorias",
+    "type": "OPPORTUNITY_INTERACTIVE",
+    "description": "Una bandada de flamencos rosados eligió el humedal del río como parada de descanso.",
+    "conditions": {
+      "minBasinHealth": 65,
+      "probability": 0.40
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "reserva_protegida",
+        "label": "🪷 Declarar Parque Natural Protegido",
+        "description": "Crea senderos educativos para escuelas y cuida el silencio del humedal.",
+        "effects": {
+          "moneyDelta": -10,
+          "basinHealthDelta": 8,
+          "trustDelta": 8
+        },
+        "consequenceText": "¡Orgullo regional! Las escuelas visitan la reserva y los flamencos embellecen el valle."
+      },
+      {
+        "id": "paseos_embarcacion",
+        "label": "🚣 Habilitar paseos en canoas y turismo guiado",
+        "description": "Fomenta visitas turísticas reguladas para generar ingresos locales.",
+        "effects": {
+          "moneyDelta": 22,
+          "trustDelta": 4,
+          "basinHealthDelta": -2
+        },
+        "consequenceText": "El turismo fluvial atrajo visitantes y dejó $22 en el pueblo con un impacto ecológico mínimo."
       }
     ]
   },
@@ -136,31 +424,16 @@
       "probability": 0.35
     },
     "effects": {
-      "moneyBonus": 40,
+      "moneyBonus": 35,
       "trustBonus": 5
     },
-    "narrativeMitigated": "¡Se acreditaron $40 para obras de modernización en la cuenca!"
-  },
-  {
-    "id": "crecimiento_poblacional",
-    "name": "Expansión Urbana y Nuevos Barrios",
-    "type": "HUMAN",
-    "description": "La ciudad creció con nuevos emprendimientos familiares y comerciales, aportando recaudación impositiva.",
-    "conditions": {
-      "minYear": 2,
-      "probability": 0.30
-    },
-    "effects": {
-      "moneyBonus": 25,
-      "trustBonus": 3
-    },
-    "narrativeMitigated": "La ciudad recaudó $25 adicionales gracias a su crecimiento demográfico."
+    "narrativeMitigated": "¡Se acreditaron $35 para obras de modernización en la cuenca!"
   },
   {
     "id": "reconocimiento_gestion",
-    "name": "Premio a la Resiliencia Hídrica",
+    "name": "Premio a la Resiliencia de la Cuenca",
     "type": "OPPORTUNITY",
-    "description": "La gestión coordinada entre productores, vecinos y naturaleza recibió una distinción nacional.",
+    "description": "La gestión coordinada entre productores, vecinos y naturaleza recibió una distinción escolar.",
     "conditions": {
       "minTrust": 75,
       "minBasinHealth": 75,

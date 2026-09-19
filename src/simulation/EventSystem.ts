@@ -6,6 +6,7 @@ import { SeededRandom } from './RandomSystem';
 export class EventSystem {
   private events: GameEvent[];
   private rng: SeededRandom;
+  private triggeredInteractiveHistory: Set<string> = new Set();
 
   constructor(rng: SeededRandom) {
     this.events = JSON.parse(JSON.stringify(eventsData));
@@ -19,45 +20,69 @@ export class EventSystem {
     const records: TriggeredEventRecord[] = [];
     let interactiveEvent: GameEvent | null = null;
 
-    for (const event of this.events) {
+    // 1. Filtrar eventos candidatos cuyas condiciones se cumplan
+    const eligibleEvents = this.events.filter((event) => {
       const cond = event.conditions;
-
-      if (cond.minYear && state.year < cond.minYear) continue;
-      if (cond.seasons && !cond.seasons.includes(state.season)) continue;
-      if (cond.climateStates && !cond.climateStates.includes(state.climateState)) continue;
+      if (cond.minYear && state.year < cond.minYear) return false;
+      if (cond.seasons && !cond.seasons.includes(state.season)) return false;
+      if (cond.climateStates && !cond.climateStates.includes(state.climateState)) return false;
 
       if (cond.upgradeNotOwned) {
         const lvl = state.upgrades[cond.upgradeNotOwned]?.currentLevel || 0;
-        if (lvl > 0) continue;
+        if (lvl > 0) return false;
       }
 
       if (cond.aquiferThreshold !== undefined && state.aquiferVolume > cond.aquiferThreshold) {
-        continue;
+        return false;
       }
 
       if (cond.minTrust !== undefined && state.publicTrust < cond.minTrust) {
-        continue;
+        return false;
       }
 
       if (cond.minBasinHealth !== undefined && state.basinHealth < cond.minBasinHealth) {
-        continue;
+        return false;
       }
 
-      // Tirada determinista
-      if (this.rng.chance(cond.probability)) {
-        if (event.isInteractive && event.options && event.options.length > 0) {
-          // Si es interactivo, lo marcamos para que el jugador tome la decisión
-          interactiveEvent = event;
-          break; // Un evento interactivo a la vez
-        } else {
-          // Evento directo (oportunidad, subsidio, etc.)
-          records.push({
-            event,
-            wasMitigated: true,
-            impactSummary: event.narrativeMitigated || event.description
-          });
-          if (records.length >= 2) break;
-        }
+      return true;
+    });
+
+    // 2. Separar interactivos y oportunidades pasivas
+    const interactiveCandidates = eligibleEvents.filter(
+      (e) => e.isInteractive && e.options && e.options.length > 0
+    );
+    const passiveCandidates = eligibleEvents.filter(
+      (e) => !e.isInteractive
+    );
+
+    // 3. Mezclar aleatoriamente los interactivos para variedad total
+    const shuffledInteractive = [...interactiveCandidates].sort(() => this.rng.next() - 0.5);
+
+    // Priorizar eventos que aún no se hayan visto en la partida
+    let pool = shuffledInteractive.filter((e) => !this.triggeredInteractiveHistory.has(e.id));
+    if (pool.length === 0 && shuffledInteractive.length > 0) {
+      this.triggeredInteractiveHistory.clear();
+      pool = shuffledInteractive;
+    }
+
+    for (const event of pool) {
+      if (this.rng.chance(event.conditions.probability)) {
+        interactiveEvent = event;
+        this.triggeredInteractiveHistory.add(event.id);
+        break;
+      }
+    }
+
+    // 4. Evaluar oportunidades pasivas (subsidios, premios)
+    const shuffledPassive = [...passiveCandidates].sort(() => this.rng.next() - 0.5);
+    for (const event of shuffledPassive) {
+      if (this.rng.chance(event.conditions.probability)) {
+        records.push({
+          event,
+          wasMitigated: true,
+          impactSummary: event.narrativeMitigated || event.description
+        });
+        if (records.length >= 2) break;
       }
     }
 
