@@ -1205,7 +1205,12 @@ function showNewspaperModal(edition: NewspaperEdition | null): void {
   if (newsSideHeadline) newsSideHeadline.textContent = edition.sideArticle.headline;
   if (newsSideLead) newsSideLead.textContent = edition.sideArticle.lead;
   if (newsGossip) newsGossip.textContent = edition.gossipSnippet;
-  if (newsWeatherHumor) newsWeatherHumor.textContent = edition.weatherForecastHumor;
+  if (btnNewsContinue) {
+    const st = engine.getState();
+    btnNewsContinue.textContent = st.isYearEndPhase
+      ? '📊 Ir al Cierre de Año e Inversiones ➡️'
+      : 'Siguiente Estación ➡️';
+  }
 
   modalNewspaper?.classList.add('open');
 }
@@ -1217,6 +1222,22 @@ btnOpenNewspaper?.addEventListener('click', () => {
 btnCloseNewspaper?.addEventListener('click', () => {
   sound.pop();
   modalNewspaper?.classList.remove('open');
+});
+
+const btnNewsContinue = document.getElementById('btn-news-continue') as HTMLButtonElement | null;
+btnNewsContinue?.addEventListener('click', () => {
+  sound.pop();
+  modalNewspaper?.classList.remove('open');
+  cardSeasonFeedback.classList.remove('open');
+  const st = engine.getState();
+
+  if (st.isYearEndPhase) {
+    showYearEndModal();
+  } else {
+    engine.advanceToNextTurn();
+    recordTurnInitialAllocations();
+    updateUI();
+  }
 });
 
 btnFbContinue.addEventListener('click', () => {

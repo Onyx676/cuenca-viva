@@ -161,8 +161,8 @@ export function generateNewspaperEdition(result: SeasonResult): NewspaperEdition
 
   return {
     editionNumber: result.turn,
-    dateString: `Año ${year} • ${seasonName} (Edición N° ${result.turn})`,
-    price: '$5 centavos hídricos',
+    dateString: `Año ${year} • ${seasonName} (N° ${result.turn})`,
+    price: 'Ejemplar Escolar',
     mainArticle,
     sideArticle,
     gossipSnippet,
