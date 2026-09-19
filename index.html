@@ -35,6 +35,9 @@
       </div>
 
       <div class="top-actions">
+        <button id="btn-sound-toggle" class="btn-icon" title="Activar o desactivar efectos de sonido">
+          🔊 Sonido
+        </button>
         <button id="btn-tutorial-toggle" class="btn-icon" title="Repetir o abrir el tutorial">
           🎓 Tutorial
         </button>
@@ -44,7 +47,7 @@
         <button id="btn-classroom" class="btn-icon" title="Modo Aula con código compartido">
           🏫 Aula
         </button>
-        <button id="btn-help" class="btn-icon" title="Reglas pedagógicas">
+        <button id="btn-help" class="btn-icon" title="Reglas y ayuda">
           ❓ Ayuda
         </button>
       </div>
@@ -188,8 +191,13 @@
       </div>
 
       <div class="feedback-footer">
-        <div id="fb-advice-text" class="fb-advice">Buen control del deshielo nival.</div>
-        <button id="btn-fb-continue" class="btn-huge-action">Siguiente Estación ➡️</button>
+        <div id="fb-advice-text" class="fb-advice">Buen control del agua de la montaña.</div>
+        <div class="feedback-buttons-row" style="display: flex; gap: 8px; width: 100%; justify-content: flex-end;">
+          <button id="btn-open-newspaper" class="btn-newspaper-action" title="Leer las noticias y chismes cómicos del pueblo">
+            📰 El Heraldo del Valle
+          </button>
+          <button id="btn-fb-continue" class="btn-huge-action">Siguiente Estación ➡️</button>
+        </div>
       </div>
     </div>
 
@@ -219,14 +227,21 @@
         </div>
       </div>
 
-      <!-- LOS 5 SECTORES PRINCIPALES CON SLIDERS HORIZONTALES -->
+      <!-- LOS 5 SECTORES PRINCIPALES CON PERSONAJES VIVOS Y DIÁLOGOS REACTIVOS -->
       <div class="sectors-grid">
         <!-- 1. Ciudad / Población -->
         <div class="sector-card" id="card-pop" title="Agua potable para hogares, escuelas y hospitales">
           <div class="sector-card-header">
-            <span class="sector-name" style="color: #60a5fa;">🏙️ Ciudad</span>
+            <div class="sector-portrait-wrap">
+              <span class="sector-avatar" id="avatar-pop">👩‍💼</span>
+              <div class="sector-title-box">
+                <span class="sector-speaker-name" id="speaker-pop">Alcaldesa Sofía</span>
+                <span class="sector-sublabel" style="color: #60a5fa;">🏙️ Ciudad</span>
+              </div>
+            </div>
             <span class="sector-mood" id="mood-pop">😊</span>
           </div>
+          <div class="sector-speech-bubble" id="quote-pop">"Hogares, hospitales y escuelas abastecidos con normalidad."</div>
           <div class="sector-coverage-row">
             <span class="sector-val-display" id="disp-pop">20 / 20 💧</span>
             <span class="coverage-pill cov-100" id="cov-pop">100%</span>
@@ -239,14 +254,22 @@
             <span class="fine-tune-lbl">Ajuste fino</span>
             <button class="btn-step-mini" id="btn-plus-pop">+</button>
           </div>
+          <div class="reaction-float-container" id="float-pop"></div>
         </div>
 
         <!-- 2. Agricultura -->
         <div class="sector-card" id="card-agri" title="Riego para cultivos de frutas, hortalizas y granos">
           <div class="sector-card-header">
-            <span class="sector-name" style="color: #34d399;">🌾 Cultivos</span>
+            <div class="sector-portrait-wrap">
+              <span class="sector-avatar" id="avatar-agri">👨‍🌾</span>
+              <div class="sector-title-box">
+                <span class="sector-speaker-name" id="speaker-agri">Don Jacinto</span>
+                <span class="sector-sublabel" style="color: #34d399;">🌾 Cultivos</span>
+              </div>
+            </div>
             <span class="sector-mood" id="mood-agri">🌽</span>
           </div>
+          <div class="sector-speech-bubble" id="quote-agri">"Las acequias corren mansas y el maíz crece fuerte y verde."</div>
           <div class="sector-coverage-row">
             <span class="sector-val-display" id="disp-agri">25 / 25 💧</span>
             <span class="coverage-pill cov-100" id="cov-agri">100%</span>
@@ -259,14 +282,22 @@
             <span class="fine-tune-lbl">Ajuste fino</span>
             <button class="btn-step-mini" id="btn-plus-agri">+</button>
           </div>
+          <div class="reaction-float-container" id="float-agri"></div>
         </div>
 
         <!-- 3. Ganadería -->
         <div class="sector-card" id="card-live" title="Agua y pasturas para el ganado">
           <div class="sector-card-header">
-            <span class="sector-name" style="color: #facc15;">🐄 Granja</span>
+            <div class="sector-portrait-wrap">
+              <span class="sector-avatar" id="avatar-live">👩‍🌾</span>
+              <div class="sector-title-box">
+                <span class="sector-speaker-name" id="speaker-live">Doña Berta</span>
+                <span class="sector-sublabel" style="color: #facc15;">🐄 Granja</span>
+              </div>
+            </div>
             <span class="sector-mood" id="mood-live">🥛</span>
           </div>
+          <div class="sector-speech-bubble" id="quote-live">"El ganado pasta tranquilo y los bebederos tienen agua fresca."</div>
           <div class="sector-coverage-row">
             <span class="sector-val-display" id="disp-live">10 / 10 💧</span>
             <span class="coverage-pill cov-100" id="cov-live">100%</span>
@@ -279,14 +310,22 @@
             <span class="fine-tune-lbl">Ajuste fino</span>
             <button class="btn-step-mini" id="btn-plus-live">+</button>
           </div>
+          <div class="reaction-float-container" id="float-live"></div>
         </div>
 
         <!-- 4. Minería -->
         <div class="sector-card" id="card-min" title="Extracción de minerales, procesamiento y empleo">
           <div class="sector-card-header">
-            <span class="sector-name" style="color: #c084fc;">⛏️ Mina</span>
+            <div class="sector-portrait-wrap">
+              <span class="sector-avatar" id="avatar-min">👷‍♂️</span>
+              <div class="sector-title-box">
+                <span class="sector-speaker-name" id="speaker-min">Ing. Ferrada</span>
+                <span class="sector-sublabel" style="color: #c084fc;">⛏️ Mina</span>
+              </div>
+            </div>
             <span class="sector-mood" id="mood-min">⚙️</span>
           </div>
+          <div class="sector-speech-bubble" id="quote-min">"Los motores andan parejitos y los obreros trabajan seguros."</div>
           <div class="sector-coverage-row">
             <span class="sector-val-display" id="disp-min">15 / 15 💧</span>
             <span class="coverage-pill cov-100" id="cov-min">100%</span>
@@ -299,14 +338,22 @@
             <span class="fine-tune-lbl">Ajuste fino</span>
             <button class="btn-step-mini" id="btn-plus-min">+</button>
           </div>
+          <div class="reaction-float-container" id="float-min"></div>
         </div>
 
         <!-- 5. Ecosistema / Río Vivo -->
         <div class="sector-card" id="card-eco" title="Caudal ecológico para mantener vivos los peces, humedales y vegetación">
           <div class="sector-card-header">
-            <span class="sector-name" style="color: #22d3ee;">🐟 Río Vivo</span>
+            <div class="sector-portrait-wrap">
+              <span class="sector-avatar" id="avatar-eco">👩‍🔬🦫</span>
+              <div class="sector-title-box">
+                <span class="sector-speaker-name" id="speaker-eco">Dra. Clara & Pipo</span>
+                <span class="sector-sublabel" style="color: #22d3ee;">🐟 Río Vivo</span>
+              </div>
+            </div>
             <span class="sector-mood" id="mood-eco">🐬</span>
           </div>
+          <div class="sector-speech-bubble" id="quote-eco">"El río tiene agua limpia y Pipo chapotea alegre en la orilla."</div>
           <div class="sector-coverage-row">
             <span class="sector-val-display" id="disp-eco">12 / 12 💧</span>
             <span class="coverage-pill cov-100" id="cov-eco">100%</span>
@@ -319,6 +366,7 @@
             <span class="fine-tune-lbl">Ajuste fino</span>
             <button class="btn-step-mini" id="btn-plus-eco">+</button>
           </div>
+          <div class="reaction-float-container" id="float-eco"></div>
         </div>
       </div>
 
@@ -435,6 +483,16 @@
         <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.5;">
           ¡Felicitaciones! Has administrado el ciclo del agua a lo largo de <strong>20 estaciones completas</strong>. Así quedó el balance final de la cuenca:
         </p>
+
+        <!-- TÍTULO HONORÍFICO Y MEDALLA CÓMICA -->
+        <div id="fin-honor-banner" class="honor-title-banner">
+          <div class="honor-medal-icon" id="fin-honor-icon">👑</div>
+          <div class="honor-text-wrap">
+            <div class="honor-label">Título Otorgado por el Pueblo de la Cuenca:</div>
+            <div class="honor-title" id="fin-honor-title">"El Hacedor de Lluvia"</div>
+            <div class="honor-desc" id="fin-honor-desc">Equilibrio maestro: lograste abastecer a todos los sectores sin sobreexplotar el agua subterránea.</div>
+          </div>
+        </div>
 
         <div class="report-grid">
           <div class="report-stat-box">
@@ -629,6 +687,63 @@
               Ir al Año 1 Directamente ➡️
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: EL HERALDO DEL VALLE (PERIÓDICO DE LA CUENCA) -->
+    <div id="modal-newspaper" class="modal-backdrop">
+      <div class="modal-window newspaper-window" style="max-width: 650px;">
+        <div class="newspaper-topline">
+          <span>🗞️ DIARIO INDEPENDIENTE DEL VALLE</span>
+          <span id="news-date">Año 1 • Primavera</span>
+          <span id="news-price">Edición Gratuita Escolar</span>
+        </div>
+        <div class="newspaper-masthead">
+          <div class="newspaper-title-main">📰 EL HERALDO DEL VALLE</div>
+          <div class="newspaper-slogan">"La verdad gota a gota • El periódico que leen Don Jacinto y la Alcaldesa"</div>
+        </div>
+        
+        <div class="newspaper-main-story">
+          <div class="newspaper-headline" id="news-main-headline">
+            ¡CRISIS DE ESPUMA! LA CIUDAD RECLAMA AGUA CON PATITOS DE GOMA
+          </div>
+          <div class="newspaper-subhead" id="news-main-subhead">
+            La Alcaldesa Sofía pide calma mientras los vecinos hacen fila con cacerolas
+          </div>
+          <div class="newspaper-article-body">
+            <div class="newspaper-photo-box">
+              <span id="news-photo-emoji" style="font-size: 3.2rem;">🏙️🪣</span>
+              <span class="photo-caption" id="news-photo-caption">Foto del corresponsal</span>
+            </div>
+            <div class="newspaper-text-column">
+              <p id="news-main-lead">Vecinos de todos los barrios marcharon hacia el palacio municipal...</p>
+              <blockquote id="news-main-quote">"Abrí la canilla y me salió un suspiro..."</blockquote>
+              <div class="article-byline" id="news-main-author">— Sofía Reporta</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="newspaper-columns-grid">
+          <div class="newspaper-col-card">
+            <div class="col-tag">📌 EN EL CAMPO</div>
+            <div class="col-title" id="news-side-headline">Doña Berta gana la copa láctea</div>
+            <p id="news-side-lead">Con bebederos a rebosar, la quesería del valle exportará quesos...</p>
+          </div>
+          <div class="newspaper-col-card">
+            <div class="col-tag">👀 CHISME DE LA CUENCA</div>
+            <p id="news-gossip">Se vio a Don Jacinto intentando convencer a una nube con una guitarra criolla.</p>
+          </div>
+          <div class="newspaper-col-card">
+            <div class="col-tag">☀️ EL CLIMA SEGÚN PIPO</div>
+            <p id="news-weather-humor">Sol implacable: Hasta los cactus están pidiendo un vaso con hielo.</p>
+          </div>
+        </div>
+
+        <div class="newspaper-footer" style="margin-top: 14px;">
+          <button id="btn-close-newspaper" class="btn-huge-action" style="width: 100%; justify-content: center;">
+            Volver a la Gestión ➡️
+          </button>
         </div>
       </div>
     </div>

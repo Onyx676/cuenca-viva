@@ -107,7 +107,7 @@
     "description": "Mantén la Salud Ambiental de la cuenca por encima del 70%.",
     "hint": "No seques el río ni permitas vertidos sin depurar.",
     "targetCondition": { "type": "BASIN_HEALTH", "threshold": 70 },
-    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡Ecosistema resiliente frente al estiaje!" }
+    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡El río se mantuvo fuerte y con vida en pleno calor!" }
   },
   {
     "id": "goal_y3_au",

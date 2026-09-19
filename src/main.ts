@@ -11,6 +11,9 @@ import seasonalGoalsData from './data/seasonalGoals.json';
 import { SeasonalGoal, checkSeasonalGoal } from './models/SeasonalGoal';
 import { TutorialManager } from './tutorial/TutorialManager';
 import tutorialData from './data/tutorial.json';
+import { sound } from './audio/SoundFX';
+import { getCharacterFeedback, SECTOR_CHARACTERS } from './game/Characters';
+import { generateNewspaperEdition, NewspaperEdition } from './game/Newspaper';
 
 // --- INICIALIZACIÓN DE LA SIMULACIÓN Y TUTORIAL ---
 let currentScenario = 'cuenca_central';
@@ -73,6 +76,7 @@ const statMoney = document.getElementById('stat-money')!;
 const statTrust = document.getElementById('stat-trust')!;
 const statHealth = document.getElementById('stat-health')!;
 const statQuality = document.getElementById('stat-quality')!;
+const btnSoundToggle = document.getElementById('btn-sound-toggle') as HTMLButtonElement | null;
 
 // Tracker Gráfico de 20 Turnos
 const timelineTracker = document.getElementById('timeline-tracker')!;
@@ -113,7 +117,7 @@ const btnResolveSeason = document.getElementById('btn-resolve-season') as HTMLBu
 const btnOpenUpgrades = document.getElementById('btn-open-upgrades')!;
 const btnUpgradesMoney = document.getElementById('btn-upgrades-money')!;
 
-// UI de los 5 sectores con sliders y ajuste fino
+// UI de los 5 sectores con personajes, sliders y ajuste fino
 interface SectorUIElements {
   disp: HTMLElement;
   cov: HTMLElement;
@@ -122,6 +126,10 @@ interface SectorUIElements {
   card: HTMLElement;
   btnMinus: HTMLButtonElement;
   btnPlus: HTMLButtonElement;
+  avatar: HTMLElement;
+  speaker: HTMLElement;
+  quote: HTMLElement;
+  floatContainer: HTMLElement;
 }
 
 const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
@@ -133,6 +141,10 @@ const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
     card: document.getElementById('card-pop')!,
     btnMinus: document.getElementById('btn-minus-pop') as HTMLButtonElement,
     btnPlus: document.getElementById('btn-plus-pop') as HTMLButtonElement,
+    avatar: document.getElementById('avatar-pop')!,
+    speaker: document.getElementById('speaker-pop')!,
+    quote: document.getElementById('quote-pop')!,
+    floatContainer: document.getElementById('float-pop')!,
   },
   agriculture: {
     disp: document.getElementById('disp-agri')!,
@@ -142,6 +154,10 @@ const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
     card: document.getElementById('card-agri')!,
     btnMinus: document.getElementById('btn-minus-agri') as HTMLButtonElement,
     btnPlus: document.getElementById('btn-plus-agri') as HTMLButtonElement,
+    avatar: document.getElementById('avatar-agri')!,
+    speaker: document.getElementById('speaker-agri')!,
+    quote: document.getElementById('quote-agri')!,
+    floatContainer: document.getElementById('float-agri')!,
   },
   livestock: {
     disp: document.getElementById('disp-live')!,
@@ -151,6 +167,10 @@ const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
     card: document.getElementById('card-live')!,
     btnMinus: document.getElementById('btn-minus-live') as HTMLButtonElement,
     btnPlus: document.getElementById('btn-plus-live') as HTMLButtonElement,
+    avatar: document.getElementById('avatar-live')!,
+    speaker: document.getElementById('speaker-live')!,
+    quote: document.getElementById('quote-live')!,
+    floatContainer: document.getElementById('float-live')!,
   },
   mining: {
     disp: document.getElementById('disp-min')!,
@@ -160,6 +180,10 @@ const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
     card: document.getElementById('card-min')!,
     btnMinus: document.getElementById('btn-minus-min') as HTMLButtonElement,
     btnPlus: document.getElementById('btn-plus-min') as HTMLButtonElement,
+    avatar: document.getElementById('avatar-min')!,
+    speaker: document.getElementById('speaker-min')!,
+    quote: document.getElementById('quote-min')!,
+    floatContainer: document.getElementById('float-min')!,
   },
   ecosystem: {
     disp: document.getElementById('disp-eco')!,
@@ -169,6 +193,10 @@ const sectorUI: Record<PlayableSectorId, SectorUIElements> = {
     card: document.getElementById('card-eco')!,
     btnMinus: document.getElementById('btn-minus-eco') as HTMLButtonElement,
     btnPlus: document.getElementById('btn-plus-eco') as HTMLButtonElement,
+    avatar: document.getElementById('avatar-eco')!,
+    speaker: document.getElementById('speaker-eco')!,
+    quote: document.getElementById('quote-eco')!,
+    floatContainer: document.getElementById('float-eco')!,
   },
 };
 
@@ -212,6 +240,52 @@ const fbHealth = document.getElementById('fb-health')!;
 const fbMoney = document.getElementById('fb-money')!;
 const fbAdviceText = document.getElementById('fb-advice-text')!;
 const btnFbContinue = document.getElementById('btn-fb-continue')!;
+const btnOpenNewspaper = document.getElementById('btn-open-newspaper') as HTMLButtonElement | null;
+
+// Modal: El Heraldo del Valle (Periódico)
+const modalNewspaper = document.getElementById('modal-newspaper') as HTMLElement | null;
+const btnCloseNewspaper = document.getElementById('btn-close-newspaper') as HTMLButtonElement | null;
+const newsDate = document.getElementById('news-date');
+const newsMainHeadline = document.getElementById('news-main-headline');
+const newsMainSubhead = document.getElementById('news-main-subhead');
+const newsPhotoEmoji = document.getElementById('news-photo-emoji');
+const newsMainLead = document.getElementById('news-main-lead');
+const newsMainQuote = document.getElementById('news-main-quote');
+const newsMainAuthor = document.getElementById('news-main-author');
+const newsSideHeadline = document.getElementById('news-side-headline');
+const newsSideLead = document.getElementById('news-side-lead');
+const newsGossip = document.getElementById('news-gossip');
+const newsWeatherHumor = document.getElementById('news-weather-humor');
+
+const finHonorIcon = document.getElementById('fin-honor-icon');
+const finHonorTitle = document.getElementById('fin-honor-title');
+const finHonorDesc = document.getElementById('fin-honor-desc');
+
+let lastNewspaperEdition: NewspaperEdition | null = null;
+
+let lastReactionTime: Record<PlayableSectorId, number> = {
+  population: 0,
+  agriculture: 0,
+  livestock: 0,
+  mining: 0,
+  ecosystem: 0
+};
+
+function triggerFloatingReaction(id: PlayableSectorId, text: string): void {
+  const now = Date.now();
+  if (now - lastReactionTime[id] < 500) return;
+  lastReactionTime[id] = now;
+
+  const container = sectorUI[id]?.floatContainer;
+  if (!container) return;
+  const item = document.createElement('div');
+  item.className = 'floating-reaction-item';
+  item.textContent = text;
+  container.appendChild(item);
+  setTimeout(() => {
+    if (item.parentNode) item.parentNode.removeChild(item);
+  }, 1300);
+}
 
 // Modal: Cierre de Año
 const modalYearEnd = document.getElementById('modal-year-end')!;
@@ -350,6 +424,24 @@ function updateSectorDisplay(id: PlayableSectorId): void {
   else if (pct === 100) ui.cov.classList.add('cov-100');
   else ui.cov.classList.add('cov-over');
 
+  // Diálogo y estado del portavoz del sector
+  const fb = getCharacterFeedback(id, pct);
+  ui.avatar.textContent = fb.avatarIcon;
+  ui.speaker.textContent = fb.character.name;
+  ui.quote.textContent = `"${fb.quote}"`;
+
+  // Tinte visual de la burbuja según satisfacción
+  if (pct >= 90) {
+    ui.quote.style.borderColor = 'rgba(52, 211, 153, 0.45)';
+    ui.quote.style.color = '#f8fafc';
+  } else if (pct >= 65) {
+    ui.quote.style.borderColor = 'rgba(250, 204, 21, 0.45)';
+    ui.quote.style.color = '#fef08a';
+  } else {
+    ui.quote.style.borderColor = 'rgba(239, 68, 68, 0.45)';
+    ui.quote.style.color = '#fca5a5';
+  }
+
   // Emoji de ánimo del sector
   if (id === 'population') ui.mood.textContent = pct >= 100 ? '😊' : pct >= 70 ? '😐' : '😟';
   else if (id === 'agriculture') ui.mood.textContent = pct >= 100 ? '🌽' : pct >= 70 ? '🌾' : '🍂';
@@ -373,7 +465,7 @@ function updateBalanceDisplay(): void {
     const deficit = Math.abs(reserve);
     pillReserve.className = 'water-metric-pill warning';
     pillReserve.innerHTML = `⚠️ Sobregasto (+${deficit} 💧 pozos): <strong id="val-water-reserve">${reserve}</strong>`;
-    pillReserve.title = 'El exceso sobre el agua disponible se bombea del acuífero subterráneo';
+    pillReserve.title = 'El exceso sobre el agua disponible se bombea del agua subterránea (acuífero)';
   }
 }
 
@@ -385,20 +477,20 @@ function checkContextualTips(): void {
   if (st.aquiferVolume / st.aquiferCapacity < 0.6 && !shownTips.has('aquifer_low')) {
     showToastTip(
       'aquifer_low',
-      '⚠️ Acuífero en Tensión',
-      'El agua subterránea cayó por debajo del 60%. Los pozos se recargan muy lentamente; evita el sobregasto continuo.'
+      '⚠️ Agua Subterránea en Tensión',
+      'El agua bajo tierra cayó por debajo del 60%. Los pozos tardan mucho en recargarse; evita el sobregasto continuo.'
     );
   } else if (st.waterQuality < 60 && !shownTips.has('water_quality_low')) {
     showToastTip(
       'water_quality_low',
-      '🧪 Alerta de Calidad del Agua',
-      'La calidad del agua cayó bajo 60/100. Construye plantas de tratamiento o mantén el caudal ecológico para diluir vertidos.'
+      '🧪 Alerta de Limpieza del Río',
+      'El agua del río está perdiendo pureza. Construye plantas de tratamiento o mantén el caudal ecológico para limpiarlo.'
     );
   } else if (Object.values(st.upgrades).some((u) => u.currentLevel > 0) && !shownTips.has('first_upgrade')) {
     showToastTip(
       'first_upgrade',
       '🛠️ Obra de Cuenca en Operación',
-      '¡Tu mejora reduce pérdidas y aumenta la eficiencia hídrica de la cuenca permanentemente!'
+      '¡Tu mejora reduce pérdidas y aumenta la eficiencia del agua en la cuenca de forma permanente!'
     );
   }
 }
@@ -418,9 +510,26 @@ btnCloseToast.addEventListener('click', () => {
 let sliderRafId: number | null = null;
 function onAllocationChange(id: PlayableSectorId, value: number): void {
   const cleanVal = Math.max(0, Math.round(value));
+  const prevAlloc = engine.getState().sectors[id].allocated;
   engine.setSectorAllocation(id, cleanVal);
   updateSectorDisplay(id);
   updateBalanceDisplay();
+
+  // Audio hidráulico modulado y reacción flotante
+  const sec = engine.getState().sectors[id];
+  const ratio = cleanVal / Math.max(1, sec.currentDemand);
+  sound.waterGurgle(0.7 + ratio * 0.5);
+
+  const fb = getCharacterFeedback(id, Math.round(ratio * 100));
+  if (Math.abs(cleanVal - prevAlloc) >= 1) {
+    triggerFloatingReaction(id, fb.reaction);
+  }
+
+  // Si sobrepasa el agua disponible y gasta de pozos
+  const st = engine.getState();
+  if (st.availableWater - st.currentAllocatedTotal < 0) {
+    sound.warningDry();
+  }
 
   // Actualización visual en vivo del mapa Phaser sincronizada con la tasa de refresco
   if (!sliderRafId) {
@@ -452,10 +561,12 @@ PLAYABLE_SECTORS.forEach((id) => {
     onAllocationChange(id, Number(ui.slider.value));
   });
   ui.btnMinus.addEventListener('click', () => {
+    sound.pop();
     const curr = engine.getState().sectors[id].allocated;
     onAllocationChange(id, Math.max(0, curr - 1));
   });
   ui.btnPlus.addEventListener('click', () => {
+    sound.pop();
     const curr = engine.getState().sectors[id].allocated;
     onAllocationChange(id, curr + 1);
   });
@@ -534,10 +645,12 @@ function resetCurrentDistribution(): void {
 }
 
 btnSuggestedDist.addEventListener('click', () => {
+  sound.pop();
   applySuggestedDistribution();
 });
 
 btnResetDist.addEventListener('click', () => {
+  sound.pop();
   resetCurrentDistribution();
 });
 
@@ -986,6 +1099,7 @@ function showInteractiveEventModal(event: GameEvent): void {
 
 // --- RESOLUCIÓN ESTACIONAL Y FEEDBACK ÁGIL ---
 btnResolveSeason.addEventListener('click', () => {
+  sound.pop();
   const st = engine.getState();
   if (st.activeInteractiveEvent) {
     showInteractiveEventModal(st.activeInteractiveEvent);
@@ -1008,7 +1122,7 @@ btnResolveSeason.addEventListener('click', () => {
 
   const seasonResult = engine.resolveSeason();
 
-  // Mostrar tarjeta ágil de feedback
+  // Mostrar tarjeta ágil de feedback y preparar periódico
   renderAgileSeasonFeedback(seasonResult, currentGoal, goalSuccess, prevRes, prevAqui);
   updateUI();
 });
@@ -1023,10 +1137,17 @@ function renderAgileSeasonFeedback(
   const st = engine.getState();
   const seasonInfo = SEASONS_INFO[res.season];
 
+  // Generar la edición de "El Heraldo del Valle"
+  lastNewspaperEdition = generateNewspaperEdition(res);
+
   fbSeasonTitle.textContent = `¡${seasonInfo.name} Completado! (Año ${res.year})`;
 
   if (goal && goalSuccess) {
+    sound.coin();
     fbGoalBadge.style.display = 'inline-block';
+    fbGoalBadge.style.background = 'rgba(52, 211, 153, 0.2)';
+    fbGoalBadge.style.borderColor = '#10b981';
+    fbGoalBadge.style.color = '#34d399';
     fbGoalBadge.textContent = `🎯 ¡Desafío Cumplido! +$${goal.reward.moneyBonus} 💰`;
   } else if (goal && !goalSuccess) {
     fbGoalBadge.style.display = 'inline-block';
@@ -1070,7 +1191,36 @@ function renderAgileSeasonFeedback(
   cardSeasonFeedback.classList.add('open');
 }
 
+// Modal de El Heraldo del Valle
+function showNewspaperModal(edition: NewspaperEdition | null): void {
+  if (!edition) return;
+  sound.paperRustle();
+  if (newsDate) newsDate.textContent = edition.dateString;
+  if (newsMainHeadline) newsMainHeadline.textContent = edition.mainArticle.headline;
+  if (newsMainSubhead) newsMainSubhead.textContent = edition.mainArticle.subhead;
+  if (newsPhotoEmoji) newsPhotoEmoji.textContent = edition.mainArticle.photoEmoji;
+  if (newsMainLead) newsMainLead.textContent = edition.mainArticle.lead;
+  if (newsMainQuote) newsMainQuote.textContent = edition.mainArticle.quote;
+  if (newsMainAuthor) newsMainAuthor.textContent = edition.mainArticle.author;
+  if (newsSideHeadline) newsSideHeadline.textContent = edition.sideArticle.headline;
+  if (newsSideLead) newsSideLead.textContent = edition.sideArticle.lead;
+  if (newsGossip) newsGossip.textContent = edition.gossipSnippet;
+  if (newsWeatherHumor) newsWeatherHumor.textContent = edition.weatherForecastHumor;
+
+  modalNewspaper?.classList.add('open');
+}
+
+btnOpenNewspaper?.addEventListener('click', () => {
+  showNewspaperModal(lastNewspaperEdition);
+});
+
+btnCloseNewspaper?.addEventListener('click', () => {
+  sound.pop();
+  modalNewspaper?.classList.remove('open');
+});
+
 btnFbContinue.addEventListener('click', () => {
+  sound.pop();
   cardSeasonFeedback.classList.remove('open');
   const st = engine.getState();
 
@@ -1085,6 +1235,7 @@ btnFbContinue.addEventListener('click', () => {
 
 // --- MODAL: CIERRE DE AÑO (CONSOLIDACIÓN TRAS EL OTOÑO) ---
 function showYearEndModal(): void {
+  sound.coin();
   const st = engine.getState();
   const latestYearResult = st.yearHistory[st.yearHistory.length - 1];
 
@@ -1125,11 +1276,13 @@ function showYearEndModal(): void {
 }
 
 btnYearendUpgrades.addEventListener('click', () => {
+  sound.pop();
   renderUpgradesList();
   modalUpgrades.classList.add('open');
 });
 
 btnYearendContinue.addEventListener('click', () => {
+  sound.pop();
   modalYearEnd.classList.remove('open');
   const st = engine.getState();
 
@@ -1174,9 +1327,43 @@ function showFinalReport(): void {
   document.getElementById('fin-trust')!.textContent = `${st.publicTrust}%`;
   document.getElementById('fin-seed')!.textContent = st.seed;
 
+  // Títulos y Diplomas Finales Divertidos y Pedagógicos
+  let honorIcon = '👑';
+  let honorTitleText = 'El Hacedor de Lluvia';
+  let honorDescText = 'Equilibrio maestro: lograste abastecer a todos sin sobreexplotar el agua subterránea.';
+
+  const aquiRatio = st.aquiferVolume / st.aquiferCapacity;
+  if (aquiRatio < 0.4) {
+    honorIcon = '🧛';
+    honorTitleText = 'El Vampiro del Acuífero';
+    honorDescText = '¡Pleno empleo y campos regados, pero los pozos subterráneos quedaron pidiendo agua por señas!';
+  } else if (avgEco >= 88 && avgPop >= 85) {
+    honorIcon = '🦫';
+    honorTitleText = 'El Susurrador de Carpinchos';
+    honorDescText = 'Pipo y las aves del humedal te declaran Protector Oficial del Valle. ¡Río limpio y vida asegurada!';
+  } else if (avgAgri >= 90) {
+    honorIcon = '🚜';
+    honorTitleText = 'El Rey del Tomate Gigante';
+    honorDescText = 'Don Jacinto colocó tu foto en el galpón de herramientas: ¡cosecha récord en todo el valle!';
+  } else if (avgMin >= 90 && avgPop >= 85) {
+    honorIcon = '💎';
+    honorTitleText = 'El Magnate de las Cañerías';
+    honorDescText = 'Producción récord en la mina y vecinos conformes. La economía regional te agradece de pie.';
+  } else if (avgPop < 60) {
+    honorIcon = '🪣';
+    honorTitleText = 'El Coleccionista de Baldes';
+    honorDescText = 'Los vecinos tuvieron que aprender a bañarse en 30 segundos, pero al menos la cuenca sigue en pie.';
+  }
+
+  if (finHonorIcon) finHonorIcon.textContent = honorIcon;
+  if (finHonorTitle) finHonorTitle.textContent = `"${honorTitleText}"`;
+  if (finHonorDesc) finHonorDesc.textContent = honorDescText;
+
+  sound.fanfare();
+
   confetti({
-    particleCount: 120,
-    spread: 80,
+    particleCount: 140,
+    spread: 85,
     origin: { y: 0.6 }
   });
 
@@ -1454,6 +1641,24 @@ window.addEventListener('keydown', (e) => {
     contextualCard.classList.remove('open');
   }
 });
+
+// --- CONTROL DE AUDIO Y BOTÓN DE SONIDO ---
+function updateSoundButtonLabel(): void {
+  if (!btnSoundToggle) return;
+  if (sound.getMuted()) {
+    btnSoundToggle.innerHTML = '🔇 Silencio';
+    btnSoundToggle.title = 'Sonido silenciado. Toca para activar efectos de audio';
+  } else {
+    btnSoundToggle.innerHTML = '🔊 Sonido';
+    btnSoundToggle.title = 'Sonido activado. Toca para silenciar';
+  }
+}
+
+btnSoundToggle?.addEventListener('click', () => {
+  sound.toggleMute();
+  updateSoundButtonLabel();
+});
+updateSoundButtonLabel();
 
 // --- ARRANQUE INICIAL ---
 recordTurnInitialAllocations();

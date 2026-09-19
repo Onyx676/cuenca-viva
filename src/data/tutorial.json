@@ -66,8 +66,8 @@
       "phase": 5,
       "season": "SUMMER",
       "title": "Fase 5: Ola de calor en verano",
-      "instruction": "¡Llegó una ola de calor estival! El calor evapora agua y la ciudad necesita más agua. Por suerte, las 8💧 que guardaste en primavera te dan margen para responder.",
-      "hint": "Observa cómo tu ahorro previo te permite cubrir la demanda urbana sin entrar en crisis.",
+      "instruction": "¡Llegó una tremenda ola de calor en pleno verano! Con las altas temperaturas el agua se evapora rápido y la ciudad tiene mucha más sed. Por suerte, las 8💧 que guardaste en primavera te salvan el día.",
+      "hint": "Observa cómo tu ahorro previo te permite calmar la sed de la ciudad sin entrar en crisis.",
       "enabledSectors": ["population"],
       "availableWater": 32
     },

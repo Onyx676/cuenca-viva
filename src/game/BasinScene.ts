@@ -1085,7 +1085,7 @@ export class BasinScene extends Phaser.Scene {
       }
     }
 
-    // 4. Evaporación estival (Verano o Sequía)
+    // 4. Evaporación de verano (calor y sol fuerte)
     if (isOverrideDrought || (this.gameState.season === 'SUMMER' && !isRaining)) {
       gfx.fillStyle(0xffffff, 0.35);
       for (const v of this.vaporWisps) {
@@ -1097,8 +1097,10 @@ export class BasinScene extends Phaser.Scene {
       }
     }
 
-    // 5. Aves volando sobre el delta si el río está sano
-    if (this.gameState.sectors.ecosystem.satisfactionRate > 0.6) {
+    // 5. Vida silvestre activa: Aves, Pececitos y Pipo el Carpincho
+    const ecoSat = this.gameState.sectors.ecosystem.satisfactionRate;
+    if (ecoSat > 0.6) {
+      // Aves volando sobre el delta
       gfx.lineStyle(2, 0x1e293b, 0.85);
       gfx.beginPath();
       for (const b of this.birds) {
@@ -1112,6 +1114,37 @@ export class BasinScene extends Phaser.Scene {
         gfx.lineTo(b.x + 6, by - wing);
       }
       gfx.stroke();
+
+      // Pipo el Carpincho en la orilla del humedal (cerca de width * 0.44, height * 0.69)
+      const pipoX = width * 0.45;
+      const pipoY = height * 0.69;
+      // Cuerpo del carpincho
+      gfx.fillStyle(0x78350f, 1);
+      gfx.fillRoundedRect(pipoX, pipoY, 18, 12, 5);
+      // Cabeza
+      gfx.fillStyle(0x92400e, 1);
+      gfx.fillRoundedRect(pipoX + 12, pipoY - 4, 10, 10, 3);
+      // Ojo y orejita
+      gfx.fillStyle(0x1c1917, 1);
+      gfx.fillCircle(pipoX + 18, pipoY - 1, 1.5);
+      gfx.fillStyle(0x78350f, 1);
+      gfx.fillCircle(pipoX + 13, pipoY - 4, 2);
+
+      // Pececitos saltando del río si el caudal es óptimo (> 75%)
+      if (ecoSat > 0.75) {
+        const jumpPhase = (this.animTimer * 2.5) % (Math.PI * 2);
+        if (jumpPhase < Math.PI) {
+          const fishX = width * 0.42 + Math.sin(this.animTimer * 1.5) * 15;
+          const fishY = height * 0.62 - Math.sin(jumpPhase) * 14;
+          // Cuerpo del pez
+          gfx.fillStyle(0xf59e0b, 0.95);
+          gfx.fillEllipse(fishX, fishY, 6, 3);
+          // Gotas de agua del salto
+          gfx.fillStyle(0x38bdf8, 0.8);
+          gfx.fillCircle(fishX - 4, fishY + 4, 1.5);
+          gfx.fillCircle(fishX + 4, fishY + 3, 1.2);
+        }
+      }
     }
   }
 
