@@ -1,0 +1,111 @@
+{
+  "id": "tutorial_basin",
+  "name": "Cuenca Escuela (Tutorial)",
+  "description": "Escenario pedagógico controlado para aprender las reglas de gestión hídrica paso a paso en el Año 0.",
+  "initialState": {
+    "reservoirCapacity": 100,
+    "reservoirVolume": 35,
+    "aquiferCapacity": 100,
+    "aquiferVolume": 90,
+    "snowReserve": 75,
+    "waterQuality": 85,
+    "basinHealth": 80,
+    "publicTrust": 80,
+    "money": 100
+  },
+  "demands": {
+    "population": 20,
+    "agriculture": 25,
+    "livestock": 10,
+    "mining": 15,
+    "ecosystem": 12,
+    "reserve": 0
+  },
+  "phases": [
+    {
+      "phase": 1,
+      "season": "WINTER",
+      "title": "Fase 1: De dónde viene el agua",
+      "instruction": "Durante el invierno, las precipitaciones caen y se acumulan como nieve en la cordillera. Esta nieve es nuestro tanque natural.",
+      "hint": "Observa cómo la cordillera retiene el manto blanco sin que el agua se escape.",
+      "enabledSectors": [],
+      "availableWater": 25
+    },
+    {
+      "phase": 2,
+      "season": "SPRING",
+      "title": "Fase 2: Primera distribución (Ciudad)",
+      "instruction": "Llegó la primavera y el deshielo aumenta el caudal. La Ciudad necesita agua potable urgente para sus casas, escuelas y hospitales.",
+      "hint": "Mueve el slider de Ciudad hacia la derecha hasta cubrir sus 20💧 de demanda.",
+      "enabledSectors": ["population"],
+      "availableWater": 40,
+      "targetSector": "population",
+      "targetDemand": 20
+    },
+    {
+      "phase": 3,
+      "season": "SPRING",
+      "title": "Fase 3: Caudal ecológico del río",
+      "instruction": "El río también está vivo y necesita agua para sostener sus peces, plantas y humedales en el delta.",
+      "hint": "Prueba mover el slider de Río Vivo: con poco caudal el río languidece; con suficiente caudal, vuelve la vida.",
+      "enabledSectors": ["population", "ecosystem"],
+      "availableWater": 40,
+      "targetSector": "ecosystem",
+      "targetDemand": 12
+    },
+    {
+      "phase": 4,
+      "season": "SPRING",
+      "title": "Fase 4: El concepto de Reserva",
+      "instruction": "¡Sobran 8💧 sin asignar! El agua que no utilizas ahora queda guardada automáticamente en el embalse para el futuro.",
+      "hint": "Mira la tarjeta de reservas: esos 8💧 aumentan el embalse. Haz clic en 'Confirmar Primavera'.",
+      "enabledSectors": ["population", "ecosystem"],
+      "availableWater": 40
+    },
+    {
+      "phase": 5,
+      "season": "SUMMER",
+      "title": "Fase 5: Ola de calor en verano",
+      "instruction": "¡Llegó una ola de calor estival! El calor evapora agua y la ciudad necesita más agua. Por suerte, las 8💧 que guardaste en primavera te dan margen para responder.",
+      "hint": "Observa cómo tu ahorro previo te permite cubrir la demanda urbana sin entrar en crisis.",
+      "enabledSectors": ["population"],
+      "availableWater": 32
+    },
+    {
+      "phase": 6,
+      "season": "SUMMER",
+      "title": "Fase 6: Introducir la Agricultura",
+      "instruction": "El campo necesita regar sus cultivos bajo el sol ardiente. Puedes darle mucha agua o cuidar la reserva para más adelante.",
+      "hint": "Tú decides cuánto darle a los Cultivos. Si gastas de más, tendrás menos margen en otoño.",
+      "enabledSectors": ["population", "agriculture"],
+      "availableWater": 35
+    },
+    {
+      "phase": 7,
+      "season": "AUTUMN",
+      "title": "Fase 7: Consecuencia diferida",
+      "instruction": "En otoño las lluvias fueron menores de lo previsto. Lo que decidiste en verano ahora determina tu margen de seguridad.",
+      "hint": "El estado del embalse hoy es el resultado directo de lo que gastaste o ahorraste antes.",
+      "enabledSectors": ["population", "agriculture", "ecosystem"],
+      "availableWater": 28
+    },
+    {
+      "phase": 8,
+      "season": "AUTUMN",
+      "title": "Fase 8: Decisión sin solución perfecta",
+      "instruction": "Solo hay 10💧 disponibles, pero los Cultivos piden 8💧 y el Río pide 6💧. No alcanza para todo. Gestionar es priorizar y asumir consecuencias.",
+      "hint": "Reparte los 10💧 como consideres más justo. No hay respuesta mágica perfecta.",
+      "enabledSectors": ["agriculture", "ecosystem"],
+      "availableWater": 10
+    },
+    {
+      "phase": 9,
+      "season": "AUTUMN",
+      "title": "Fase 9: Tu primera obra de infraestructura",
+      "instruction": "¡Terminaste el ciclo del Año 0! Para prepararte para los 5 años reales, elige una mejora: Riego Tecnificado o Estación Meteorológica.",
+      "hint": "Verás inmediatamente cómo se construye la obra y cómo transforma los números.",
+      "enabledSectors": [],
+      "availableWater": 0
+    }
+  ]
+}

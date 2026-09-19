@@ -1,0 +1,58 @@
+{
+  "WINTER": {
+    "tempOffset": -4.0,
+    "rainShare": 0.15,
+    "snowShare": 0.70,
+    "snowMeltRate": 0.05,
+    "evaporationMultiplier": 0.50,
+    "demandMultipliers": {
+      "population": 0.90,
+      "agriculture": 0.40,
+      "livestock": 0.85,
+      "mining": 1.00,
+      "ecosystem": 0.80
+    }
+  },
+  "SPRING": {
+    "tempOffset": 0.5,
+    "rainShare": 0.25,
+    "snowShare": 0.15,
+    "snowMeltRate": 0.55,
+    "evaporationMultiplier": 1.00,
+    "demandMultipliers": {
+      "population": 1.00,
+      "agriculture": 1.00,
+      "livestock": 1.00,
+      "mining": 1.00,
+      "ecosystem": 1.20
+    }
+  },
+  "SUMMER": {
+    "tempOffset": 4.5,
+    "rainShare": 0.20,
+    "snowShare": 0.00,
+    "snowMeltRate": 0.40,
+    "evaporationMultiplier": 1.65,
+    "demandMultipliers": {
+      "population": 1.25,
+      "agriculture": 1.50,
+      "livestock": 1.30,
+      "mining": 1.00,
+      "ecosystem": 1.00
+    }
+  },
+  "AUTUMN": {
+    "tempOffset": -1.0,
+    "rainShare": 0.40,
+    "snowShare": 0.15,
+    "snowMeltRate": 0.00,
+    "evaporationMultiplier": 0.85,
+    "demandMultipliers": {
+      "population": 0.95,
+      "agriculture": 0.70,
+      "livestock": 0.90,
+      "mining": 1.00,
+      "ecosystem": 0.90
+    }
+  }
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ampliacion_embalse",
+    "branch": "AGUA_RESERVAS",
+    "name": "Ampliación del Embalse",
+    "description": "Incrementa la capacidad de almacenamiento superficial para amortiguar sequías prolongadas.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [30, 50, 75],
+    "effects": [
+      { "type": "reservoir_capacity", "value": 25, "description": "+25 hm³ de capacidad máxima de embalse" },
+      { "type": "reservoir_capacity", "value": 30, "description": "+30 hm³ de capacidad adicional" },
+      { "type": "reservoir_capacity", "value": 35, "description": "+35 hm³ de capacidad y compuertas de regulación inteligente" }
+    ],
+    "prerequisites": [],
+    "visualTag": "dam_expanded"
+  },
+  {
+    "id": "captacion_lluvia",
+    "branch": "AGUA_RESERVAS",
+    "name": "Drenaje Sostenible y Captación",
+    "description": "Microreservorios urbanos y drenaje verde para aprovechar tormentas y evitar anegamientos.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [25, 40, 60],
+    "effects": [
+      { "type": "runoff_capture", "value": 0.15, "description": "+15% captura de escorrentía pluvial" },
+      { "type": "flood_reduction", "value": 0.40, "description": "-40% daños por tormentas torrenciales" },
+      { "type": "action_preventive_drainage", "value": 1, "description": "Desbloquea acción: 'Activar drenaje preventivo' ante tormentas" }
+    ],
+    "prerequisites": [],
+    "visualTag": "rain_catchment"
+  },
+  {
+    "id": "recarga_acuifero",
+    "branch": "AGUA_RESERVAS",
+    "name": "Recarga Gestionada del Acuífero",
+    "description": "Pozos y zanjas de infiltración que derivan excedentes hídricos hacia los sedimentos subterráneos.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [30, 45, 65],
+    "effects": [
+      { "type": "aquifer_recharge_boost", "value": 0.20, "description": "+20% infiltración de excedentes al acuífero" },
+      { "type": "aquifer_recharge_boost", "value": 0.25, "description": "+25% recarga adicional en épocas de lluvia" },
+      { "type": "action_managed_recharge", "value": 1, "description": "Desbloquea acción: Infiltración forzada de excedentes de deshielo" }
+    ],
+    "prerequisites": ["captacion_lluvia"],
+    "visualTag": "aquifer_well"
+  },
+  {
+    "id": "mantenimiento_canales",
+    "branch": "AGRICULTURA",
+    "name": "Mantenimiento e Impermeabilización",
+    "description": "Limpieza, recrecido y revestimiento con geomembrana en canales matrices de riego.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [20, 35, 55],
+    "effects": [
+      { "type": "agri_efficiency", "value": 0.10, "description": "Reduce pérdidas por filtración en 10%" },
+      { "type": "agri_efficiency", "value": 0.15, "description": "Elimina el riesgo de rotura de canales de tierra" },
+      { "type": "agri_efficiency", "value": 0.20, "description": "Red de distribución principal 100% impermeabilizada" }
+    ],
+    "prerequisites": [],
+    "visualTag": "clean_canals"
+  },
+  {
+    "id": "riego_eficiente",
+    "branch": "AGRICULTURA",
+    "name": "Riego Tecnificado y Sensores",
+    "description": "Modernización de parcelas con riego por goteo, aspersión y sensores de humedad en suelo.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [30, 45, 65],
+    "effects": [
+      { "type": "agri_demand_reduction", "value": 0.12, "description": "Reduce demanda de riego en un 12%" },
+      { "type": "agri_demand_reduction", "value": 0.18, "description": "Reduce demanda de riego en un 18% adicional" },
+      { "type": "agri_demand_reduction", "value": 0.15, "description": "Sensores inteligentes: riego automático según transpiración" }
+    ],
+    "prerequisites": ["mantenimiento_canales"],
+    "visualTag": "drip_irrigation"
+  },
+  {
+    "id": "reparacion_red",
+    "branch": "CIUDAD_SANEAMIENTO",
+    "name": "Renovación de Red de Agua Potable",
+    "description": "Reparación de fugas subterráneas y reemplazo de tuberías obsoletas en la ciudad.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [25, 40, 60],
+    "effects": [
+      { "type": "urban_demand_reduction", "value": 0.10, "description": "Reduce pérdidas domiciliarias en un 10%" },
+      { "type": "urban_demand_reduction", "value": 0.15, "description": "Modernización estructural de matrices urbanas (-15% demanda)" },
+      { "type": "urban_demand_reduction", "value": 0.15, "description": "Micromedición inteligente en toda la población" }
+    ],
+    "prerequisites": [],
+    "visualTag": "urban_pipes"
+  },
+  {
+    "id": "planta_saneamiento",
+    "branch": "CIUDAD_SANEAMIENTO",
+    "name": "Saneamiento y Reúso de Aguas",
+    "description": "Tratamiento de efluentes cloacales urbanos y reutilización para áreas verdes y periurbanas.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [30, 45, 70],
+    "effects": [
+      { "type": "water_quality_boost", "value": 15, "description": "+15 calidad del agua devuelta al río" },
+      { "type": "water_reuse", "value": 0.25, "description": "Tratamiento secundario: +25% agua reciclada" },
+      { "type": "water_reuse", "value": 0.35, "description": "Planta terciaria: vertido ultra limpio y reúso periurbano" }
+    ],
+    "prerequisites": [],
+    "visualTag": "water_treatment"
+  },
+  {
+    "id": "recirculacion_minera",
+    "branch": "MINERIA",
+    "name": "Recirculación y Circuito Cerrado",
+    "description": "Espesadores de relaves y bombas para reciclar el agua de procesos mineros.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [35, 50, 75],
+    "effects": [
+      { "type": "mining_fresh_demand", "value": -0.20, "description": "Reduce extracción de agua fresca en un 20%" },
+      { "type": "mining_fresh_demand", "value": -0.25, "description": "Recirculación avanzada (-25% demanda de agua fresca)" },
+      { "type": "mining_fresh_demand", "value": -0.40, "description": "Circuito cerrado completo: vertido cero y mínima agua fresca" }
+    ],
+    "prerequisites": [],
+    "visualTag": "mining_recycle"
+  },
+  {
+    "id": "restauracion_cauces",
+    "branch": "AMBIENTE",
+    "name": "Restauración Ribereña y Humedales",
+    "description": "Revegetación de márgenes del río y preservación de humedales como esponjas naturales.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [20, 35, 50],
+    "effects": [
+      { "type": "basin_health_boost", "value": 10, "description": "+10 a la salud ecológica de la cuenca" },
+      { "type": "basin_health_boost", "value": 15, "description": "Filtrado natural de sedimentos y amortiguación de crecidas" },
+      { "type": "basin_health_boost", "value": 20, "description": "Parque ecológico protegido con alta biodiversidad" }
+    ],
+    "prerequisites": [],
+    "visualTag": "river_forest"
+  },
+  {
+    "id": "estacion_meteorologica",
+    "branch": "MONITOREO_CLIMATICO",
+    "name": "Red de Monitoreo y Alerta Temprana",
+    "description": "Estaciones meteorológicas, radares nivales en cordillera y centro de modelado hidrológico.",
+    "level": 0,
+    "maxLevel": 3,
+    "costs": [20, 35, 55],
+    "effects": [
+      { "type": "forecast_accuracy", "value": 1, "description": "Nivel 1: Muestra tendencia general de la próxima estación" },
+      { "type": "forecast_accuracy", "value": 2, "description": "Nivel 2: Muestra probabilidades numéricas y aportes estimados" },
+      { "type": "forecast_accuracy", "value": 3, "description": "Nivel 3: Anticipa eventos extremos y permite preparar defensas" }
+    ],
+    "prerequisites": [],
+    "visualTag": "weather_station"
+  }
+]

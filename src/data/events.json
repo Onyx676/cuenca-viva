@@ -1,0 +1,176 @@
+[
+  {
+    "id": "lluvia_extraordinaria",
+    "name": "Crecida por Lluvia Torrencial",
+    "type": "CLIMATE",
+    "description": "Un temporal persistente generó un pulso extraordinario de agua que baja velozmente desde la precordillera.",
+    "conditions": {
+      "climateStates": ["WET", "VERY_WET"],
+      "probability": 0.40
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "liberar_preventivo",
+        "label": "🌊 Liberar agua del embalse preventivamente",
+        "description": "Abre compuertas para amortiguar el pico de crecida. Evita inundaciones pero reduce la reserva superficial almacenada.",
+        "effects": {
+          "reservoirDelta": -15,
+          "floodDamageAvoided": true,
+          "trustDelta": 2
+        },
+        "consequenceText": "El embalse amortiguó la crecida sin daños aguas abajo, sacrificando 15 unidades de reserva."
+      },
+      {
+        "id": "retener_todo",
+        "label": "🛡️ Retener el agua al máximo en la presa",
+        "description": "Conserva toda el agua para el verano, pero arriesga desbordes e inundaciones si la presa se llena.",
+        "effects": {
+          "reservoirDelta": 15,
+          "floodDamageAvoided": false,
+          "trustDelta": -8,
+          "moneyDelta": -20
+        },
+        "consequenceText": "El agua sobrepasó la capacidad de retención y generó anegamientos en campos agrícolas. Costó $20 en reparaciones."
+      },
+      {
+        "id": "drenaje_sostenible",
+        "label": "🌱 Activar drenaje urbano e infiltración",
+        "description": "Utiliza la infraestructura verde y microreservorios para absorber el impacto sin perder agua.",
+        "requiresUpgrade": "captacion_lluvia",
+        "effects": {
+          "aquiferDelta": 10,
+          "floodDamageAvoided": true,
+          "trustDelta": 6
+        },
+        "consequenceText": "¡Tus obras de drenaje sostenible capturaron el exceso, recargando el acuífero sin sufrir daños!"
+      }
+    ]
+  },
+  {
+    "id": "sequia_severa",
+    "name": "Alerta de Sequía Severa",
+    "type": "CLIMATE",
+    "description": "Meses sin precipitaciones redujeron los ríos al mínimo. Es urgente definir una estrategia ante la escasez.",
+    "conditions": {
+      "climateStates": ["DRY", "VERY_DRY"],
+      "probability": 0.45
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "restriccion_riego",
+        "label": "🌾 Aplicar restricciones al riego agrícola",
+        "description": "Prioriza el agua potable y el río. El agro reduce temporalmente su consumo.",
+        "effects": {
+          "trustDelta": -4,
+          "agriDamage": 0.15,
+          "basinHealthDelta": 4
+        },
+        "consequenceText": "Se protegió el abastecimiento humano y el caudal del río. El agro asumió una pérdida controlada."
+      },
+      {
+        "id": "agotar_embalse",
+        "label": "🌊 Extraer agua de reserva del embalse",
+        "description": "Mantiene el suministro completo de todos los sectores utilizando el agua superficial almacenada.",
+        "effects": {
+          "reservoirDelta": -25,
+          "trustDelta": 4
+        },
+        "consequenceText": "Todos los sectores continuaron produciendo, pero el embalse quedó al borde de su nivel crítico."
+      },
+      {
+        "id": "bombear_acuifero",
+        "label": "💧 Bombeo extraordinario de pozos subterráneos",
+        "description": "Extrae agua del acuífero para cubrir el déficit sin tocar el embalse.",
+        "effects": {
+          "aquiferDelta": -18,
+          "moneyDelta": -10,
+          "trustDelta": 2
+        },
+        "consequenceText": "Se cubrió el consumo, pero el nivel freático subterráneo bajó notablemente y el bombeo costó $10 en energía."
+      }
+    ]
+  },
+  {
+    "id": "falla_saneamiento",
+    "name": "Falla en el Sistema de Tratamiento",
+    "type": "HUMAN_CONDITIONAL",
+    "description": "Se detectaron descargas con alta carga orgánica cerca de las tomas de agua del valle medio.",
+    "conditions": {
+      "probability": 0.30
+    },
+    "isInteractive": true,
+    "options": [
+      {
+        "id": "reparacion_urgente",
+        "label": "🔧 Reparación técnica urgente e inmediata",
+        "description": "Contrata cuadrillas y reactivos para neutralizar la contaminación antes de que llegue al delta.",
+        "effects": {
+          "moneyDelta": -20,
+          "waterQualityDelta": -3,
+          "trustDelta": 4
+        },
+        "consequenceText": "Se contuvo el incidente rápidamente con una inversión de emergencia de $20."
+      },
+      {
+        "id": "dilucion_rio",
+        "label": "🌊 Diluir con mayor caudal del río",
+        "description": "Suelta agua limpia de la presa para diluir los contaminantes sin gastar dinero.",
+        "effects": {
+          "reservoirDelta": -12,
+          "waterQualityDelta": -8,
+          "trustDelta": -3
+        },
+        "consequenceText": "El caudal diluyó el efluente pero se consumió agua de la presa y la calidad del río cayó temporalmente."
+      }
+    ]
+  },
+  {
+    "id": "subsidio_verde",
+    "name": "Fondo Internacional de Transición Hídrica",
+    "type": "OPPORTUNITY",
+    "description": "La cuenca fue seleccionada para un programa de financiamiento de infraestructura y eficiencia.",
+    "conditions": {
+      "minTrust": 60,
+      "probability": 0.35
+    },
+    "effects": {
+      "moneyBonus": 40,
+      "trustBonus": 5
+    },
+    "narrativeMitigated": "¡Se acreditaron $40 para obras de modernización en la cuenca!"
+  },
+  {
+    "id": "crecimiento_poblacional",
+    "name": "Expansión Urbana y Nuevos Barrios",
+    "type": "HUMAN",
+    "description": "La ciudad creció con nuevos emprendimientos familiares y comerciales, aportando recaudación impositiva.",
+    "conditions": {
+      "minYear": 2,
+      "probability": 0.30
+    },
+    "effects": {
+      "moneyBonus": 25,
+      "trustBonus": 3
+    },
+    "narrativeMitigated": "La ciudad recaudó $25 adicionales gracias a su crecimiento demográfico."
+  },
+  {
+    "id": "reconocimiento_gestion",
+    "name": "Premio a la Resiliencia Hídrica",
+    "type": "OPPORTUNITY",
+    "description": "La gestión coordinada entre productores, vecinos y naturaleza recibió una distinción nacional.",
+    "conditions": {
+      "minTrust": 75,
+      "minBasinHealth": 75,
+      "probability": 0.40
+    },
+    "effects": {
+      "moneyBonus": 30,
+      "trustBonus": 8,
+      "basinHealthBonus": 5
+    },
+    "narrativeMitigated": "¡Premio a la sustentabilidad! Se otorgaron $30 adicionales para reinvertir en la cuenca."
+  }
+]

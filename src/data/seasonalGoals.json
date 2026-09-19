@@ -1,0 +1,202 @@
+[
+  {
+    "id": "goal_y1_w",
+    "year": 1,
+    "season": "WINTER",
+    "title": "❄️ Acumulación Invernal",
+    "description": "Mantén el embalse por encima del 40% de su capacidad.",
+    "hint": "En invierno no gastes de más; deja que la nieve se acumule.",
+    "targetCondition": { "type": "RESERVOIR_MIN", "threshold": 40 },
+    "reward": { "moneyBonus": 10, "trustBonus": 3, "message": "¡Excelente reserva invernal conservada!" }
+  },
+  {
+    "id": "goal_y1_sp",
+    "year": 1,
+    "season": "SPRING",
+    "title": "🌱 Deshielo y Vida",
+    "description": "Garantiza al menos el 80% del caudal mínimo ecológico del río.",
+    "hint": "El deshielo alimenta el río; no desvíes toda el agua antes del delta.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "ecosystem", "threshold": 80 },
+    "reward": { "moneyBonus": 10, "trustBonus": 3, "message": "¡El río vivo floreció en primavera!" }
+  },
+  {
+    "id": "goal_y1_su",
+    "year": 1,
+    "season": "SUMMER",
+    "title": "☀️ Sed de Verano",
+    "description": "Abastece el 85% del consumo de agua potable de la Ciudad.",
+    "hint": "Las altas temperaturas disparan la necesidad de agua en hogares y hospitales.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "population", "threshold": 85 },
+    "reward": { "moneyBonus": 12, "trustBonus": 4, "message": "¡La población superó el calor sin cortes!" }
+  },
+  {
+    "id": "goal_y1_au",
+    "year": 1,
+    "season": "AUTUMN",
+    "title": "🍂 Cosecha y Balance",
+    "description": "Reparte el agua sin sobregirar la disponibilidad natural.",
+    "hint": "Evita bombear en exceso del acuífero antes de cerrar el año.",
+    "targetCondition": { "type": "SURPLUS_WATER", "threshold": 0 },
+    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡Cierre de año equilibrado y sostenible!" }
+  },
+  {
+    "id": "goal_y2_w",
+    "year": 2,
+    "season": "WINTER",
+    "title": "❄️ Nivel del Acuífero",
+    "description": "Conserva el acuífero subterráneo por encima del 75%.",
+    "hint": "El agua bajo tierra es el reaseguro para sequías futuras.",
+    "targetCondition": { "type": "AQUIFER_MIN", "threshold": 75 },
+    "reward": { "moneyBonus": 12, "trustBonus": 3, "message": "¡Acuífero profundo protegido y saludable!" }
+  },
+  {
+    "id": "goal_y2_sp",
+    "year": 2,
+    "season": "SPRING",
+    "title": "🌱 Riego Oportuno",
+    "description": "Cubre al menos el 80% de la demanda agrícola para la siembra.",
+    "hint": "Los campos necesitan agua en primavera para que broten los cultivos.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "agriculture", "threshold": 80 },
+    "reward": { "moneyBonus": 14, "trustBonus": 3, "message": "¡Gran brote agrícola en todo el valle!" }
+  },
+  {
+    "id": "goal_y2_su",
+    "year": 2,
+    "season": "SUMMER",
+    "title": "☀️ Ganado y Pasturas",
+    "description": "Cubre el 85% del requerimiento de la granja y ganadería.",
+    "hint": "Los animales sufren el estrés térmico sin abrevaderos suficientes.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "livestock", "threshold": 85 },
+    "reward": { "moneyBonus": 12, "trustBonus": 3, "message": "¡Régimen ganadero óptimo bajo el sol!" }
+  },
+  {
+    "id": "goal_y2_au",
+    "year": 2,
+    "season": "AUTUMN",
+    "title": "🍂 Confianza Comunitaria",
+    "description": "Finaliza la temporada con una Confianza Pública superior al 75%.",
+    "hint": "Equilibra el suministro entre todos los sectores.",
+    "targetCondition": { "type": "PUBLIC_TRUST", "threshold": 75 },
+    "reward": { "moneyBonus": 15, "trustBonus": 5, "message": "¡Alta aprobación ciudadana de la gestión!" }
+  },
+  {
+    "id": "goal_y3_w",
+    "year": 3,
+    "season": "WINTER",
+    "title": "❄️ Preservación Invernal",
+    "description": "Mantén el embalse por encima del 35% de reserva.",
+    "hint": "Guarda agua para cuando comience el ciclo productivo.",
+    "targetCondition": { "type": "RESERVOIR_MIN", "threshold": 35 },
+    "reward": { "moneyBonus": 12, "trustBonus": 3, "message": "¡Excelente custodia de los embalses!" }
+  },
+  {
+    "id": "goal_y3_sp",
+    "year": 3,
+    "season": "SPRING",
+    "title": "🌱 Producción Minera e Industria",
+    "description": "Suministra al menos el 80% del requerimiento minero.",
+    "hint": "La industria aporta regalías cruciales para el presupuesto.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "mining", "threshold": 80 },
+    "reward": { "moneyBonus": 16, "trustBonus": 3, "message": "¡Producción industrial sólida y activa!" }
+  },
+  {
+    "id": "goal_y3_su",
+    "year": 3,
+    "season": "SUMMER",
+    "title": "☀️ Salud de la Cuenca",
+    "description": "Mantén la Salud Ambiental de la cuenca por encima del 70%.",
+    "hint": "No seques el río ni permitas vertidos sin depurar.",
+    "targetCondition": { "type": "BASIN_HEALTH", "threshold": 70 },
+    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡Ecosistema resiliente frente al estiaje!" }
+  },
+  {
+    "id": "goal_y3_au",
+    "year": 3,
+    "season": "AUTUMN",
+    "title": "🍂 Sin Déficit Subterráneo",
+    "description": "Distribuye el agua dentro de los límites del caudal disponible.",
+    "hint": "Deja que las lluvias otoñales recarguen los pozos.",
+    "targetCondition": { "type": "SURPLUS_WATER", "threshold": 0 },
+    "reward": { "moneyBonus": 14, "trustBonus": 4, "message": "¡Gestión responsable sin sobreexplotación!" }
+  },
+  {
+    "id": "goal_y4_w",
+    "year": 4,
+    "season": "WINTER",
+    "title": "❄️ Acuífero Seguro",
+    "description": "Conserva el nivel subterráneo por encima del 70%.",
+    "hint": "Los pozos deben mantenerse en nivel saludable.",
+    "targetCondition": { "type": "AQUIFER_MIN", "threshold": 70 },
+    "reward": { "moneyBonus": 14, "trustBonus": 3, "message": "¡Reservas subterráneas estables!" }
+  },
+  {
+    "id": "goal_y4_sp",
+    "year": 4,
+    "season": "SPRING",
+    "title": "🌱 Biodiversidad Ribereña",
+    "description": "Asigna el 85% del caudal ecológico en el delta.",
+    "hint": "Las aves y peces dependen de que el río llegue al humedal.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "ecosystem", "threshold": 85 },
+    "reward": { "moneyBonus": 14, "trustBonus": 4, "message": "¡Corredor biológico lleno de vida!" }
+  },
+  {
+    "id": "goal_y4_su",
+    "year": 4,
+    "season": "SUMMER",
+    "title": "☀️ Eficiencia en la Ciudad",
+    "description": "Abastece a la población sobre el 85% en pleno verano.",
+    "hint": "Las obras de reparación de red facilitan cumplir esta meta.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "population", "threshold": 85 },
+    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡Servicios urbanos impecables en el calor!" }
+  },
+  {
+    "id": "goal_y4_au",
+    "year": 4,
+    "season": "AUTUMN",
+    "title": "🍂 Cosecha Récord",
+    "description": "Alcanza al menos el 80% de satisfacción en el sector agrícola.",
+    "hint": "Los cultivos tecnificados rinden al máximo.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "agriculture", "threshold": 80 },
+    "reward": { "moneyBonus": 16, "trustBonus": 4, "message": "¡Gran cosecha de otoño asegurada!" }
+  },
+  {
+    "id": "goal_y5_w",
+    "year": 5,
+    "season": "WINTER",
+    "title": "❄️ Último Invierno",
+    "description": "Mantén el embalse por encima del 40% de capacidad.",
+    "hint": "Prepara la cuenca para el año culminante de la partida.",
+    "targetCondition": { "type": "RESERVOIR_MIN", "threshold": 40 },
+    "reward": { "moneyBonus": 15, "trustBonus": 4, "message": "¡Reserva hidrológica blindada!" }
+  },
+  {
+    "id": "goal_y5_sp",
+    "year": 5,
+    "season": "SPRING",
+    "title": "🌱 Equilibrio Productivo",
+    "description": "Logra al menos el 75% tanto en ciudad como en cultivos.",
+    "hint": "La armonía entre el campo y la ciudad es la clave.",
+    "targetCondition": { "type": "SECTOR_SATISFACTION", "sectorId": "population", "threshold": 75 },
+    "reward": { "moneyBonus": 16, "trustBonus": 4, "message": "¡Armonía territorial consumada!" }
+  },
+  {
+    "id": "goal_y5_su",
+    "year": 5,
+    "season": "SUMMER",
+    "title": "☀️ Máxima Resiliencia",
+    "description": "Mantén la Salud Ambiental de la cuenca sobre el 75%.",
+    "hint": "Demuestra la solidez de las obras ambientales construidas.",
+    "targetCondition": { "type": "BASIN_HEALTH", "threshold": 75 },
+    "reward": { "moneyBonus": 18, "trustBonus": 5, "message": "¡Ecosistema en estado de gracia!" }
+  },
+  {
+    "id": "goal_y5_au",
+    "year": 5,
+    "season": "AUTUMN",
+    "title": "🍂 Gran Final de la Década",
+    "description": "Cierra el año 5 sin déficit hídrico y con confianza > 80%.",
+    "hint": "Consagra tu legado como administrador ejemplar de la cuenca.",
+    "targetCondition": { "type": "PUBLIC_TRUST", "threshold": 80 },
+    "reward": { "moneyBonus": 25, "trustBonus": 10, "message": "¡Hito histórico en la gestión del agua!" }
+  }
+]

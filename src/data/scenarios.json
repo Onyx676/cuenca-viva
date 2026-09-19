@@ -1,0 +1,104 @@
+[
+  {
+    "id": "cuenca_central",
+    "name": "Cuenca del Valle Central",
+    "description": "Una cuenca diversa con agricultura intensiva, una ciudad en crecimiento y minería en precordillera. Requiere equilibrio constante.",
+    "difficulty": "Media",
+    "years": 5,
+    "initialState": {
+      "money": 120,
+      "publicTrust": 75,
+      "basinHealth": 80,
+      "waterQuality": 85,
+      "reservoirVolume": 65,
+      "reservoirCapacity": 100,
+      "aquiferVolume": 85,
+      "aquiferCapacity": 100,
+      "snowReserve": 60,
+      "climateState": "NORMAL",
+      "ensoState": "NEUTRAL"
+    },
+    "climate": {
+      "baseRainfall": 80,
+      "baseSnowfall": 70,
+      "soilInfiltrationRate": 0.35,
+      "surfaceRunoffRate": 0.45,
+      "evaporationBase": 15
+    },
+    "demands": {
+      "population": 25,
+      "agriculture": 35,
+      "livestock": 10,
+      "mining": 20,
+      "ecosystem": 15
+    }
+  },
+  {
+    "id": "cuenca_arida",
+    "name": "Oasis Cordillerano Árido",
+    "description": "Precipitaciones pluviales muy escasas. Casi toda el agua proviene del deshielo nival y acuíferos profundos.",
+    "difficulty": "Difícil",
+    "years": 5,
+    "initialState": {
+      "money": 140,
+      "publicTrust": 70,
+      "basinHealth": 70,
+      "waterQuality": 80,
+      "reservoirVolume": 50,
+      "reservoirCapacity": 120,
+      "aquiferVolume": 70,
+      "aquiferCapacity": 100,
+      "snowReserve": 75,
+      "climateState": "DRY",
+      "ensoState": "LA_NINA"
+    },
+    "climate": {
+      "baseRainfall": 35,
+      "baseSnowfall": 85,
+      "soilInfiltrationRate": 0.20,
+      "surfaceRunoffRate": 0.60,
+      "evaporationBase": 22
+    },
+    "demands": {
+      "population": 20,
+      "agriculture": 45,
+      "livestock": 10,
+      "mining": 25,
+      "ecosystem": 12
+    }
+  },
+  {
+    "id": "cuenca_abundante",
+    "name": "Cuenca de los Lagos del Sur",
+    "description": "Precipitaciones frecuentes pero vulnerable a crecidas e inundaciones si no se gestionan embalses y drenajes.",
+    "difficulty": "Fácil",
+    "years": 5,
+    "initialState": {
+      "money": 100,
+      "publicTrust": 80,
+      "basinHealth": 90,
+      "waterQuality": 92,
+      "reservoirVolume": 80,
+      "reservoirCapacity": 100,
+      "aquiferVolume": 95,
+      "aquiferCapacity": 100,
+      "snowReserve": 80,
+      "climateState": "WET",
+      "ensoState": "EL_NINO"
+    },
+    "climate": {
+      "baseRainfall": 110,
+      "baseSnowfall": 80,
+      "soilInfiltrationRate": 0.40,
+      "surfaceRunoffRate": 0.40,
+      "evaporationBase": 12
+    },
+    "demands": {
+      "population": 30,
+      "agriculture": 30,
+      "livestock": 15,
+      "mining": 15,
+      "ecosystem": 20
+    }
+  }
+]
