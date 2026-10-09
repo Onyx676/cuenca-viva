@@ -613,6 +613,28 @@ body {
 
 .fb-sector-impact { display: flex; gap: 8px; flex-wrap: wrap; font-size: .9rem; }
 .fb-sector-impact[hidden], #btn-return-summary[hidden], #btn-resolve-season[hidden] { display: none; }
+#valley-inspection-controls[hidden], .valley-results-panel[hidden] { display: none; }
+#valley-inspection-controls { display: contents; }
+.valley-results-panel {
+  position: fixed; left: 16px; right: 16px; bottom: max(205px, 24vh);
+  z-index: 50; padding: 12px; border: 1px solid #38bdf8; border-radius: 12px;
+  background: rgba(15, 23, 42, .96); color: #f8fafc;
+  display: grid; grid-template-columns: 1fr auto; gap: 10px;
+  max-height: calc(100vh - 350px); overflow-y: auto;
+}
+.valley-results-panel > strong { align-self: center; font-size: .9rem; }
+.valley-result-cards { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.valley-result-cards details { padding: 10px; border: 1px solid #475569; border-radius: 8px; background: #1e293b; }
+.valley-result-cards summary { cursor: pointer; font-weight: 700; color: #7dd3fc; }
+.valley-result-cards p { margin: 8px 0 0; font-size: .95rem; line-height: 1.4; }
+@media (max-width: 900px) {
+  .valley-result-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .valley-results-panel { bottom: 185px; max-height: calc(100vh - 300px); }
+}
+@media (max-width: 480px) {
+  .valley-results-panel { left: 8px; right: 8px; grid-template-columns: 1fr; }
+  .valley-result-cards { grid-template-columns: 1fr; }
+}
 .fb-sector-impact span { padding: 5px 9px; border-radius: 7px; background: #243247; }
 .fb-sector-impact [data-tone="gain"] { color: #6ee7b7; }
 .fb-sector-impact [data-tone="loss"] { color: #fda4af; }

@@ -96,6 +96,7 @@ export class BasinScene extends Phaser.Scene {
   private reactionTurn = 0;
   private reactionVisibleMs = 0;
   private resultReactions: { sector: SectorId; text: string }[] = [];
+  private resultReactionCards: { sector: SectorId; title: string; text: string }[] = [];
   private waterReplay?: {
     balance: SeasonWaterBalance;
     phases: ('evaporation' | 'recharge' | 'pumping' | 'returns')[];
@@ -450,6 +451,7 @@ export class BasinScene extends Phaser.Scene {
   public updateGameState(newState: GameState, preview?: SeasonWaterBalance): void {
     if (newState.turn < this.reactionTurn || (this.gameState !== newState && newState.turn === 1)) {
       this.resultReactions = [];
+      this.resultReactionCards = [];
       this.resolvedCoverage = undefined;
       this.resultActivityLabel?.setVisible(false);
       this.reactionTurn = 0;
@@ -521,6 +523,7 @@ export class BasinScene extends Phaser.Scene {
       this.resultActivityLabel = undefined;
       this.resolvedCoverage = undefined;
       this.resultReactions = [];
+      this.resultReactionCards = [];
     });
     if (!this.gameState && BasinScene.initialGameState) {
       this.gameState = BasinScene.initialGameState;
@@ -1253,6 +1256,10 @@ export class BasinScene extends Phaser.Scene {
       ecosystem: ['Clara: «Al río le asignaron una declaración de buenas intenciones».', 'Clara: «El río sigue corriendo. Sin cortar cinta, por favor».']
     };
     const names: Partial<Record<SectorId, string>> = { population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Caudal del río' };
+    this.resultReactionCards = sectors.map(sector => ({ sector,
+      title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`,
+      text: voices[sector]![coverage[sector] >= .85 ? 1 : 0]
+    }));
     const selected = [ordered[0]];
     const wellSupplied = [...ordered].reverse().find(id => id !== selected[0] && coverage[id] >= .85);
     if (wellSupplied) selected.push(wellSupplied);
@@ -1267,9 +1274,14 @@ export class BasinScene extends Phaser.Scene {
       && (previousResult?.balance.basinHealth ?? state.basinHealth) >= 70;
   }
 
-  /** Reabre el feedback del último reparto, sin recalcular ni consumir azar. */
+  /** La inspección muestra las cinco tarjetas juntas en DOM, sin cola temporal. */
   public replayResultReactions(): void {
-    this.reactionVisibleMs = 0;
+    this.reactionVisibleMs = this.resultReactions.length * 9000;
+    this.reactionText?.setVisible(false);
+  }
+
+  public getResultReactionCards(): readonly { sector: SectorId; title: string; text: string }[] {
+    return this.resultReactionCards.map(card => ({ ...card }));
   }
 
   // Escenas simbólicas de respuesta al reparto anterior. No estiman cosecha,

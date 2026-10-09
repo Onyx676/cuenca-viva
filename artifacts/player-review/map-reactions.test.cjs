@@ -118,7 +118,12 @@ test('Mapa: reanudar planificación usa el resultado registrado, no la previsió
   assert.equal(scene.resolvedCoverage.livestock, .3, 'La escena conserva una copia del resultado');
   scene.reactionVisibleMs = 18000;
   scene.replayResultReactions();
-  assert.equal(scene.reactionVisibleMs, 0);
+  assert.equal(scene.reactionVisibleMs, 18000);
+  const cards = scene.getResultReactionCards();
+  assert.equal(cards.length, 5);
+  assert.match(cards.find(card => card.sector === 'livestock').title, /30%/);
+  cards[0].text = 'Cambio local';
+  assert.notEqual(scene.getResultReactionCards()[0].text, 'Cambio local');
   assert.equal(scene.reactionTurn, 3);
   assert.match(scene.resultReactions[0].text, /Resultado T3.*30%/);
 });

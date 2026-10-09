@@ -1914,6 +1914,20 @@ btnViewValley.addEventListener('click', () => {
   cardSeasonFeedback.classList.remove('open');
   cardSeasonFeedback.inert = true;
   BasinScene.instance?.replayResultReactions();
+  valleyResults.replaceChildren();
+  for (const result of BasinScene.instance?.getResultReactionCards() ?? []) {
+    const card = document.createElement('details');
+    card.open = true;
+    const title = document.createElement('summary');
+    title.textContent = result.title;
+    const text = document.createElement('p');
+    text.textContent = result.text;
+    card.append(title, text);
+    valleyResults.appendChild(card);
+  }
+  btnToggleValleyResults.textContent = 'Colapsar todos';
+  valleyInspectionControls.hidden = false;
+  valleyResultsPanel.hidden = false;
   btnResolveSeason.hidden = true;
   btnReturnSummary.hidden = false;
   btnReturnSummary.focus();
@@ -1924,10 +1938,40 @@ btnReturnSummary.id = 'btn-return-summary';
 btnReturnSummary.className = 'btn-huge-action';
 btnReturnSummary.textContent = 'Volver al resumen';
 btnReturnSummary.hidden = true;
-btnResolveSeason.parentElement!.appendChild(btnReturnSummary);
+const valleyInspectionControls = document.createElement('div');
+valleyInspectionControls.id = 'valley-inspection-controls';
+valleyInspectionControls.hidden = true;
+const valleyResultsPanel = document.createElement('section');
+valleyResultsPanel.className = 'valley-results-panel';
+valleyResultsPanel.hidden = true;
+valleyResultsPanel.setAttribute('aria-label', 'Resultados del último reparto en el valle');
+const valleyResultsHeading = document.createElement('strong');
+valleyResultsHeading.textContent = 'Así respondió el valle · tocá un sector para colapsarlo';
+const btnToggleValleyResults = document.createElement('button');
+btnToggleValleyResults.type = 'button';
+btnToggleValleyResults.className = 'btn-tool-action';
+btnToggleValleyResults.textContent = 'Colapsar todos';
+const valleyResults = document.createElement('div');
+valleyResults.className = 'valley-result-cards';
+valleyResultsPanel.append(valleyResultsHeading, btnToggleValleyResults, valleyResults);
+valleyInspectionControls.append(valleyResultsPanel, btnReturnSummary);
+btnResolveSeason.parentElement!.appendChild(valleyInspectionControls);
+btnToggleValleyResults.addEventListener('click', () => {
+  if (!canUseControl(btnToggleValleyResults) || !engine.getState().isSeasonResolved) return;
+  const cards = Array.from(valleyResults.querySelectorAll('details'));
+  const expand = !cards.some(card => card.open);
+  cards.forEach(card => { card.open = expand; });
+  btnToggleValleyResults.textContent = expand ? 'Colapsar todos' : 'Expandir todos';
+});
+valleyResults.addEventListener('toggle', () => {
+  btnToggleValleyResults.textContent = Array.from(valleyResults.querySelectorAll('details')).some(card => card.open)
+    ? 'Colapsar todos' : 'Expandir todos';
+}, true);
 btnReturnSummary.addEventListener('click', () => {
   if (!canUseControl(btnReturnSummary) || !engine.getState().isSeasonResolved || btnReturnSummary.hidden) return;
   btnReturnSummary.hidden = true;
+  valleyResultsPanel.hidden = true;
+  valleyInspectionControls.hidden = true;
   btnResolveSeason.hidden = false;
   cardSeasonFeedback.inert = false;
   cardSeasonFeedback.classList.add('open');
@@ -1969,6 +2013,8 @@ function continueResolvedSeason(): void {
   modalNewspaper?.classList.remove('open');
   cardSeasonFeedback.classList.remove('open');
   btnReturnSummary.hidden = true;
+  valleyResultsPanel.hidden = true;
+  valleyInspectionControls.hidden = true;
   btnResolveSeason.hidden = false;
 
   if (st.isYearEndPhase) {
@@ -2833,7 +2879,7 @@ updateSoundButtonLabel();
 function activeInteractionSurface(): HTMLElement | null {
   const modals = Array.from(document.querySelectorAll<HTMLElement>('.modal-backdrop.open'));
   return modals.at(-1) ?? (cardSeasonFeedback.classList.contains('open') ? cardSeasonFeedback
-    : typeof btnReturnSummary !== 'undefined' && !btnReturnSummary.hidden ? btnReturnSummary : null);
+    : typeof btnReturnSummary !== 'undefined' && !btnReturnSummary.hidden ? valleyInspectionControls : null);
 }
 
 function backgroundInteractionBlocked(): boolean {
