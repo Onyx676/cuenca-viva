@@ -2001,7 +2001,7 @@ function positionValleyResultCards(): void {
       card.style.maxHeight = `${Math.max(65, Math.min(150, (bottom - top - 16) / group.length))}px`;
       const x = group[0] === 'mining'
         ? compact ? rect.width - width - 8 : rect.width - width - 16
-        : compact ? 8 : Math.max(8, anchor.x * scaleX - width - (id === 'ecosystem' ? 90 : 35));
+        : compact ? 8 : id === 'population' ? 16 : Math.max(8, anchor.x * scaleX - width - 90);
       card.style.left = `${rect.left + x}px`;
       const y = Math.max(previousBottom + 8, rect.top + anchor.y * scaleY - card.offsetHeight / 2);
       positions.push({ card, y });
