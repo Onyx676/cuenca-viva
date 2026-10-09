@@ -125,7 +125,6 @@ export function generateNewspaperEdition(
 ): NewspaperEdition {
   const b = result.balance;
   const s = b.satisfactions;
-  const percent = (rate: number) => `${Math.round(rate * 100)}%`;
   const variant = ((result.turn - 1) % 20 + 20) % 20;
   // Cada situación tiene una bolsa barajada. Se agota antes de repetir;
   // reconstruirla desde semilla/historial conserva la edición al reabrir o recuperar.
@@ -146,52 +145,94 @@ export function generateNewspaperEdition(
   };
   const voice = (topic: keyof typeof VOICES) => pick([...VOICES[topic], ...EXTRA_VOICES[topic]], `voice:${topic}`, true);
   const productive = ['agriculture', 'livestock', 'mining'] as const;
-  const coverageFact = (id: 'population' | typeof productive[number]) => {
-    const name = NAMES[id], rate = percent(s[id]);
-    const lines = id === 'agriculture' ? [
-      `El riego de Cultivos alcanzó el ${rate} de lo necesario.`,
-      `Cultivos recibió agua para cubrir el ${rate} de sus necesidades.`,
-      `La dotación de Cultivos cubrió el ${rate} del requerimiento.`,
-      `Para Cultivos, el reparto alcanzó una cobertura del ${rate}.`,
-      `Cultivos cerró con el ${rate} de sus necesidades atendidas.`,
-      `El agua entregada a Cultivos cubrió el ${rate} de lo requerido.`
-    ] : id === 'livestock' ? [
-      `Granja tuvo cubierto el ${rate} de su abastecimiento.`,
-      `El reparto atendió el ${rate} de las necesidades de Granja.`,
-      `A Granja le llegó agua para el ${rate} de lo que necesitaba.`,
-      `La dotación de Granja alcanzó una cobertura del ${rate}.`,
-      `Granja cerró con el ${rate} de su requerimiento atendido.`,
-      `El abastecimiento de Granja llegó al ${rate} de lo necesario.`
-    ] : id === 'mining' ? [
-      `Mina recibió el ${rate} del agua que necesitaba.`,
-      `El abastecimiento de Mina cubrió el ${rate} del requerimiento.`,
-      `La dotación de Mina alcanzó el ${rate} de lo necesario.`,
-      `Mina cerró con el ${rate} de sus necesidades atendidas.`,
-      `El reparto dejó a Mina con una cobertura del ${rate}.`,
-      `Para Mina, el agua entregada cubrió el ${rate} de lo requerido.`
+  const coverageFact = (id: 'population' | typeof productive[number] | 'ecosystem') => {
+    const name = NAMES[id], rate = s[id];
+    // Bandas editoriales: describen cobertura, no producción ni daños simulados.
+    // La referencia completa sigue siendo 1; no redondear un faltante a éxito.
+    const lines = rate >= 1 ? [
+      `${name} tuvo agua para toda su necesidad.`,
+      `En ${name}, el abastecimiento quedó cubierto.`,
+      `${name} cerró sin faltantes de agua.`,
+      `El agua alcanzó para lo que necesitaba ${name}.`,
+      `${name} recibió agua suficiente esta estación.`,
+      `Esta vez, ${name} cubrió su necesidad de agua.`,
+      `Para ${name}, el reparto alcanzó.`,
+      `${name} pudo cubrir todo su requerimiento de agua.`,
+      `La necesidad de agua de ${name} quedó atendida.`,
+      `${name} llegó al cierre con agua suficiente.`,
+      `El abastecimiento de ${name} no dejó faltantes.`,
+      `No quedó necesidad de agua pendiente en ${name}.`,
+      `${name} contó con toda el agua necesaria.`,
+      `El reparto cubrió las necesidades de agua de ${name}.`,
+      `${name} terminó con su abastecimiento resuelto.`
+    ] : rate >= .8 ? [
+      `${name} quedó cerca de cubrir su necesidad de agua.`,
+      `En ${name}, faltó poco para completar el abastecimiento.`,
+      `${name} cerró con un faltante menor.`,
+      `El agua casi alcanzó para lo que necesitaba ${name}.`,
+      `${name} recibió casi toda el agua necesaria.`,
+      `Esta vez, ${name} atendió la mayor parte de su necesidad.`,
+      `Para ${name}, quedó una porción menor por cubrir.`,
+      `${name} estuvo cerca de cubrir todo su requerimiento.`,
+      `La necesidad de agua de ${name} quedó casi atendida.`,
+      `${name} llegó al cierre con poco abastecimiento pendiente.`,
+      `El abastecimiento de ${name} dejó un faltante pequeño.`,
+      `Quedó una necesidad menor de agua pendiente en ${name}.`,
+      `${name} contó con agua para casi todas sus necesidades.`,
+      `El reparto dejó a ${name} cerca de lo necesario.`,
+      `${name} terminó a poco de resolver su abastecimiento.`
+    ] : rate >= .5 ? [
+      `${name} tuvo agua, pero quedó una parte importante por cubrir.`,
+      `En ${name}, el abastecimiento dejó un faltante importante.`,
+      `${name} cerró con necesidades de agua todavía pendientes.`,
+      `El agua atendió sólo parte de lo que necesitaba ${name}.`,
+      `${name} recibió agua sin alcanzar lo necesario.`,
+      `Esta vez, ${name} cubrió sólo parte de su necesidad.`,
+      `Para ${name}, queda bastante abastecimiento por resolver.`,
+      `${name} cubrió parte del requerimiento; el resto sigue pendiente.`,
+      `La necesidad de agua de ${name} quedó atendida parcialmente.`,
+      `${name} llegó al cierre con un faltante que merece atención.`,
+      `El abastecimiento de ${name} quedó por debajo de lo necesario.`,
+      `Quedó una necesidad importante de agua pendiente en ${name}.`,
+      `${name} contó con agua para una parte de sus necesidades.`,
+      `El reparto dejó necesidades importantes pendientes en ${name}.`,
+      `${name} terminó con su abastecimiento aún incompleto.`
+    ] : rate > 0 ? [
+      `${name} recibió poca agua frente a lo necesario.`,
+      `En ${name}, el abastecimiento dejó un faltante grave.`,
+      `${name} cerró con gran parte de su necesidad sin cubrir.`,
+      `El agua estuvo lejos de alcanzar para ${name}.`,
+      `${name} recibió agua muy por debajo de lo necesario.`,
+      `Esta vez, ${name} cubrió sólo una pequeña parte de su necesidad.`,
+      `Para ${name}, falta resolver la mayor parte del abastecimiento.`,
+      `${name} quedó lejos de cubrir su requerimiento de agua.`,
+      `La necesidad de agua de ${name} sigue mayormente pendiente.`,
+      `${name} llegó al cierre con un faltante serio.`,
+      `El abastecimiento de ${name} necesita atención urgente.`,
+      `Quedó una gran necesidad de agua pendiente en ${name}.`,
+      `${name} contó con poca agua para sus necesidades.`,
+      `El reparto dejó a ${name} con una brecha de agua grave.`,
+      `${name} terminó con un abastecimiento muy insuficiente.`
     ] : [
-      `Ciudad recibió el ${rate} del agua que necesitaba.`,
-      `El abastecimiento urbano cubrió el ${rate} del requerimiento.`,
-      `La dotación de Ciudad alcanzó el ${rate} de lo necesario.`,
-      `Ciudad cerró con el ${rate} de sus necesidades atendidas.`,
-      `El reparto atendió el ${rate} del abastecimiento de Ciudad.`,
-      `${name} tuvo una cobertura del ${rate}.`
+      `${name} no recibió agua para cubrir su necesidad.`,
+      `En ${name}, la necesidad de agua quedó sin atender.`,
+      `${name} cerró sin abastecimiento.`,
+      `No hubo agua recibida para ${name}.`,
+      `${name} quedó sin el agua que necesitaba.`,
+      `Esta vez, ${name} no cubrió ninguna parte de su necesidad.`,
+      `Para ${name}, todo el abastecimiento sigue pendiente.`,
+      `${name} terminó sin agua recibida.`,
+      `La necesidad de agua de ${name} quedó pendiente por completo.`,
+      `${name} llegó al cierre sin abastecimiento de agua.`,
+      `El abastecimiento de ${name} quedó sin atender.`,
+      `Toda la necesidad de agua sigue pendiente en ${name}.`,
+      `${name} no contó con agua para sus necesidades.`,
+      `El reparto no abasteció a ${name}.`,
+      `${name} terminó con toda su necesidad sin cubrir.`
     ];
-    lines.push(
-      `${name}: el agua recibida alcanzó el ${rate} de lo necesario.`,
-      `Balance de ${name}: ${rate} de las necesidades cubiertas.`,
-      `La entrega a ${name} atendió el ${rate} del requerimiento.`,
-      `El cierre de ${name} dejó una cobertura del ${rate}.`,
-      `${name} terminó la estación con el ${rate} de lo requerido.`,
-      `De lo que necesitaba ${name}, se cubrió el ${rate}.`,
-      `El abastecimiento llegó al ${rate} del requerimiento de ${name}.`,
-      `${name} contó con agua para el ${rate} de sus necesidades.`,
-      `En ${name}, el agua entregada representó el ${rate} de lo necesario.`
-    );
-    // Misma bolsa de estructuras, posiciones distintas: dos sectores de una
-    // edición no reciben la misma frase con sólo el nombre cambiado.
-    const offsets = { population: 0, agriculture: 4, livestock: 8, mining: 12 };
-    return pick(lines, 'coverage-phrasing', true, offsets[id]);
+    const offsets = { population: 0, agriculture: 4, livestock: 8, mining: 12, ecosystem: 2 };
+    const sentence = pick(lines, 'coverage-phrasing', true, offsets[id]);
+    return id === 'ecosystem' ? sentence.replace(/abastecimiento/g, 'caudal ecológico') : sentence;
   };
   const lowest = [...productive].sort((a, c) => s[a] - s[c])[0];
   const usesReturned = b.returns.population + b.returns.agriculture + b.returns.livestock + b.returns.mining;
@@ -201,7 +242,7 @@ export function generateNewspaperEdition(
       : '';
   const deficitFact = (id: typeof productive[number]) =>
     b.allocations[id] === 0 ? `${NAMES[id]} no tuvo agua asignada.`
-      : b.suppliedAllocations[id] < b.allocations[id] ? `${NAMES[id]} cubrió ${percent(s[id])}: recibió ${b.suppliedAllocations[id]} 💧 de ${b.allocations[id]} asignadas. ${requestFact(id)}`
+      : b.suppliedAllocations[id] < b.allocations[id] ? `${coverageFact(id)} ${requestFact(id)}`
       : coverageFact(id);
   const chosen = result.events.find(item => item.chosenOptionId);
   const eventFact = (record: SeasonResult['events'][number]) => {
@@ -251,7 +292,7 @@ export function generateNewspaperEdition(
       : `El embalse conserva ${b.reservoirEnd} 💧, igual que al inicio del reparto.`;
   const facts = {
     population: b.allocations.population === 0 ? requestFact('population') : `${coverageFact('population')} ${requestFact('population')}`.trim(),
-    ecosystem: `El caudal ecológico cubrió ${percent(s.ecosystem)} de su referencia.`,
+    ecosystem: coverageFact('ecosystem'),
     waterQuality: qualityFact,
     basinHealth: `La salud del río cerró en ${b.basinHealth}/100.`
   };
@@ -286,12 +327,8 @@ export function generateNewspaperEdition(
     covered.add(focus);
     const p = previous?.balance;
     const comparison = focus === 'reservoir' ? reserveFact
-      : focus === 'agriculture' || focus === 'livestock' || focus === 'mining'
-        ? `${focus === 'agriculture' ? 'Cultivos' : focus === 'livestock' ? 'Granja' : 'Mina'} pasó de ${percent(p!.satisfactions[focus])} a ${percent(s[focus])} de cobertura.`
-      : focus === 'population'
-      ? `Ciudad pasó de ${percent(p!.satisfactions.population)} a ${percent(s.population)} de cobertura.`
-      : focus === 'ecosystem'
-        ? `El caudal ecológico pasó de ${percent(p!.satisfactions.ecosystem)} a ${percent(s.ecosystem)} de su referencia.`
+      : focus === 'agriculture' || focus === 'livestock' || focus === 'mining' || focus === 'population' || focus === 'ecosystem'
+        ? `${NAMES[focus]} recibió más agua respecto de su necesidad que la estación anterior. ${coverageFact(focus)}`
         : focus === 'waterQuality' ? qualityFact
           : `La salud del río pasó de ${p!.basinHealth} a ${b.basinHealth}/100.`;
     headline = `${NAMES[focus]} recuperó ${focus === 'reservoir' ? 'reserva' : focus === 'waterQuality' || focus === 'basinHealth' ? 'terreno' : 'cobertura'}`;
@@ -383,7 +420,7 @@ export function generateNewspaperEdition(
   const briefs: [string, string, string][] = [
     ['waterQuality', voice('waterQuality'), `${qualityFact} Más caudal no garantiza mejor calidad.`],
     ['reservoir', voice('reservoir'), reserveFact],
-    ['ecosystem', voice('ecosystem'), `Caudal ecológico: ${percent(s.ecosystem)}. Cuenta también el agua que sigue y retorna.`],
+    ['ecosystem', voice('ecosystem'), `${facts.ecosystem} Cuenta el agua que sigue y retorna.`],
     ['returns', 'Clara: «El reparto no termina donde termina el canal»', `Ciudad y actividades devolvieron ${usesReturned} 💧 al río. Aguas abajo pasaron ${b.downstreamFlow} 💧 en total; esos retornos ya están incluidos.`],
     ['population', voice('population'), facts.population],
     ['agriculture', voice('agriculture'), coverageFact('agriculture')],

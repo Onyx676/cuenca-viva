@@ -31,8 +31,9 @@ test('Heraldo: quince bajadas por sector, explicación única y causas de entreg
     assert.equal(edition.secondaryArticles.length, 2);
     edition.secondaryArticles.forEach((article, i) => {
       variants[i].add(article.subhead);
-      assert.doesNotMatch(article.subhead, /pedido|asignad|envío|entero|completo/);
-      assert.match(article.subhead, /67%/);
+      assert.doesNotMatch(article.subhead, /pedido|asignad|envío|entero|\bcompleto\b/);
+      assert.doesNotMatch(article.subhead, /%/);
+      assert.match(article.subhead, /parte|faltante|pendiente|incompleto|debajo|parcialmente|sin alcanzar|por resolver/);
     });
     const normalized = edition.secondaryArticles.map(article => article.subhead.replace(/Cultivos|Granja/g, 'Sector'));
     assert.notEqual(normalized[0], normalized[1], 'Dos breves no usan la misma estructura cambiando sólo el sector');
@@ -42,6 +43,40 @@ test('Heraldo: quince bajadas por sector, explicación única y causas de entreg
   variants.forEach(lines => assert.equal(lines.size, 15));
   assert.equal(primary.size, 15);
   assert.equal(JSON.stringify([result, engine.getState(), engine.rng]), before);
+});
+
+test('Heraldo: quince variantes por gravedad, sin porcentajes ni éxito ante faltantes', () => {
+  const engine = new SimulationEngine('cuenca_central', 'COBERTURA-NARRADA', true);
+  const base = structuredClone(engine.resolveSeason());
+  base.events = [];
+  const before = JSON.stringify([base, engine.getState(), engine.rng]);
+  const cases = [
+    [0, /sin|no |pendiente/i],
+    [.4, /poca|grave|gran parte|lejos|muy por debajo|pequeña parte|mayor parte|mayormente|serio|urgente|gran necesidad|brecha|insuficiente/],
+    [.67, /parte|faltante|pendiente|incompleto|debajo|parcialmente|sin alcanzar|por resolver/],
+    [.9, /cerca|poco|menor|casi|pequeño/],
+    [1, /tod[ao]|cubierto|sin faltantes|alcanzó|suficiente|cubrió|atendida|no dejó faltantes|No quedó|resuelto/]
+  ];
+  for (const [rate, meaning] of cases) {
+    const variants = new Set();
+    for (let turn = 1; turn <= 15; turn++) {
+      const result = structuredClone(base);
+      result.turn = turn;
+      Object.assign(result.balance.satisfactions, { population: rate === 0 ? 0 : 1, ecosystem: 1, agriculture: rate, livestock: 1, mining: 1 });
+      result.balance.allocations.agriculture = 10;
+      result.balance.suppliedAllocations.agriculture = rate === 0 ? 0 : 10;
+      result.balance.allocations.population = 10;
+      result.balance.suppliedAllocations.population = rate === 0 ? 0 : 10;
+      const verdict = rate === 0 ? { kind: 'crisis', focus: 'population', label: 'Crisis' } : { kind: 'recovery', focus: 'agriculture', label: 'Recuperación' };
+      const edition = generateNewspaperEdition(result, undefined, verdict);
+      assert.doesNotMatch(JSON.stringify(edition), /%/);
+      assert.match(edition.mainArticle.subhead, meaning);
+      variants.add(edition.mainArticle.subhead);
+      assert.deepEqual(generateNewspaperEdition(result, undefined, verdict), edition);
+    }
+    assert.equal(variants.size, 15);
+  }
+  assert.equal(JSON.stringify([base, engine.getState(), engine.rng]), before);
 });
 
 test('Heraldo: humor editorial variado, breve y sin alterar partida/PRNG', () => {

@@ -368,6 +368,7 @@ test('Heraldo: titulares fieles al mismo hecho, cortos y deterministas', () => {
       assert.deepEqual(generateNewspaperEdition(result, previous), edition);
       assert.equal(JSON.stringify({ result, previous }), snapshot);
       assert.equal(edition.kind, kind);
+      assert.doesNotMatch(JSON.stringify(edition), /%/, 'Las noticias narran cobertura sin porcentajes');
       assert.equal(edition.secondaryArticles.length, 2);
       headlines.add(edition.mainArticle.headline);
       assert.ok(edition.mainArticle.headline.length <= 85);
@@ -387,7 +388,7 @@ test('Heraldo: titulares fieles al mismo hecho, cortos y deterministas', () => {
   assert.match(noRequest.mainArticle.subhead, /Mina.*no tuvo agua asignada/);
   assert.doesNotMatch(noRequest.mainArticle.subhead, /Llegó todo lo pedido/);
   zero.balance.allocations.mining = 10;
-  assert.match(generateNewspaperEdition(zero).mainArticle.subhead, /recibió 0.*de 10 asignadas.*No llegó todo lo asignado/);
+  assert.match(generateNewspaperEdition(zero).mainArticle.subhead, /Mina.*No llegó todo lo asignado/);
   zero.balance.suppliedAllocations.mining = 10;
   zero.balance.satisfactions.mining = 0.15;
   assert.match(generateNewspaperEdition(zero).mainArticle.subhead, /pedido|asignado/);
@@ -430,8 +431,8 @@ test('Heraldo: caída de calidad precede reserva estable y festejo, sin cambiar 
     const previous = structuredClone(result);
     previous.balance.waterQuality = 90;
     const edition = generateNewspaperEdition(result, previous);
-    assert.match(edition.mainArticle.subhead, kind === 'crisis' ? /Ciudad/ : /caudal ecológico cubrió 65%/);
-    if (kind === 'crisis') assert.match(edition.mainArticle.subhead, /40%/);
+    assert.match(edition.mainArticle.subhead, kind === 'crisis' ? /Ciudad/ : /Río Vivo/);
+    if (kind === 'crisis') assert.match(edition.mainArticle.subhead, /poca|grave|gran parte|lejos|muy por debajo|pequeña parte|mayor parte|mayormente|serio|urgente|gran necesidad|brecha|insuficiente/);
     assert.ok(edition.secondaryArticles.some(article => /calidad del agua pasó de 90 a 75/.test(article.subhead)));
   }
 });
@@ -445,7 +446,7 @@ test('Heraldo: recuperación y reservas conservan portada sólo ante caídas lev
     const edition = generateNewspaperEdition(result, previous);
     assert.equal(edition.kind, kind);
     assert.match(edition.mainArticle.subhead, kind === 'recovery'
-      ? /Ciudad pasó de 65% a 90%/ : /El reparto usó reservas y el embalse bajó/);
+      ? /Ciudad recibió más agua respecto de su necesidad/ : /El reparto usó reservas y el embalse bajó/);
     assert.ok(edition.secondaryArticles.some(article => /calidad del agua pasó de 82 a 75/.test(article.subhead)));
     previous.balance.waterQuality = 83;
     const seriousDrop = generateNewspaperEdition(result, previous);
@@ -752,7 +753,7 @@ test('Feedback: meta parcial no oculta abandono; recuperación cuenta agua almac
   assert.equal(verdict.pendingSector,'mining');
   assert.match(verdict.message,/Mina quedó en 0%/);
   assert.match(generateNewspaperEdition(result).mainArticle.subhead,/Mina/);
-  assert.match(generateNewspaperEdition(result).mainArticle.subhead,/0%/);
+  assert.match(generateNewspaperEdition(result).mainArticle.subhead,/Mina.*sin|Mina.*no|no.*Mina|pendiente.*Mina/);
   result.season='SPRING';
   Object.assign(result.balance,{reservoirStart:20,reservoirEnd:35});
   Object.assign(result.balance.satisfactions,{population:1,ecosystem:1});
@@ -762,7 +763,7 @@ test('Feedback: meta parcial no oculta abandono; recuperación cuenta agua almac
   const edition=generateNewspaperEdition(result);
   assert.match(edition.mainArticle.subhead,/recuperó reserva; guarda 35/);
   assert.match(edition.mainArticle.subhead,/Mina/);
-  assert.match(edition.mainArticle.subhead,/0%/);
+  assert.match(edition.mainArticle.subhead,/Mina.*sin|Mina.*no|no.*Mina|pendiente.*Mina/);
   result.balance.reservoirEnd=20;
   result.balance.unallocatedStored=80;
   assert.notEqual(getSeasonVerdict(result).focus,'reservoir');
@@ -779,7 +780,7 @@ test('Feedback reconoce recuperación productiva y conserva avisos graves', () =
   const snapshot=JSON.stringify({result,previous});
   const verdict=getSeasonVerdict(result,previous);
   assert.equal(verdict.focus,'agriculture');
-  assert.match(generateNewspaperEdition(result,previous).mainArticle.subhead,/Cultivos pasó de 40% a 75%/);
+  assert.match(generateNewspaperEdition(result,previous).mainArticle.subhead,/Cultivos recibió más agua respecto de su necesidad/);
   assert.equal(JSON.stringify({result,previous}),snapshot);
   result.balance.waterQuality=35;
   assert.equal(getSeasonVerdict(result,previous).kind,'crisis');
