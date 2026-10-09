@@ -41,6 +41,8 @@ class MockElement {
   }
   contains(el) { return !!el && (el === this || this.children.some(c => c.contains(el))); }
   attach(el) { this.children.push(el); el.parent = this; }
+  appendChild(el) { this.attach(el); return el; }
+  append(...els) { els.forEach(el => { if (typeof el === 'string') { const node = element(); node.textContent = el; this.attach(node); } else this.attach(el); }); }
   focus() { if (this.owner) this.owner.activeElement = this; }
   setAttribute(k, v) { this.attributes[k] = v; }
   getAttribute(k) { return this.attributes[k] ?? null; }
@@ -50,7 +52,7 @@ class MockElement {
   remove() { if (this.parent) this.parent.children = this.parent.children.filter(el => el !== this); this.parent = null; }
   querySelectorAll() { return this.children.flatMap(el => [el, ...el.querySelectorAll()]).filter(el => el.isControl); }
   querySelector() { return this.querySelectorAll()[0] ?? null; }
-  replaceChildren() {}
+  replaceChildren(...els) { this.children = []; this.append(...els); }
 }
 class MockEvent { constructor(target, type = 'click') { this.target = target; this.type = type; this.prevented = false; this.stopped = false; } preventDefault() { this.prevented = true; } stopImmediatePropagation() { this.stopped = true; } }
 class MockKeyboardEvent extends MockEvent { constructor(target, key, shiftKey = false) { super(target, 'keydown'); this.key = key; this.shiftKey = shiftKey; } }
@@ -70,7 +72,12 @@ function fixture(scenario = 'cuenca_central', seed = 'AULA-2026-001') {
     showInteractiveEventModal() { c.modalInteractiveEvent.classList.add('open'); },
     BasinScene: { instance: { clearWaterReplay() { c.cleared++; c.cardSeasonFeedback.classList.remove('water-replay-active'); }, replaySeasonWater(b, done) { c.callbacks.push(done); c.cardSeasonFeedback.classList.add('water-replay-active'); }, updateGameState() {}, setEventWeatherOverride() {} } },
     btnTutNext: {}, tutorialGuideBanner: { style: {} }, sectorUI: {}, PLAYABLE_SECTORS: sectors, __handlers: {},
+    positionValleyResultCards() {}, requestAnimationFrame: fn => fn(),
   };
+  for (const name of ['valleyResults', 'valleyResultsPanel', 'valleyInspectionControls', 'btnReturnSummary', 'btnToggleValleyResults', 'fbWaterSummary']) c[name] = element();
+  c.btnReturnSummary.hidden = true;
+  c.BasinScene.instance.replayResultReactions = () => {};
+  c.BasinScene.instance.getResultReactionCards = () => [];
   for (const name of ['modalNewspaper', 'cardSeasonFeedback', 'btnNewsContinue', 'btnFbContinue', 'modalYearEnd', 'modalFinalReport', 'modalWelcome', 'modalInteractiveEvent', 'newsDate', 'newsMainHeadline', 'newsMainSubhead', 'newsPhotoEmoji', 'newsPhotoCaption', 'btnOpenNewspaper', 'fbSeasonTitle', 'fbGoalBadge', 'fbPop', 'fbAgri', 'fbHealth', 'fbMoney', 'fbAdviceText']) c[name] = element();
   for (const id of sectors) c.sectorUI[id] = { card: element(), slider: {}, btnMinus: {}, btnPlus: {} };
   const app = element();
@@ -80,12 +87,13 @@ function fixture(scenario = 'cuenca_central', seed = 'AULA-2026-001') {
   c.document = { createElement: () => element(), getElementById: () => app, querySelector: () => null, querySelectorAll: () => [c.modalNewspaper, c.modalYearEnd, c.modalFinalReport, c.modalWelcome, c.modalInteractiveEvent] };
   c.sessionLog = new SessionLog(c.engine.getState());
   const names = ['advanceRecordedTurn', 'createRecordedEngine', 'exitTutorialToYearOne', 'cancelPendingNewspaper', 'openPendingNewspaper', 'showNewspaperModal', 'closeNewspaperToSummary', 'continueResolvedSeason', 'renderAgileSeasonFeedback', 'activeInteractionSurface', 'backgroundInteractionBlocked', 'canUseControl', 'focusInteractionSurface', 'syncInteractionLock', 'guardBackgroundEvent', 'selectMapSector', 'handleMapElementClick', 'onAllocationChange'];
+  if (functions.showValleyInspection) names.push('showValleyInspection');
   const eventStart = main.indexOf('        const state = engine.getState();');
   const eventEnd = main.indexOf('        BasinScene.instance?.setEventWeatherOverride', eventStart);
   assert.ok(eventStart >= 0 && eventEnd > eventStart);
   const code = names.map(n => { assert.ok(functions[n], n); return functions[n]; }).join('\n')
     + `\n__eventChoice = opt => { ${main.slice(eventStart, eventEnd)} };`
-    + Object.entries(handlers).filter(([n]) => ['btnNewsContinue', 'btnCloseNewspaper', 'btnFbContinue', 'btnYearendContinue', 'btnResolveSeason', 'btnRestart', 'btnSuggestedDist', 'btnResetDist', 'btnDistributionTip', 'btnOpenUpgrades', 'btnHelp', 'btnClassroom', 'btnYearendUpgrades', 'btnCloseUpgrades', 'btnCloseHelp', 'btnCloseClassroom'].includes(n))
+    + Object.entries(handlers).filter(([n]) => ['btnNewsContinue', 'btnCloseNewspaper', 'btnReturnSummary', 'btnFbContinue', 'btnYearendContinue', 'btnResolveSeason', 'btnRestart', 'btnSuggestedDist', 'btnResetDist', 'btnDistributionTip', 'btnOpenUpgrades', 'btnHelp', 'btnClassroom', 'btnYearendUpgrades', 'btnCloseUpgrades', 'btnCloseHelp', 'btnCloseClassroom'].includes(n))
       .map(([n, code]) => `\n__handlers.${n} = ${code};`).join('');
   vm.runInNewContext(ts.transpileModule(code, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText, c);
   c.HTMLElement = c.Node = MockElement; c.KeyboardEvent = MockKeyboardEvent;
@@ -98,9 +106,11 @@ function fixture(scenario = 'cuenca_central', seed = 'AULA-2026-001') {
   const modals = [c.modalInteractiveEvent, c.modalYearEnd, c.modalUpgrades, c.modalFinalReport, c.modalClassroom, c.modalHelp, c.modalWelcome, c.modalNewspaper];
   for (const modal of modals) { modal.isModal = true; appRoot.attach(modal); }
   appRoot.attach(c.cardSeasonFeedback);
+  appRoot.attach(c.valleyInspectionControls);
   const attachControls = (parent, names) => names.forEach(name => { c[name].isControl = true; parent.attach(c[name]); });
   attachControls(background, ['btnSuggestedDist', 'btnResetDist', 'btnDistributionTip', 'btnOpenUpgrades', 'btnHelp', 'btnClassroom', 'btnResolveSeason']);
   attachControls(c.modalNewspaper, ['btnNewsContinue']); attachControls(c.cardSeasonFeedback, ['btnFbContinue']);
+  attachControls(c.valleyInspectionControls, ['btnReturnSummary', 'btnToggleValleyResults']);
   attachControls(c.modalYearEnd, ['btnYearendUpgrades', 'btnYearendContinue']); attachControls(c.modalFinalReport, ['btnRestart']);
   attachControls(c.modalUpgrades, ['btnCloseUpgrades', 'buyButton']); attachControls(c.modalInteractiveEvent, ['eventButton']);
   attachControls(c.modalHelp, ['btnCloseHelp']); attachControls(c.modalClassroom, ['btnCloseClassroom']);
@@ -169,6 +179,11 @@ for (const scenario of ['cuenca_central', 'cuenca_arida', 'cuenca_abundante']) t
     blockedActions(c); const done = c.callbacks.at(-1); done(); done();
     c.syncInteractionLock(); assert.ok(c.modalNewspaper.classList.contains('open')); assert.equal(c.modalNewspaper.inert, false); blockedActions(c);
     c.__handlers.btnNewsContinue(); c.__handlers.btnNewsContinue(); c.syncInteractionLock();
+    if (c.__handlers.btnReturnSummary) {
+      assert.equal(c.cardSeasonFeedback.classList.contains('open'), false);
+      blockedActions(c);
+      c.__handlers.btnReturnSummary(); c.syncInteractionLock();
+    }
     assert.ok(c.cardSeasonFeedback.classList.contains('open')); assert.equal(c.cardSeasonFeedback.inert, false); blockedActions(c);
     c.__handlers.btnFbContinue(); c.__handlers.btnFbContinue(); done();
     if (turn % 4 === 0) {

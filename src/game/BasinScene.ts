@@ -4,6 +4,7 @@ import { SectorId } from '../models/Sector';
 import { SeasonType } from '../models/Season';
 import type { SeasonWaterBalance } from '../models/Balance';
 import upgradesCatalog from '../data/upgrades.json';
+import { getMapResultStory } from './MapResultStories';
 
 export type MapClickTarget = SectorId | 'dam' | 'aquifer' | 'mountain' | 'river';
 
@@ -97,6 +98,7 @@ export class BasinScene extends Phaser.Scene {
   private reactionVisibleMs = 0;
   private resultReactions: { sector: SectorId; text: string }[] = [];
   private resultReactionCards: { sector: SectorId; title: string; text: string }[] = [];
+  private resultSceneVariants: Partial<Record<SectorId, number>> = {};
   private waterReplay?: {
     balance: SeasonWaterBalance;
     phases: ('evaporation' | 'recharge' | 'pumping' | 'returns')[];
@@ -1256,10 +1258,13 @@ export class BasinScene extends Phaser.Scene {
       ecosystem: ['Clara: «Al río le asignaron una declaración de buenas intenciones».', 'Clara: «El río sigue corriendo. Sin cortar cinta, por favor».']
     };
     const names: Partial<Record<SectorId, string>> = { population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Caudal del río' };
-    this.resultReactionCards = sectors.map(sector => ({ sector,
-      title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`,
-      text: voices[sector]![coverage[sector] >= .85 ? 1 : 0]
-    }));
+    const riverHealthy = (previousResult?.balance.waterQuality ?? state.waterQuality) >= 70
+      && (previousResult?.balance.basinHealth ?? state.basinHealth) >= 70;
+    this.resultReactionCards = sectors.map(sector => {
+      const story = getMapResultStory(sector, coverage[sector] >= .85 && (sector !== 'ecosystem' || riverHealthy), resultTurn, state.seed ?? 'VALLE');
+      this.resultSceneVariants[sector] = story.variant;
+      return { sector, title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`, text: story.text };
+    });
     const selected = [ordered[0]];
     const wellSupplied = [...ordered].reverse().find(id => id !== selected[0] && coverage[id] >= .85);
     if (wellSupplied) selected.push(wellSupplied);
@@ -1307,10 +1312,12 @@ export class BasinScene extends Phaser.Scene {
     this.resultActivityLabel.setText(`Reacciones al último reparto · T${this.reactionTurn}`)
       .setPosition(10, layout.top + layout.height - 30).setVisible(true);
     const scale = Math.max(.65, Math.min(1, layout.width / 850));
-    // No bobbing/tweens: reduced-motion gets exactly the same legible scene.
+    const moving = this.gameState?.isSeasonResolved && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     for (const id of ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as SectorId[]) {
       const coverage = this.resolvedCoverage[id] ?? 0;
       const covered = coverage >= .85;
+      const variant = this.resultSceneVariants[id] ?? 0;
+      const gesture = moving ? Math.sin(this.animTimer * (3 + variant)) * 3 * scale : 0;
       const anchor = this.getMapAnchor(id);
       const x = Math.max(22, anchor.x - 86 * scale), y = anchor.y + 22 * scale;
       g.fillStyle(0x0f172a, .25); g.fillEllipse(x, y + 15 * scale, 54 * scale, 14 * scale);
@@ -1332,20 +1339,25 @@ export class BasinScene extends Phaser.Scene {
           if (covered) {
             g.fillStyle(0xe5ac47); g.fillCircle(x + (offset + 5) * scale, y + 4 * scale, 4 * scale);
             g.fillCircle(x + (offset + 12) * scale, y + 4 * scale, 4 * scale);
+            if (variant === 1) {
+              g.lineStyle(2 * scale, 0x5bd488);
+              g.lineBetween(x + (offset + 8) * scale, y, x + (offset + 8) * scale, y - 18 * scale - gesture);
+              g.fillStyle(0x5bd488); g.fillCircle(x + (offset + 8) * scale, y - 18 * scale - gesture, 5 * scale);
+            }
           }
         }
       } else {
         // Vecinos/operarios/corral: un gesto persistente suficientemente grande.
         for (const offset of [-12, 10]) {
-          const px = x + offset * scale;
+          const px = x + offset * scale + (covered ? gesture : 0);
           g.fillStyle(0xe4b38f); g.fillCircle(px, y - 17 * scale, 4 * scale);
           g.lineStyle(5 * scale, id === 'mining' ? 0xe2a23a : id === 'livestock' ? 0x916744 : 0x5f9bbb);
           g.lineBetween(px, y - 11 * scale, px, y + 2 * scale);
           g.lineStyle(2.5 * scale, 0xe4b38f);
-          g.lineBetween(px, y - 7 * scale, px - 8 * scale, y - (covered ? 18 : 1) * scale);
-          g.lineBetween(px, y - 7 * scale, px + 8 * scale, y - (covered ? 18 : 1) * scale);
+          g.lineBetween(px, y - 7 * scale, px - 8 * scale, y - (covered || variant === 1 ? 18 : 1) * scale + gesture);
+          g.lineBetween(px, y - 7 * scale, px + 8 * scale, y - (covered || variant === 1 ? 18 : 1) * scale - gesture);
           g.lineStyle(3 * scale, 0x334155);
-          g.lineBetween(px, y + 2 * scale, px - 4 * scale, y + 12 * scale);
+          g.lineBetween(px, y + 2 * scale, px - 4 * scale - gesture, y + 12 * scale);
           g.lineBetween(px, y + 2 * scale, px + 4 * scale, y + 12 * scale);
         }
       }
@@ -1353,6 +1365,11 @@ export class BasinScene extends Phaser.Scene {
       g.lineStyle(2 * scale, 0xc5c0a9); g.lineBetween(x + 27 * scale, y + 10 * scale, x + 27 * scale, y - 25 * scale);
       g.fillStyle(covered ? 0x34b28c : 0xedba54);
       g.fillRect(x + 20 * scale, y - 28 * scale, 20 * scale, 12 * scale);
+      if (!covered && variant === 2) {
+        // Megáfono simbólico: no crea un evento ni penalización.
+        g.fillStyle(0xf5dfb8); g.fillTriangle(x - 24 * scale, y - 10 * scale,
+          x - 37 * scale, y - 17 * scale, x - 37 * scale, y - 3 * scale);
+      }
       g.lineStyle(2 * scale, 0x0f172a);
       if (covered) {
         g.lineBetween(x + 24 * scale, y - 22 * scale, x + 28 * scale, y - 19 * scale);

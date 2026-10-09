@@ -3,18 +3,43 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const ts = require('typescript');
 const vm = require('node:vm');
+require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+}).outputText, filename);
+const { getMapResultStory } = require('../../src/game/MapResultStories.ts');
 const filename = require('node:path').resolve('src/game/BasinScene.ts');
 const output = ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText;
 let blocked = false;
+let reducedMotion = true;
 const moduleObject = { exports: {} };
 vm.runInNewContext(output, {
   module: moduleObject, exports: moduleObject.exports,
-  require: name => name === 'phaser' ? { Scene: class {} } : name.endsWith('upgrades.json') ? [] : (() => { throw new Error(name); })(),
-  document: { querySelector: () => blocked ? {} : null }
+  require: name => name === 'phaser' ? { Scene: class {} } : name.endsWith('upgrades.json') ? [] : name === './MapResultStories' ? { getMapResultStory } : (() => { throw new Error(name); })(),
+  document: { querySelector: () => blocked ? {} : null }, window: { matchMedia: () => ({ matches: reducedMotion }) }
 }, { filename });
 const { BasinScene } = moduleObject.exports;
+
+test('Mapa: quince escenas por sector y resultado, estables y con variedad visual', () => {
+  for (const sector of ['population', 'agriculture', 'livestock', 'mining', 'ecosystem']) {
+    for (const good of [true, false]) {
+      const texts = new Set(), variants = new Set();
+      for (let turn = 1; turn <= 15; turn++) {
+        const story = getMapResultStory(sector, good, turn, 'MISMA-CUENCA');
+        assert.deepEqual(getMapResultStory(sector, good, turn, 'MISMA-CUENCA'), story);
+        texts.add(story.text); variants.add(story.variant);
+      }
+      assert.equal(texts.size, 15);
+      assert.equal(variants.size, 3);
+    }
+  }
+  for (const good of [true, false]) for (let turn = 1; turn <= 15; turn++) {
+    const scenes = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'].map(sector =>
+      getMapResultStory(sector, good, turn, 'MISMA-CUENCA').text.split(': ')[1]);
+    assert.equal(new Set(scenes).size, 5, 'No repetir el mismo chiste entre sectores');
+  }
+});
 
 test('Mapa: reacciones usan resultado real, no preview, y sobreviven avance sin mutar estado', () => {
   const scene = new BasinScene();
@@ -152,6 +177,18 @@ test('Mapa: escenas persistentes de los cinco sectores, ocultas en modal y sin o
   assert.equal(JSON.stringify(calls), firstDraw, 'El dibujo persiste después de la burbuja y no depende del reloj');
   assert.equal(graphicsCount, 1);
   assert.equal(textCount, 1);
+  scene.gameState = { isSeasonResolved: true };
+  reducedMotion = false;
+  calls.length = 0; scene.animTimer = 0; scene.drawResultActivity();
+  const standing = JSON.stringify(calls);
+  calls.length = 0; scene.animTimer = .5; scene.drawResultActivity();
+  assert.notEqual(JSON.stringify(calls), standing, 'Los gestos cambian con el reloj visual');
+  reducedMotion = true;
+  calls.length = 0; scene.drawResultActivity();
+  const reduced = JSON.stringify(calls);
+  calls.length = 0; scene.animTimer = 1.5; scene.drawResultActivity();
+  assert.equal(JSON.stringify(calls), reduced, 'Movimiento reducido conserva la escena estática');
+  assert.equal(graphicsCount, 1); assert.equal(textCount, 1);
   blocked = true;
   calls.length = 0;
   scene.drawResultActivity();

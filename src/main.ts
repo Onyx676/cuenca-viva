@@ -494,6 +494,7 @@ function positionMapControls(): void {
     element.style.left = `${scene.scale.width * (compact && element.dataset.network === "river" ? 0.17 : x)}px`;
     element.style.top = `${mapTop + mapHeight * (compact && element.dataset.network === "river" ? 0.60 : y)}px`;
   }
+  positionValleyResultCards();
   if (selectedSector) {
     const gate=document.querySelector<HTMLElement>(`[data-map-sector="${selectedSector}"]`)!.getBoundingClientRect();
     const panel=document.querySelector('.allocation-panel')!.getBoundingClientRect();
@@ -1895,7 +1896,7 @@ function showNewspaperModal(edition: NewspaperEdition | null): void {
   if (newsPriceEl) newsPriceEl.textContent = edition.price;
 
   if (btnNewsContinue) {
-    btnNewsContinue.textContent = 'Ver resumen';
+    btnNewsContinue.textContent = 'Ver el valle';
   }
 
   cardSeasonFeedback.classList.remove('open');
@@ -1911,12 +1912,17 @@ btnOpenNewspaper?.addEventListener('click', () => {
 
 btnViewValley.addEventListener('click', () => {
   if (!canUseControl(btnViewValley) || !cardSeasonFeedback.classList.contains('open') || !engine.getState().isSeasonResolved) return;
+  showValleyInspection();
+});
+
+function showValleyInspection(): void {
   cardSeasonFeedback.classList.remove('open');
   cardSeasonFeedback.inert = true;
   BasinScene.instance?.replayResultReactions();
   valleyResults.replaceChildren();
   for (const result of BasinScene.instance?.getResultReactionCards() ?? []) {
     const card = document.createElement('details');
+    card.dataset.sector = result.sector;
     card.open = true;
     const title = document.createElement('summary');
     title.textContent = result.title;
@@ -1930,13 +1936,14 @@ btnViewValley.addEventListener('click', () => {
   valleyResultsPanel.hidden = false;
   btnResolveSeason.hidden = true;
   btnReturnSummary.hidden = false;
+  positionValleyResultCards();
   btnReturnSummary.focus();
-});
+}
 const btnReturnSummary = document.createElement('button');
 btnReturnSummary.type = 'button';
 btnReturnSummary.id = 'btn-return-summary';
 btnReturnSummary.className = 'btn-huge-action';
-btnReturnSummary.textContent = 'Volver al resumen';
+btnReturnSummary.textContent = 'Ver resumen';
 btnReturnSummary.hidden = true;
 const valleyInspectionControls = document.createElement('div');
 valleyInspectionControls.id = 'valley-inspection-controls';
@@ -1947,6 +1954,7 @@ valleyResultsPanel.hidden = true;
 valleyResultsPanel.setAttribute('aria-label', 'Resultados del último reparto en el valle');
 const valleyResultsHeading = document.createElement('strong');
 valleyResultsHeading.textContent = 'Así respondió el valle · tocá un sector para colapsarlo';
+valleyResultsHeading.hidden = true;
 const btnToggleValleyResults = document.createElement('button');
 btnToggleValleyResults.type = 'button';
 btnToggleValleyResults.className = 'btn-tool-action';
@@ -1966,7 +1974,44 @@ btnToggleValleyResults.addEventListener('click', () => {
 valleyResults.addEventListener('toggle', () => {
   btnToggleValleyResults.textContent = Array.from(valleyResults.querySelectorAll('details')).some(card => card.open)
     ? 'Colapsar todos' : 'Expandir todos';
+  positionValleyResultCards();
 }, true);
+
+function positionValleyResultCards(): void {
+  if (typeof valleyResultsPanel === 'undefined' || valleyResultsPanel.hidden) return;
+  const scene = BasinScene.instance;
+  const canvas = document.querySelector('#game-container canvas');
+  if (!scene || !canvas) return;
+  const rect = canvas.getBoundingClientRect(), layout = scene.getMapLayout();
+  const scaleX = rect.width / layout.width, scaleY = rect.height / scene.scale.height;
+  const compact = rect.width <= 640;
+  valleyResultsPanel.style.setProperty('--valley-toggle-top', `${seasonalGoalBanner.getBoundingClientRect().bottom + 8}px`);
+  const width = compact ? Math.floor(rect.width * .44) : Math.min(240, Math.floor(rect.width * .23));
+  const top = rect.top + layout.top * scaleY + (compact ? 8 : 90);
+  const bottom = Math.min(rect.top + (layout.top + layout.height) * scaleY,
+    document.querySelector('.allocation-panel')!.getBoundingClientRect().top) - 8;
+  for (const group of [['mining', 'agriculture', 'livestock'], ['population', 'ecosystem']] as const) {
+    const positions: { card: HTMLDetailsElement; y: number }[] = [];
+    let previousBottom = top - 8;
+    for (const id of group) {
+      const card = valleyResults.querySelector<HTMLDetailsElement>(`[data-sector="${id}"]`);
+      if (!card) continue;
+      const anchor = scene.getMapAnchor(id);
+      card.style.width = `${width}px`;
+      card.style.maxHeight = `${Math.max(65, Math.min(150, (bottom - top - 16) / group.length))}px`;
+      const x = group[0] === 'mining'
+        ? compact ? rect.width - width - 8 : rect.width - width - 16
+        : compact ? 8 : Math.max(8, anchor.x * scaleX - width - (id === 'ecosystem' ? 90 : 35));
+      card.style.left = `${rect.left + x}px`;
+      const y = Math.max(previousBottom + 8, rect.top + anchor.y * scaleY - card.offsetHeight / 2);
+      positions.push({ card, y });
+      previousBottom = y + card.offsetHeight;
+    }
+    // Mantener cada columna en el mapa y separar tarjetas de sectores cercanos.
+    const shift = Math.max(0, previousBottom - bottom);
+    positions.forEach(({ card, y }) => { card.style.top = `${Math.max(top, y - shift)}px`; });
+  }
+}
 btnReturnSummary.addEventListener('click', () => {
   if (!canUseControl(btnReturnSummary) || !engine.getState().isSeasonResolved || btnReturnSummary.hidden) return;
   btnReturnSummary.hidden = true;
@@ -1987,9 +2032,7 @@ function closeNewspaperToSummary(): void {
   cancelPendingNewspaper();
   modalNewspaper?.classList.remove('open');
   cardSeasonFeedback.classList.remove('water-replay-active');
-  cardSeasonFeedback.inert = false;
-  cardSeasonFeedback.classList.add('open');
-  btnFbContinue.focus();
+  showValleyInspection();
 }
 
 const btnNewsContinue = document.getElementById('btn-news-continue') as HTMLButtonElement | null;
