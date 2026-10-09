@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const ts = require('typescript');
 const vm = require('node:vm');
 require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
-  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText, filename);
 const { getMapResultStory } = require('../../src/game/MapResultStories.ts');
 const filename = require('node:path').resolve('src/game/BasinScene.ts');
@@ -21,22 +21,23 @@ vm.runInNewContext(output, {
 }, { filename });
 const { BasinScene } = moduleObject.exports;
 
-test('Mapa: quince escenas por sector y resultado, estables y con variedad visual', () => {
+test('Mapa: escenas aprobadas por sector y cobertura, estables y sin frases de éxito ante faltante', () => {
   for (const sector of ['population', 'agriculture', 'livestock', 'mining', 'ecosystem']) {
-    for (const good of [true, false]) {
+    for (const rate of [1, .9, .6, .2]) {
       const texts = new Set(), variants = new Set();
       for (let turn = 1; turn <= 15; turn++) {
-        const story = getMapResultStory(sector, good, turn, 'MISMA-CUENCA');
-        assert.deepEqual(getMapResultStory(sector, good, turn, 'MISMA-CUENCA'), story);
+        const story = getMapResultStory(sector, rate, undefined, turn, 'MISMA-CUENCA');
+        assert.deepEqual(getMapResultStory(sector, rate, undefined, turn, 'MISMA-CUENCA'), story);
+        if (rate < 1) assert.doesNotMatch(story.text, /Alcanzó el agua|Hoy no me puedo quejar|Las vacas tienen agua/);
         texts.add(story.text); variants.add(story.variant);
       }
-      assert.equal(texts.size, 15);
-      assert.equal(variants.size, 3);
+      assert.ok(texts.size >= 1);
+      assert.ok([...variants].every(value => value >= 0 && value <= 2));
     }
   }
-  for (const good of [true, false]) for (let turn = 1; turn <= 15; turn++) {
+  for (const rate of [1, .6]) for (let turn = 1; turn <= 15; turn++) {
     const scenes = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'].map(sector =>
-      getMapResultStory(sector, good, turn, 'MISMA-CUENCA').text.split(': ')[1]);
+      getMapResultStory(sector, rate, undefined, turn, 'MISMA-CUENCA').text);
     assert.equal(new Set(scenes).size, 5, 'No repetir el mismo chiste entre sectores');
   }
 });

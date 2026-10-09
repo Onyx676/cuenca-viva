@@ -3,6 +3,7 @@ import { SEASONS_INFO } from '../models/Season';
 import { getSeasonVerdict, type SeasonVerdict, type SeasonVerdictKind } from '../seasonVerdict';
 import { SeededRandom } from '../simulation/RandomSystem';
 import { NEWSPAPER_HEADLINES } from './NewspaperHeadlines';
+import { EDITORIAL_SECTORS, pickEditorial, sectorArticle, type EditorialSector } from './EditorialSelection';
 
 export interface NewspaperArticle {
   headline: string;
@@ -76,7 +77,10 @@ export function getEventRecap(record: SeasonResult['events'][number], turn: numb
     liberar_preventivo: 'Elegiste liberar agua antes de la crecida.', retener_todo: 'Elegiste intentar retener agua de la crecida.', drenaje_sostenible: 'Elegiste usar el drenaje para infiltrar agua.'
   };
   const lines = scenes[record.event.id];
-  return { headline: lines ? lines[Math.floor((turn - 1) / 4) % lines.length] : record.event.name,
+  const approvedEvents: Record<string, string> = { berta_calor: '01', ferrada_molienda: '02', sofia_aniversario: '03', jacinto_festival: '04',
+    clara_carpincho: '05', fugas_red_ciudad: '06', flamencos_turismo: '07', falla_saneamiento: '08', sequia_severa: '09', lluvia_extraordinaria: '10' };
+  const approvedRecap = pickEditorial([`H-EVT-${approvedEvents[record.event.id]}`], turn, 'recap', record.event.id);
+  return { headline: approvedRecap?.headline ?? record.event.name,
     decision: choices[record.chosenOptionId] ?? `Elegiste «${option.label}».` };
 }
 
@@ -397,10 +401,57 @@ export function generateNewspaperEdition(
     'No faltó parte del envío: faltó incluir más agua en el pedido.'
   ], 'short-request-explanation', true)}`;
 
+  const approved = (ids: string[], context: string) => pickEditorial(ids, result.turn, editorialSeed, context);
+  const approvedSector = (id: EditorialSector) => sectorArticle(id, s[id], previous?.balance.satisfactions[id], result.turn, editorialSeed,
+    !!previous && b.suppliedAllocations[id] > previous.balance.suppliedAllocations[id]);
+  const eventIds: Record<string, string> = {
+    berta_calor: '01', ferrada_molienda: '02', sofia_aniversario: '03', jacinto_festival: '04', clara_carpincho: '05',
+    fugas_red_ciudad: '06', flamencos_turismo: '07', falla_saneamiento: '08', sequia_severa: '09', lluvia_extraordinaria: '10'
+  };
+  const approvedTopic = (id: string) => {
+    if (EDITORIAL_SECTORS.includes(id as EditorialSector)) return approvedSector(id as EditorialSector);
+    if (id === 'waterQuality') return approved([b.waterQuality < 60 ? 'H-GEN-08'
+      : previous && b.waterQuality < previous.balance.waterQuality ? 'H-GEN-09'
+      : previous && b.waterQuality > previous.balance.waterQuality ? 'H-GEN-10' : ''], id);
+    if (id === 'basinHealth') return approved([b.basinHealth < 60 ? 'H-GEN-11'
+      : previous && b.basinHealth > previous.balance.basinHealth ? 'H-GEN-12' : ''], id);
+    if (id === 'reservoir' && delta > 0) return approved(['A-H-17'], id);
+    if (id === 'snow' && b.snowMelt > 0) return approved(['H-GEN-15'], id);
+    if (id === 'rain' && b.seasonRainfall > 0) return approved([b.soilInfiltration > 0 ? 'H-GEN-16' : 'H-GEN-17'], id);
+    if (id === 'aquifer') return approved([b.aquiferWithdrawal > 0 ? 'H-GEN-18'
+      : result.events.some(record => (record.waterAdjustment?.aquiferChange ?? 0) < 0) ? '' : 'H-GEN-19'], id);
+    if (id === 'returns' && usesReturned > 0) return approved(['H-GEN-20'], id);
+    return undefined;
+  };
+  let mainPair = topic === 'qualityDrop' ? approved(['H-GEN-09'], topic)
+    : verdict.kind === 'crisis' && verdict.focus === 'population' ? approved(['H-GEN-07', ...(s.population < .5 ? ['H-CIU-05'] : [])], 'city-crisis')
+    : verdict.kind === 'crisis' || verdict.kind === 'error' || verdict.kind === 'recovery'
+      ? approvedTopic(verdict.focus ?? '')
+    : verdict.kind === 'tradeoff' ? approved([s[s.population >= .85 ? 'population' : 'agriculture'] >= 1 ? 'H-GEN-05' : 'H-GEN-06'], 'reserve-draw')
+    : verdict.kind === 'good' ? approved(['A-H-18', 'H-GEN-01', 'H-GEN-02'], 'good')
+    : verdict.kind === 'opportunity' ? approved(['H-GEN-13'], 'opportunity')
+    : s[lowest] < .8 ? approvedSector(lowest) : approved(['H-GEN-03', 'H-GEN-04'], 'normal');
+  if (mainPair?.headline && mainPair.subhead) {
+    headline = mainPair.headline;
+    subhead = mainPair.subhead;
+    // La pieza reemplaza la bajada entera; el sector pendiente necesita una breve propia.
+    if (verdict.pendingSector && verdict.pendingSector !== verdict.focus && verdict.kind !== 'normal') covered.delete(verdict.pendingSector);
+  } else {
+    // Sin pieza aprobada para ese contexto, conservar sólo la explicación factual.
+    headline = verdict.label;
+  }
+
   const secondaryArticles: NewspaperEdition['secondaryArticles'] = [];
   const add = (topic: string, headline: string, fact: string) => {
     if (!covered.has(topic) && secondaryArticles.length < 2) {
-      secondaryArticles.push({ headline, subhead: fact });
+      const pair = approvedTopic(topic);
+      if (pair?.headline && pair.subhead) secondaryArticles.push({ headline: pair.headline, subhead: pair.subhead });
+      else if (topic === 'event' && chosen && eventIds[chosen.event.id]) {
+        const eventPair = approved([`H-EVT-${eventIds[chosen.event.id]}`], `event:${chosen.event.id}`)!;
+        // Las bajadas de eventos contienen instrucciones editoriales; mostrar la decisión real.
+        secondaryArticles.push({ headline: eventPair.headline!, subhead: ['berta_calor', 'ferrada_molienda'].includes(chosen.event.id)
+          ? `${eventPair.subhead} ${eventFact(chosen)}` : eventFact(chosen) });
+      } else secondaryArticles.push({ headline: topic in NAMES ? NAMES[topic as keyof typeof NAMES] : headline, subhead: fact });
       covered.add(topic);
     }
   };
@@ -410,6 +461,11 @@ export function generateNewspaperEdition(
   if (b.waterQuality < 60 || (previous && b.waterQuality < previous.balance.waterQuality))
     add('waterQuality', voice('waterQuality'), qualityFact);
   if (b.basinHealth < 60) add('basinHealth', voice('basinHealth'), facts.basinHealth);
+  if (verdict.pendingSector) add(verdict.pendingSector, NAMES[verdict.pendingSector], deficitFact(verdict.pendingSector));
+  if (shortRequest && !mainPair && secondaryArticles.length < 2) {
+    const pair = approved(['H-GEN-14'], 'short-request')!;
+    add('shortRequest', pair.headline!, pair.subhead!);
+  }
   // Una decisión registrada merece una breve; nunca desplaza alertas de ciudad/río/calidad.
   if (chosen) add('event', chosen.event.name, eventFact(chosen));
   if (delta < 0) add('reservoir', voice('reservoir'), reserveFact);
@@ -431,7 +487,9 @@ export function generateNewspaperEdition(
   if (b.seasonRainfall > 0) briefs.push(['rain', 'La lluvia llega sin completar el formulario de ingreso', b.soilInfiltration > 0 ? 'Una parte de la lluvia se infiltró en el suelo.' : 'Llovió; este balance no registró infiltración al suelo.']);
   const event = result.events[0];
   if (event) briefs.push(['event', event.event.name, event.chosenOptionId ? eventFact(event) : 'Suceso registrado esta estación. El balance incluye sus efectos; no permite aislarlos del clima y del reparto.']);
-  briefs.push(['aquifer', 'La reserva subterránea tampoco admite retiros ilimitados', b.aquiferWithdrawal > 0 ? 'Hubo bombeo del acuífero para abastecer el reparto.' : 'Esta estación no se bombeó agua del acuífero.']);
+  briefs.push(['aquifer', 'Agua subterránea', b.aquiferWithdrawal > 0 ? 'Hubo bombeo del acuífero para abastecer el reparto.'
+    : result.events.some(record => (record.waterAdjustment?.aquiferChange ?? 0) < 0) ? 'Hubo una extracción extraordinaria del acuífero antes del reparto.'
+      : 'Esta estación no se bombeó agua del acuífero.']);
   const start = variant % briefs.length;
   for (const brief of [...briefs.slice(start), ...briefs.slice(0, start)]) add(...brief);
 
