@@ -455,7 +455,10 @@ export class BasinScene extends Phaser.Scene {
       this.reactionTurn = 0;
       this.reactionText?.setVisible(false);
     }
-    if (!newState.isSeasonResolved) this.clearWaterReplay();
+    if (!newState.isSeasonResolved) {
+      this.clearWaterReplay();
+      this.reactionText?.setVisible(false);
+    }
     this.gameState = newState;
     this.decisionPreview = preview;
     if (newState.isSeasonResolved && newState.turn !== this.reactionTurn) this.prepareResultReactions(newState);
@@ -1350,7 +1353,10 @@ export class BasinScene extends Phaser.Scene {
   }
 
   private updateResultReaction(delta: number): void {
-    const blocked = !!this.waterReplay || !!document.querySelector('.modal-backdrop.open, #card-season-feedback.open');
+    // Las escenas conservan el último resultado, pero sus carteles sólo se
+    // muestran al revisar esa estación resuelta, nunca durante el nuevo reparto.
+    const blocked = !this.gameState?.isSeasonResolved || !!this.waterReplay
+      || !!document.querySelector('.modal-backdrop.open, #card-season-feedback.open');
     const index = Math.floor(this.reactionVisibleMs / 9000);
     if (blocked || !this.resultReactions[index]) {
       this.reactionText?.setVisible(false);

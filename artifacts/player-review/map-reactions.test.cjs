@@ -36,6 +36,7 @@ test('Mapa: reacciones usan resultado real, no preview, y sobreviven avance sin 
 
 test('Mapa: burbuja única, reloj pausado en replay/modales, termina y no crece por frame', () => {
   const scene = new BasinScene();
+  scene.gameState = { isSeasonResolved: true };
   let created = 0;
   const label = { width: 180, height: 64, visible: false,
     setDepth() { return this; }, setOrigin() { return this; },
@@ -74,6 +75,30 @@ test('Mapa: burbuja única, reloj pausado en replay/modales, termina y no crece 
   scene.updateResultReaction(30);
   assert.equal(label.visible, false);
   assert.equal(created, 1);
+});
+
+test('Mapa: avanzar oculta el cartel inmediatamente y no reaparece al planificar o recuperar', () => {
+  const scene = new BasinScene();
+  const label = { visible: true, setVisible(value) { this.visible = value; return this; } };
+  scene.reactionText = label;
+  scene.reactionTurn = 3;
+  scene.reactionVisibleMs = 50;
+  scene.resultReactions = [{ sector: 'livestock', text: 'Resultado T3' }];
+  scene.resolvedCoverage = { livestock: .4 };
+  scene.clearWaterReplay = () => {};
+  const planning = { turn: 4, isSeasonResolved: false, seasonHistory: [{ turn: 3 }] };
+  const before = JSON.stringify(planning);
+  blocked = false;
+  scene.updateGameState(planning);
+  assert.equal(label.visible, false, 'No espera al siguiente frame ni al temporizador');
+  for (let frame = 0; frame < 100; frame++) scene.updateResultReaction(16);
+  assert.equal(label.visible, false);
+  assert.equal(scene.reactionVisibleMs, 50);
+  assert.equal(scene.resolvedCoverage.livestock, .4, 'Las escenas del último reparto se conservan');
+  scene.replayResultReactions();
+  scene.updateResultReaction(16);
+  assert.equal(label.visible, false, 'Reiniciar el reloj tampoco abre carteles durante planificación');
+  assert.equal(JSON.stringify(planning), before);
 });
 
 test('Mapa: reanudar planificación usa el resultado registrado, no la previsión ni asignación nueva', () => {
