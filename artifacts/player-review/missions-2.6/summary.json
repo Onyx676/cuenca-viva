@@ -1,0 +1,6031 @@
+{
+  "modelVersion": "2.6",
+  "sources": {
+    "src/simulation/SimulationEngine.ts": "7febac29d71a9c6b1a3c951b44c39d1a1dddedb724ee283fec46d0735b1623ba",
+    "src/simulation/WaterSystem.ts": "de27859f2b6ee61fbb6fb0dfab4be2acdacdc4d2c99548c6aa4d87130524515e",
+    "src/simulation/DemandSystem.ts": "a02b57866062296918645af89107558895874c7e218fa8d0ebd2b61818900a8d",
+    "src/simulation/MissionSystem.ts": "a6083213cb30431a6ceae52a39cb8c12187fa74e0927059519f37a34435456a4",
+    "src/models/SeasonalGoal.ts": "9c9a8129f7d371a9c5bc0e50ecee25049f28ca51afdccec101bfef2a41eab8a8",
+    "src/simulation/RandomSystem.ts": "a81bcb83618d2623bfe51eca14b3133090db12f412ec16fed530b971ed1bbb05",
+    "src/data/scenarios.json": "611bcf459324d1ee3e516fe2c522f250aaf283dfeca48246f756c0166e1a507e",
+    "src/data/upgrades.json": "437a37d1d891229a89adf5709bdc2f41432c5fd93a974c7669c01750233a6ff8",
+    "src/data/seasonalGoals.json": "d7fb73f40b78d0c02861625cbabb53885a92221c7f93c4feb3cd297b7014a92f",
+    "src/data/events.json": "972d09c1f8039c21e1171a0995c45444d628431a113985f64c9c28809c7c70fa"
+  },
+  "validation": {
+    "configurations": 90,
+    "repetitions": 2,
+    "turnsPerRun": 20,
+    "seasonalChecks": 3600
+  },
+  "results": [
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 16,
+      "completeProductive": 17,
+      "coverage": {
+        "population": 98,
+        "agriculture": 96.7,
+        "livestock": 95.8,
+        "mining": 92.5,
+        "ecosystem": 96.4
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 18,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 214,
+      "recharge": 157,
+      "trust": 52,
+      "health": 94,
+      "finalMoney": 128,
+      "annualNet": 547,
+      "goals": 7,
+      "mixed": 10,
+      "binding": 10,
+      "coverageOnly": 9,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 1,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.8,
+        "livestock": 94,
+        "mining": 95.1,
+        "ecosystem": 95.7
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 68,
+      "aquiferMin": 28,
+      "stressedTurns": 4,
+      "pump": 178,
+      "recharge": 177,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 162,
+      "annualNet": 566,
+      "goals": 16,
+      "mixed": 11,
+      "binding": 11,
+      "coverageOnly": 8,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 3,
+      "purchaseCost": 745,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 8,
+      "completeProductive": 10,
+      "coverage": {
+        "population": 98.2,
+        "agriculture": 95,
+        "livestock": 96.3,
+        "mining": 97,
+        "ecosystem": 95.7
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 37,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 216,
+      "recharge": 184,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 168,
+      "annualNet": 582,
+      "goals": 19,
+      "mixed": 10,
+      "binding": 9,
+      "coverageOnly": 9,
+      "unreachable": 1,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 14,
+      "completeProductive": 15,
+      "coverage": {
+        "population": 93.7,
+        "agriculture": 91.6,
+        "livestock": 91,
+        "mining": 87.5,
+        "ecosystem": 95.5
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 8,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 209,
+      "recharge": 135,
+      "trust": 12,
+      "health": 92,
+      "finalMoney": 83,
+      "annualNet": 517,
+      "goals": 6,
+      "mixed": 9,
+      "binding": 9,
+      "coverageOnly": 10,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 1,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.7,
+        "livestock": 94.2,
+        "mining": 95.1,
+        "ecosystem": 95.6
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 28,
+      "aquiferMin": 18,
+      "stressedTurns": 11,
+      "pump": 201,
+      "recharge": 155,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 200,
+      "annualNet": 566,
+      "goals": 18,
+      "mixed": 9,
+      "binding": 9,
+      "coverageOnly": 10,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 745,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 6,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 98.7,
+        "agriculture": 91.4,
+        "livestock": 94.3,
+        "mining": 96.5,
+        "ecosystem": 94.3
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 10,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 227,
+      "recharge": 163,
+      "trust": 97,
+      "health": 86,
+      "finalMoney": 158,
+      "annualNet": 572,
+      "goals": 19,
+      "mixed": 9,
+      "binding": 9,
+      "coverageOnly": 10,
+      "unreachable": 1,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 11,
+      "completeProductive": 11,
+      "coverage": {
+        "population": 80.8,
+        "agriculture": 80.1,
+        "livestock": 77.9,
+        "mining": 62.5,
+        "ecosystem": 85.9
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 179,
+      "recharge": 105,
+      "trust": 10,
+      "health": 74,
+      "finalMoney": 40,
+      "annualNet": 379,
+      "goals": 6,
+      "mixed": 6,
+      "binding": 6,
+      "coverageOnly": 13,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 535,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 1,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 89.7,
+        "agriculture": 79.8,
+        "livestock": 82.3,
+        "mining": 80.1,
+        "ecosystem": 89.1
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 10,
+      "pump": 189,
+      "recharge": 119,
+      "trust": 10,
+      "health": 76,
+      "finalMoney": 55,
+      "annualNet": 439,
+      "goals": 13,
+      "mixed": 6,
+      "binding": 6,
+      "coverageOnly": 13,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 675,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 5,
+      "completeProductive": 6,
+      "coverage": {
+        "population": 83.6,
+        "agriculture": 79.7,
+        "livestock": 78.3,
+        "mining": 75,
+        "ecosystem": 83.6
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 196,
+      "recharge": 123,
+      "trust": 10,
+      "health": 66,
+      "finalMoney": 39,
+      "annualNet": 421,
+      "goals": 13,
+      "mixed": 6,
+      "binding": 6,
+      "coverageOnly": 13,
+      "unreachable": 7,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 675,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 41.5,
+        "agriculture": 38.7,
+        "livestock": 36.1,
+        "mining": 35.6,
+        "ecosystem": 83.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 139,
+      "recharge": 69,
+      "trust": 10,
+      "health": 30,
+      "finalMoney": 38,
+      "annualNet": 158,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 45,
+        "agriculture": 37.4,
+        "livestock": 35.8,
+        "mining": 32.9,
+        "ecosystem": 83.2
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 136,
+      "recharge": 66,
+      "trust": 10,
+      "health": 24,
+      "finalMoney": 50,
+      "annualNet": 156,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 42.3,
+        "agriculture": 38.5,
+        "livestock": 36.1,
+        "mining": 35.4,
+        "ecosystem": 83.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 139,
+      "recharge": 69,
+      "trust": 10,
+      "health": 30,
+      "finalMoney": 38,
+      "annualNet": 158,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 18,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 43.4,
+        "agriculture": 42.5,
+        "livestock": 38.1,
+        "mining": 38.4,
+        "ecosystem": 86.5
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 34,
+      "finalMoney": 61,
+      "annualNet": 181,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 47.4,
+        "agriculture": 40.1,
+        "livestock": 36.9,
+        "mining": 35.7,
+        "ecosystem": 86.5
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 149,
+      "recharge": 79,
+      "trust": 10,
+      "health": 30,
+      "finalMoney": 58,
+      "annualNet": 178,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 44,
+        "agriculture": 42.3,
+        "livestock": 38.5,
+        "mining": 38.1,
+        "ecosystem": 86.5
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 34,
+      "finalMoney": 62,
+      "annualNet": 182,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 18,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 33.8,
+        "agriculture": 32.7,
+        "livestock": 28.8,
+        "mining": 28.9,
+        "ecosystem": 75.4
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 118,
+      "recharge": 48,
+      "trust": 10,
+      "health": 16,
+      "finalMoney": 43,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 37.3,
+        "agriculture": 31.1,
+        "livestock": 27.7,
+        "mining": 27.1,
+        "ecosystem": 76.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 118,
+      "recharge": 48,
+      "trust": 10,
+      "health": 20,
+      "finalMoney": 40,
+      "annualNet": 146,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 34.6,
+        "agriculture": 32.5,
+        "livestock": 28.8,
+        "mining": 28.6,
+        "ecosystem": 75.4
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 118,
+      "recharge": 48,
+      "trust": 10,
+      "health": 16,
+      "finalMoney": 43,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 18,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 9,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 76.9,
+        "agriculture": 77.5,
+        "livestock": 75.7,
+        "mining": 63.8,
+        "ecosystem": 95.1
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 289,
+      "recharge": 225,
+      "trust": 10,
+      "health": 78,
+      "finalMoney": 80,
+      "annualNet": 385,
+      "goals": 8,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 520,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 83.7,
+        "agriculture": 73.7,
+        "livestock": 71.2,
+        "mining": 65.2,
+        "ecosystem": 95.7
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 2,
+      "aquiferEnd": 2,
+      "aquiferMin": 0,
+      "stressedTurns": 15,
+      "pump": 297,
+      "recharge": 235,
+      "trust": 12,
+      "health": 80,
+      "finalMoney": 94,
+      "annualNet": 389,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 520,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 8,
+      "completeProductive": 8,
+      "coverage": {
+        "population": 79.7,
+        "agriculture": 76.2,
+        "livestock": 75.4,
+        "mining": 69,
+        "ecosystem": 95.1
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 308,
+      "recharge": 244,
+      "trust": 10,
+      "health": 90,
+      "finalMoney": 100,
+      "annualNet": 395,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 12,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 520,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 5,
+      "completeProductive": 5,
+      "coverage": {
+        "population": 65.4,
+        "agriculture": 66,
+        "livestock": 61.9,
+        "mining": 58.8,
+        "ecosystem": 91.9
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 247,
+      "recharge": 174,
+      "trust": 10,
+      "health": 62,
+      "finalMoney": 44,
+      "annualNet": 314,
+      "goals": 5,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 435,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 71.9,
+        "agriculture": 62.5,
+        "livestock": 60.9,
+        "mining": 49.6,
+        "ecosystem": 93.1
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 247,
+      "recharge": 174,
+      "trust": 10,
+      "health": 59,
+      "finalMoney": 40,
+      "annualNet": 300,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 435,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 5,
+      "completeProductive": 5,
+      "coverage": {
+        "population": 66,
+        "agriculture": 64.6,
+        "livestock": 62.5,
+        "mining": 52.7,
+        "ecosystem": 91.6
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 252,
+      "recharge": 179,
+      "trust": 10,
+      "health": 76,
+      "finalMoney": 51,
+      "annualNet": 303,
+      "goals": 7,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 12,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 445,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 9,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 79.1,
+        "agriculture": 78.9,
+        "livestock": 76.6,
+        "mining": 67.5,
+        "ecosystem": 92.4
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 330,
+      "recharge": 262,
+      "trust": 10,
+      "health": 84,
+      "finalMoney": 57,
+      "annualNet": 385,
+      "goals": 10,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 565,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 90.3,
+        "agriculture": 80.2,
+        "livestock": 77,
+        "mining": 68.3,
+        "ecosystem": 95.4
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 2,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 14,
+      "pump": 306,
+      "recharge": 238,
+      "trust": 10,
+      "health": 80,
+      "finalMoney": 72,
+      "annualNet": 435,
+      "goals": 12,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": false,
+      "completeAll": 9,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 79.1,
+        "agriculture": 78.2,
+        "livestock": 76.7,
+        "mining": 73.1,
+        "ecosystem": 92.4
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 330,
+      "recharge": 262,
+      "trust": 10,
+      "health": 84,
+      "finalMoney": 64,
+      "annualNet": 392,
+      "goals": 10,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 11,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 565,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 14,
+      "completeProductive": 20,
+      "coverage": {
+        "population": 100,
+        "agriculture": 100,
+        "livestock": 100,
+        "mining": 100,
+        "ecosystem": 92.6
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 58,
+      "aquiferMin": 23,
+      "stressedTurns": 7,
+      "pump": 211,
+      "recharge": 192,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 276,
+      "annualNet": 585,
+      "goals": 6,
+      "mixed": 12,
+      "binding": 12,
+      "coverageOnly": 7,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.8,
+        "livestock": 94,
+        "mining": 97.4,
+        "ecosystem": 93
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 90,
+      "aquiferMin": 45,
+      "stressedTurns": 0,
+      "pump": 169,
+      "recharge": 194,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 348,
+      "annualNet": 554,
+      "goals": 12,
+      "mixed": 12,
+      "binding": 12,
+      "coverageOnly": 7,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 5,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 96.5,
+        "agriculture": 93.1,
+        "livestock": 95.3,
+        "mining": 97.9,
+        "ecosystem": 95.4
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 81,
+      "aquiferMin": 40,
+      "stressedTurns": 0,
+      "pump": 175,
+      "recharge": 188,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 403,
+      "annualNet": 574,
+      "goals": 19,
+      "mixed": 12,
+      "binding": 12,
+      "coverageOnly": 7,
+      "unreachable": 1,
+      "yearsCoverageAndAquifer": 2,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 13,
+      "completeProductive": 19,
+      "coverage": {
+        "population": 100,
+        "agriculture": 100,
+        "livestock": 100,
+        "mining": 97.5,
+        "ecosystem": 93.6
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 9,
+      "aquiferMin": 0,
+      "stressedTurns": 12,
+      "pump": 224,
+      "recharge": 151,
+      "trust": 97,
+      "health": 98,
+      "finalMoney": 263,
+      "annualNet": 581,
+      "goals": 9,
+      "mixed": 10,
+      "binding": 8,
+      "coverageOnly": 9,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.6,
+        "livestock": 94.2,
+        "mining": 97.3,
+        "ecosystem": 91.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 0,
+      "aquiferEnd": 39,
+      "aquiferMin": 29,
+      "stressedTurns": 6,
+      "pump": 194,
+      "recharge": 159,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 318,
+      "annualNet": 540,
+      "goals": 15,
+      "mixed": 9,
+      "binding": 7,
+      "coverageOnly": 10,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 9,
+      "completeProductive": 13,
+      "coverage": {
+        "population": 98.2,
+        "agriculture": 94.8,
+        "livestock": 96.5,
+        "mining": 99,
+        "ecosystem": 94.2
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 17,
+      "aquiferMin": 8,
+      "stressedTurns": 11,
+      "pump": 222,
+      "recharge": 165,
+      "trust": 100,
+      "health": 98,
+      "finalMoney": 444,
+      "annualNet": 584,
+      "goals": 20,
+      "mixed": 9,
+      "binding": 7,
+      "coverageOnly": 10,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 11,
+      "completeProductive": 16,
+      "coverage": {
+        "population": 92.1,
+        "agriculture": 92.9,
+        "livestock": 90.6,
+        "mining": 85,
+        "ecosystem": 85.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 9,
+      "pump": 206,
+      "recharge": 133,
+      "trust": 44,
+      "health": 87,
+      "finalMoney": 312,
+      "annualNet": 499,
+      "goals": 6,
+      "mixed": 8,
+      "binding": 7,
+      "coverageOnly": 11,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 97.3,
+        "agriculture": 87.4,
+        "livestock": 90.9,
+        "mining": 92.4,
+        "ecosystem": 87.6
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 6,
+      "pump": 211,
+      "recharge": 143,
+      "trust": 82,
+      "health": 93,
+      "finalMoney": 404,
+      "annualNet": 505,
+      "goals": 10,
+      "mixed": 8,
+      "binding": 7,
+      "coverageOnly": 11,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 5,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 93.4,
+        "agriculture": 89.6,
+        "livestock": 91.2,
+        "mining": 94.3,
+        "ecosystem": 90.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 6,
+      "pump": 201,
+      "recharge": 131,
+      "trust": 73,
+      "health": 91,
+      "finalMoney": 491,
+      "annualNet": 524,
+      "goals": 17,
+      "mixed": 9,
+      "binding": 9,
+      "coverageOnly": 10,
+      "unreachable": 3,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 44.5,
+        "agriculture": 44,
+        "livestock": 39.6,
+        "mining": 30.7,
+        "ecosystem": 82.7
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 130,
+      "recharge": 60,
+      "trust": 10,
+      "health": 47,
+      "finalMoney": 39,
+      "annualNet": 149,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 360,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 49.1,
+        "agriculture": 41.4,
+        "livestock": 38.1,
+        "mining": 35,
+        "ecosystem": 82.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 132,
+      "recharge": 62,
+      "trust": 10,
+      "health": 57,
+      "finalMoney": 25,
+      "annualNet": 160,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 45.1,
+        "agriculture": 43.7,
+        "livestock": 39.9,
+        "mining": 30.7,
+        "ecosystem": 82.7
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 130,
+      "recharge": 60,
+      "trust": 10,
+      "health": 47,
+      "finalMoney": 38,
+      "annualNet": 148,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 18,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 360,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 46.3,
+        "agriculture": 43.6,
+        "livestock": 40.8,
+        "mining": 40.4,
+        "ecosystem": 84.2
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 81,
+      "finalMoney": 67,
+      "annualNet": 191,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 50.4,
+        "agriculture": 42.7,
+        "livestock": 40.9,
+        "mining": 38.6,
+        "ecosystem": 83.8
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 85,
+      "finalMoney": 75,
+      "annualNet": 179,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 46.8,
+        "agriculture": 43.3,
+        "livestock": 41.9,
+        "mining": 40.4,
+        "ecosystem": 83.2
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 144,
+      "recharge": 74,
+      "trust": 10,
+      "health": 71,
+      "finalMoney": 56,
+      "annualNet": 181,
+      "goals": 5,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 17,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 34.5,
+        "agriculture": 33.6,
+        "livestock": 29.1,
+        "mining": 29.2,
+        "ecosystem": 74.5
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 119,
+      "recharge": 49,
+      "trust": 10,
+      "health": 38,
+      "finalMoney": 30,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 340,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 38.3,
+        "agriculture": 31.7,
+        "livestock": 28.7,
+        "mining": 26.9,
+        "ecosystem": 75.8
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 119,
+      "recharge": 49,
+      "trust": 10,
+      "health": 42,
+      "finalMoney": 22,
+      "annualNet": 146,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 340,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 35.3,
+        "agriculture": 33.4,
+        "livestock": 29.1,
+        "mining": 29,
+        "ecosystem": 74.5
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 119,
+      "recharge": 49,
+      "trust": 10,
+      "health": 38,
+      "finalMoney": 30,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 18,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 340,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 11,
+      "completeProductive": 11,
+      "coverage": {
+        "population": 84.8,
+        "agriculture": 84.2,
+        "livestock": 81.8,
+        "mining": 72.5,
+        "ecosystem": 94.5
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 5,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 312,
+      "recharge": 253,
+      "trust": 18,
+      "health": 99,
+      "finalMoney": 112,
+      "annualNet": 429,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 94.6,
+        "agriculture": 85,
+        "livestock": 82.1,
+        "mining": 85.2,
+        "ecosystem": 95.3
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 28,
+      "aquiferMin": 0,
+      "stressedTurns": 14,
+      "pump": 327,
+      "recharge": 291,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 309,
+      "annualNet": 528,
+      "goals": 14,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 8,
+      "completeProductive": 8,
+      "coverage": {
+        "population": 86.4,
+        "agriculture": 85.5,
+        "livestock": 83.7,
+        "mining": 79.6,
+        "ecosystem": 95.4
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 300,
+      "recharge": 236,
+      "trust": 14,
+      "health": 93,
+      "finalMoney": 105,
+      "annualNet": 447,
+      "goals": 10,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 10,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 670,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 6,
+      "completeProductive": 6,
+      "coverage": {
+        "population": 69.3,
+        "agriculture": 69.9,
+        "livestock": 66.1,
+        "mining": 49.4,
+        "ecosystem": 90.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 283,
+      "recharge": 210,
+      "trust": 16,
+      "health": 98,
+      "finalMoney": 58,
+      "annualNet": 299,
+      "goals": 7,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 565,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 75.1,
+        "agriculture": 66.9,
+        "livestock": 63.4,
+        "mining": 57.1,
+        "ecosystem": 90
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 3,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 290,
+      "recharge": 220,
+      "trust": 18,
+      "health": 98,
+      "finalMoney": 44,
+      "annualNet": 314,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 610,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 5,
+      "completeProductive": 5,
+      "coverage": {
+        "population": 71,
+        "agriculture": 69.2,
+        "livestock": 66.8,
+        "mining": 55.2,
+        "ecosystem": 89.1
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 285,
+      "recharge": 212,
+      "trust": 16,
+      "health": 94,
+      "finalMoney": 83,
+      "annualNet": 297,
+      "goals": 8,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 11,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 585,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 12,
+      "completeProductive": 12,
+      "coverage": {
+        "population": 91.3,
+        "agriculture": 92,
+        "livestock": 89.2,
+        "mining": 75,
+        "ecosystem": 93.7
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 15,
+      "pump": 369,
+      "recharge": 301,
+      "trust": 86,
+      "health": 98,
+      "finalMoney": 467,
+      "annualNet": 509,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 99.7,
+        "agriculture": 88.6,
+        "livestock": 87.2,
+        "mining": 95.6,
+        "ecosystem": 98.9
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 362,
+      "recharge": 294,
+      "trust": 92,
+      "health": 98,
+      "finalMoney": 521,
+      "annualNet": 563,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.6",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_mission",
+      "events": true,
+      "completeAll": 12,
+      "completeProductive": 12,
+      "coverage": {
+        "population": 91.5,
+        "agriculture": 91.1,
+        "livestock": 89.5,
+        "mining": 85,
+        "ecosystem": 93.4
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 15,
+      "pump": 369,
+      "recharge": 301,
+      "trust": 86,
+      "health": 98,
+      "finalMoney": 483,
+      "annualNet": 525,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 9,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 15,
+      "completeProductive": 18,
+      "coverage": {
+        "population": 98.6,
+        "agriculture": 97.9,
+        "livestock": 96.7,
+        "mining": 95,
+        "ecosystem": 95.2
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 22,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 221,
+      "recharge": 168,
+      "trust": 93,
+      "health": 93,
+      "finalMoney": 168,
+      "annualNet": 585,
+      "goals": 14,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 745,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 100,
+        "agriculture": 88.9,
+        "livestock": 94,
+        "mining": 95.1,
+        "ecosystem": 96.5
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 55,
+      "aquiferMin": 21,
+      "stressedTurns": 8,
+      "pump": 179,
+      "recharge": 165,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 162,
+      "annualNet": 564,
+      "goals": 15,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 2,
+      "purchaseCost": 745,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 13,
+      "completeProductive": 15,
+      "coverage": {
+        "population": 95.1,
+        "agriculture": 93.8,
+        "livestock": 91.4,
+        "mining": 87.5,
+        "ecosystem": 94.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 8,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 219,
+      "recharge": 145,
+      "trust": 47,
+      "health": 90,
+      "finalMoney": 127,
+      "annualNet": 524,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 700,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.1,
+        "livestock": 94.2,
+        "mining": 95.1,
+        "ecosystem": 96.2
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 10,
+      "aquiferMin": 0,
+      "stressedTurns": 11,
+      "pump": 209,
+      "recharge": 145,
+      "trust": 100,
+      "health": 96,
+      "finalMoney": 163,
+      "annualNet": 565,
+      "goals": 15,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 745,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 11,
+      "completeProductive": 11,
+      "coverage": {
+        "population": 81.5,
+        "agriculture": 80.3,
+        "livestock": 77.5,
+        "mining": 65,
+        "ecosystem": 85.2
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 187,
+      "recharge": 113,
+      "trust": 10,
+      "health": 74,
+      "finalMoney": 48,
+      "annualNet": 386,
+      "goals": 11,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 610,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 1,
+      "coverage": {
+        "population": 88.2,
+        "agriculture": 78.1,
+        "livestock": 81.4,
+        "mining": 80.1,
+        "ecosystem": 88.1
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 10,
+      "pump": 183,
+      "recharge": 113,
+      "trust": 10,
+      "health": 74,
+      "finalMoney": 45,
+      "annualNet": 433,
+      "goals": 12,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 675,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 41.5,
+        "agriculture": 38.7,
+        "livestock": 36.1,
+        "mining": 35.6,
+        "ecosystem": 83.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 139,
+      "recharge": 69,
+      "trust": 10,
+      "health": 30,
+      "finalMoney": 38,
+      "annualNet": 158,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 45,
+        "agriculture": 37.4,
+        "livestock": 35.8,
+        "mining": 32.9,
+        "ecosystem": 83.2
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 136,
+      "recharge": 66,
+      "trust": 10,
+      "health": 24,
+      "finalMoney": 50,
+      "annualNet": 156,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 43.4,
+        "agriculture": 42.5,
+        "livestock": 38.1,
+        "mining": 38.4,
+        "ecosystem": 86.5
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 34,
+      "finalMoney": 61,
+      "annualNet": 181,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 47.4,
+        "agriculture": 40.1,
+        "livestock": 36.9,
+        "mining": 35.7,
+        "ecosystem": 86.5
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 149,
+      "recharge": 79,
+      "trust": 10,
+      "health": 30,
+      "finalMoney": 58,
+      "annualNet": 178,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 300,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 33.8,
+        "agriculture": 32.7,
+        "livestock": 28.8,
+        "mining": 28.9,
+        "ecosystem": 75.4
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 118,
+      "recharge": 48,
+      "trust": 10,
+      "health": 16,
+      "finalMoney": 43,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 37.3,
+        "agriculture": 31.1,
+        "livestock": 27.7,
+        "mining": 27.1,
+        "ecosystem": 76.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 118,
+      "recharge": 48,
+      "trust": 10,
+      "health": 20,
+      "finalMoney": 40,
+      "annualNet": 146,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 270,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 1
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 9,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 76.9,
+        "agriculture": 77.5,
+        "livestock": 75.7,
+        "mining": 63.8,
+        "ecosystem": 95.1
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 289,
+      "recharge": 225,
+      "trust": 10,
+      "health": 78,
+      "finalMoney": 80,
+      "annualNet": 385,
+      "goals": 8,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 520,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 83.7,
+        "agriculture": 73.7,
+        "livestock": 71.2,
+        "mining": 65.2,
+        "ecosystem": 95.7
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 2,
+      "aquiferEnd": 2,
+      "aquiferMin": 0,
+      "stressedTurns": 15,
+      "pump": 297,
+      "recharge": 235,
+      "trust": 12,
+      "health": 80,
+      "finalMoney": 94,
+      "annualNet": 389,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 520,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 5,
+      "completeProductive": 5,
+      "coverage": {
+        "population": 65.4,
+        "agriculture": 66,
+        "livestock": 61.9,
+        "mining": 58.8,
+        "ecosystem": 91.9
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 247,
+      "recharge": 174,
+      "trust": 10,
+      "health": 62,
+      "finalMoney": 44,
+      "annualNet": 314,
+      "goals": 5,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 435,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 71.9,
+        "agriculture": 62.5,
+        "livestock": 60.9,
+        "mining": 49.6,
+        "ecosystem": 93.1
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 247,
+      "recharge": 174,
+      "trust": 10,
+      "health": 59,
+      "finalMoney": 40,
+      "annualNet": 300,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 435,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": false,
+      "completeAll": 9,
+      "completeProductive": 9,
+      "coverage": {
+        "population": 79.1,
+        "agriculture": 78.9,
+        "livestock": 76.6,
+        "mining": 67.5,
+        "ecosystem": 92.4
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 330,
+      "recharge": 262,
+      "trust": 10,
+      "health": 84,
+      "finalMoney": 57,
+      "annualNet": 385,
+      "goals": 10,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 565,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": false,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 90.3,
+        "agriculture": 80.2,
+        "livestock": 77,
+        "mining": 68.3,
+        "ecosystem": 95.4
+      },
+      "reservoirEnd": 3,
+      "reservoirMin": 2,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 14,
+      "pump": 306,
+      "recharge": 238,
+      "trust": 10,
+      "health": 80,
+      "finalMoney": 72,
+      "annualNet": 435,
+      "goals": 12,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 14,
+      "completeProductive": 20,
+      "coverage": {
+        "population": 100,
+        "agriculture": 100,
+        "livestock": 100,
+        "mining": 100,
+        "ecosystem": 92.6
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 68,
+      "aquiferMin": 33,
+      "stressedTurns": 1,
+      "pump": 194,
+      "recharge": 186,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 376,
+      "annualNet": 585,
+      "goals": 14,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.8,
+        "livestock": 94,
+        "mining": 97.4,
+        "ecosystem": 93.7
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 90,
+      "aquiferMin": 58,
+      "stressedTurns": 0,
+      "pump": 153,
+      "recharge": 188,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 372,
+      "annualNet": 554,
+      "goals": 16,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 2,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 13,
+      "completeProductive": 19,
+      "coverage": {
+        "population": 99.6,
+        "agriculture": 99.8,
+        "livestock": 99.5,
+        "mining": 97.5,
+        "ecosystem": 93.6
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 9,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 224,
+      "recharge": 151,
+      "trust": 100,
+      "health": 98,
+      "finalMoney": 353,
+      "annualNet": 580,
+      "goals": 14,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 3,
+      "coverage": {
+        "population": 100,
+        "agriculture": 89.3,
+        "livestock": 94.2,
+        "mining": 95.1,
+        "ecosystem": 91.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 0,
+      "aquiferEnd": 40,
+      "aquiferMin": 30,
+      "stressedTurns": 2,
+      "pump": 192,
+      "recharge": 158,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 359,
+      "annualNet": 551,
+      "goals": 15,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 10,
+      "completeProductive": 16,
+      "coverage": {
+        "population": 92.8,
+        "agriculture": 93.5,
+        "livestock": 91.4,
+        "mining": 85,
+        "ecosystem": 85.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 9,
+      "pump": 204,
+      "recharge": 129,
+      "trust": 66,
+      "health": 87,
+      "finalMoney": 419,
+      "annualNet": 501,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_central",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 1,
+      "completeProductive": 4,
+      "coverage": {
+        "population": 98.1,
+        "agriculture": 88.9,
+        "livestock": 91.3,
+        "mining": 92.4,
+        "ecosystem": 88.3
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 6,
+      "pump": 200,
+      "recharge": 130,
+      "trust": 82,
+      "health": 93,
+      "finalMoney": 443,
+      "annualNet": 524,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 1,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 44.5,
+        "agriculture": 44,
+        "livestock": 39.6,
+        "mining": 30.7,
+        "ecosystem": 82.7
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 130,
+      "recharge": 60,
+      "trust": 10,
+      "health": 47,
+      "finalMoney": 39,
+      "annualNet": 149,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 360,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 49.1,
+        "agriculture": 41.4,
+        "livestock": 38.1,
+        "mining": 35,
+        "ecosystem": 82.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 132,
+      "recharge": 62,
+      "trust": 10,
+      "health": 57,
+      "finalMoney": 25,
+      "annualNet": 160,
+      "goals": 3,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 46.3,
+        "agriculture": 43.6,
+        "livestock": 40.8,
+        "mining": 40.4,
+        "ecosystem": 84.2
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 81,
+      "finalMoney": 67,
+      "annualNet": 191,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 50.4,
+        "agriculture": 42.7,
+        "livestock": 40.9,
+        "mining": 38.6,
+        "ecosystem": 83.8
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 147,
+      "recharge": 77,
+      "trust": 10,
+      "health": 85,
+      "finalMoney": 75,
+      "annualNet": 179,
+      "goals": 6,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 385,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 2,
+      "completeProductive": 2,
+      "coverage": {
+        "population": 34.5,
+        "agriculture": 33.6,
+        "livestock": 29.1,
+        "mining": 29.2,
+        "ecosystem": 74.5
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 19,
+      "pump": 119,
+      "recharge": 49,
+      "trust": 10,
+      "health": 38,
+      "finalMoney": 30,
+      "annualNet": 149,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 340,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_arida",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 38.3,
+        "agriculture": 31.7,
+        "livestock": 28.7,
+        "mining": 26.9,
+        "ecosystem": 75.8
+      },
+      "reservoirEnd": 1,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 18,
+      "pump": 119,
+      "recharge": 49,
+      "trust": 10,
+      "health": 42,
+      "finalMoney": 22,
+      "annualNet": 146,
+      "goals": 2,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 340,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 2
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 2
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 11,
+      "completeProductive": 11,
+      "coverage": {
+        "population": 84.8,
+        "agriculture": 84.2,
+        "livestock": 81.8,
+        "mining": 72.5,
+        "ecosystem": 94.5
+      },
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 5,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 312,
+      "recharge": 253,
+      "trust": 18,
+      "health": 99,
+      "finalMoney": 112,
+      "annualNet": 429,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 630,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-001",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 94.6,
+        "agriculture": 85,
+        "livestock": 82.1,
+        "mining": 85.2,
+        "ecosystem": 95.3
+      },
+      "reservoirEnd": 5,
+      "reservoirMin": 1,
+      "aquiferEnd": 28,
+      "aquiferMin": 0,
+      "stressedTurns": 14,
+      "pump": 327,
+      "recharge": 291,
+      "trust": 100,
+      "health": 100,
+      "finalMoney": 309,
+      "annualNet": 528,
+      "goals": 14,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 6,
+      "completeProductive": 6,
+      "coverage": {
+        "population": 69.3,
+        "agriculture": 69.9,
+        "livestock": 66.1,
+        "mining": 49.4,
+        "ecosystem": 90.8
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 0,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 17,
+      "pump": 283,
+      "recharge": 210,
+      "trust": 16,
+      "health": 98,
+      "finalMoney": 58,
+      "annualNet": 299,
+      "goals": 7,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 565,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 1
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "AULA-2026-260",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 75.1,
+        "agriculture": 66.9,
+        "livestock": 63.4,
+        "mining": 57.1,
+        "ecosystem": 90
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 3,
+      "aquiferMin": 0,
+      "stressedTurns": 16,
+      "pump": 290,
+      "recharge": 220,
+      "trust": 18,
+      "health": 98,
+      "finalMoney": 44,
+      "annualNet": 314,
+      "goals": 9,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 610,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 2
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 2
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 2
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_full_requests",
+      "events": true,
+      "completeAll": 12,
+      "completeProductive": 12,
+      "coverage": {
+        "population": 91.3,
+        "agriculture": 92,
+        "livestock": 89.2,
+        "mining": 75,
+        "ecosystem": 93.7
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 15,
+      "pump": 369,
+      "recharge": 301,
+      "trust": 86,
+      "health": 98,
+      "finalMoney": 467,
+      "annualNet": 509,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    },
+    {
+      "modelVersion": "2.5",
+      "scenario": "cuenca_abundante",
+      "seed": "SEQUIA-2026",
+      "policy": "works_85_productive",
+      "events": true,
+      "completeAll": 0,
+      "completeProductive": 0,
+      "coverage": {
+        "population": 99.7,
+        "agriculture": 88.6,
+        "livestock": 87.2,
+        "mining": 95.6,
+        "ecosystem": 98.9
+      },
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "stressedTurns": 13,
+      "pump": 362,
+      "recharge": 294,
+      "trust": 92,
+      "health": 98,
+      "finalMoney": 521,
+      "annualNet": 563,
+      "goals": 13,
+      "mixed": 0,
+      "binding": 0,
+      "coverageOnly": 0,
+      "unreachable": 0,
+      "yearsCoverageAndAquifer": 0,
+      "purchaseCost": 810,
+      "upgrades": {
+        "recirculacion_minera": {
+          "id": "recirculacion_minera",
+          "currentLevel": 3
+        },
+        "reparacion_red": {
+          "id": "reparacion_red",
+          "currentLevel": 3
+        },
+        "mantenimiento_canales": {
+          "id": "mantenimiento_canales",
+          "currentLevel": 2
+        },
+        "restauracion_cauces": {
+          "id": "restauracion_cauces",
+          "currentLevel": 1
+        },
+        "riego_eficiente": {
+          "id": "riego_eficiente",
+          "currentLevel": 3
+        },
+        "captacion_lluvia": {
+          "id": "captacion_lluvia",
+          "currentLevel": 1
+        },
+        "planta_saneamiento": {
+          "id": "planta_saneamiento",
+          "currentLevel": 3
+        },
+        "recarga_acuifero": {
+          "id": "recarga_acuifero",
+          "currentLevel": 3
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 import scenariosData from '../data/scenarios.json';
 import seasonsData from '../data/seasons.json';
-import seasonalGoalsData from '../data/seasonalGoals.json';
 import { checkSeasonalGoal, firstGoalDistribution, SeasonalGoal } from '../models/SeasonalGoal';
 import { GameState, GameScenario } from '../models/GameState';
 import { SectorId, SectorState } from '../models/Sector';
@@ -15,9 +14,10 @@ import { DemandSystem } from './DemandSystem';
 import { UpgradeSystem } from './UpgradeSystem';
 import { EventSystem } from './EventSystem';
 import { WaterSystem } from './WaterSystem';
+import { legacySeasonalGoal, selectSeasonalGoal } from './MissionSystem';
 
 export class SimulationEngine {
-  public static readonly MODEL_VERSION = '2.5';
+  public static readonly MODEL_VERSION = '2.6';
   private rng: SeededRandom;
   private climateSys: ClimateSystem;
   private rainSys: RainSystem;
@@ -36,7 +36,8 @@ export class SimulationEngine {
   private plannedClimate?: GameState['climateState'];
   private plannedEnso?: GameState['ensoState'];
 
-  constructor(scenarioId: string = 'cuenca_central', seed: string = 'AULA-2026-001', isClassroomMode: boolean = false) {
+  constructor(scenarioId: string = 'cuenca_central', seed: string = 'AULA-2026-001', isClassroomMode: boolean = false,
+    private readonly goalRules: 'legacy' | 'contextual-v1' = 'contextual-v1') {
     this.rng = new SeededRandom(seed);
     this.climateSys = new ClimateSystem(this.rng, new SeededRandom(`${seed}:forecast:v2`));
     this.rainSys = new RainSystem(this.rng);
@@ -53,6 +54,11 @@ export class SimulationEngine {
 
   public getState(): GameState {
     return this.state;
+  }
+
+  public getModelVersion(): string { return this.goalRules === 'legacy' ? '2.5' : SimulationEngine.MODEL_VERSION; }
+  public getCurrentSeasonalGoal(): SeasonalGoal | undefined {
+    return this.goalRules === 'legacy' ? legacySeasonalGoal(this.state) : this.state.currentSeasonalGoal;
   }
 
   public getUpgradeSystem(): UpgradeSystem {
@@ -281,6 +287,8 @@ export class SimulationEngine {
       isGameOver: false
     };
 
+    if (this.goalRules !== 'legacy') this.state.goalRulesVersion = 'contextual-v1';
+
     this.prepareSeasonStart();
   }
 
@@ -441,6 +449,13 @@ export class SimulationEngine {
     st.nextSeasonForecast = this.climateSys.generateForecast(this.plannedClimate, monitorLvl);
 
     st.isSeasonResolved = false;
+    if (this.goalRules !== 'legacy') {
+      st.currentSeasonalGoal = selectSeasonalGoal(st, requests => {
+        const candidate: GameState = { ...st, sectors: { ...st.sectors } };
+        for (const id of Object.keys(requests) as (keyof typeof requests)[]) candidate.sectors[id] = { ...st.sectors[id], allocated: requests[id] };
+        return this.previewSeasonForState(candidate).balance;
+      });
+    }
   }
 
   /**
@@ -665,7 +680,7 @@ export class SimulationEngine {
     st.isSeasonResolved = true;
 
     // Recompensar consecuencias comprobadas, nunca el estado anterior a la decisión.
-    const goal = (seasonalGoalsData as SeasonalGoal[]).find(g => g.year === st.year && g.season === st.season);
+    const goal = this.getCurrentSeasonalGoal();
     seasonResult.goalAchieved = !!goal && checkSeasonalGoal(goal, st);
     if (goal && seasonResult.goalAchieved) {
       st.money += goal.reward.moneyBonus;

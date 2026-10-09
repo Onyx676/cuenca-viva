@@ -95,7 +95,7 @@ test('Recarga fluvial: redondeo permite cero y conserva límite de bypass con re
 
 test('Modelo2.5: mismas decisiones conservan clima y PRNG frente a2.4 en veinte turnos y tres escenarios', () => {
   for (const scenario of ['cuenca_central', 'cuenca_arida', 'cuenca_abundante']) {
-    const engines = [new Model24(scenario, 'RIO-CLIMA-2026', true), new SimulationEngine(scenario, 'RIO-CLIMA-2026', true)];
+    const engines = [new Model24(scenario, 'RIO-CLIMA-2026', true), new SimulationEngine(scenario, 'RIO-CLIMA-2026', true, 'legacy')];
     for (let turn = 1; turn <= 20; turn++) {
       assert.deepEqual(forcing(engines[0]), forcing(engines[1]));
       engines.forEach(engine => {
@@ -116,7 +116,7 @@ test('Modelo2.5: mismas decisiones conservan clima y PRNG frente a2.4 en veinte 
 
 test('Modelo2.5: consultas puras y replay reconstruyen recarga, eventos, reservas y PRNG hasta turno20', () => {
   function play(scenario) {
-    const engine = new SimulationEngine(scenario, 'RIO-REPLAY-2026', true);
+    const engine = new SimulationEngine(scenario, 'RIO-REPLAY-2026', true, 'legacy');
     const log = new SessionLog(engine.getState());
     for (let turn = 1; turn <= 20; turn++) {
       const state = engine.getState();

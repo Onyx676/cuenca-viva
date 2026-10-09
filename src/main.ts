@@ -13,8 +13,8 @@ import { SeasonResult, SeasonWaterBalance } from './models/Balance';
 import { getSeasonVerdict } from './seasonVerdict';
 import { describeRequestGaps, describeStorageHistory } from './waterClarity';
 import { suggestDistribution } from './suggestedDistribution';
-import seasonalGoalsData from './data/seasonalGoals.json';
 import { SeasonalGoal, checkSeasonalGoal } from './models/SeasonalGoal';
+import { goalProgress } from './simulation/MissionSystem';
 import { TutorialManager } from './tutorial/TutorialManager';
 import tutorialData from './data/tutorial.json';
 import { sound } from './audio/SoundFX';
@@ -561,9 +561,11 @@ function positionMapControls(): void {
     const panel=document.querySelector('.allocation-panel')!.getBoundingClientRect();
     const editorWidth=sectorEditor.offsetWidth;
     sectorEditor.style.left=`${compact?8:Math.max(8,gate.left-editorWidth-18)}px`;
-    const availableTop=tutorialManager.isActive() && window.innerWidth <= 800
+    const baseAvailableTop=tutorialManager.isActive() && window.innerWidth <= 800
       ? Math.max(headerBottom + 64, tutorialGuideBanner.getBoundingClientRect().bottom + 8)
       : headerBottom+(compact?64:8);
+    const visibleBannerBottom = (element: HTMLElement) => element.getClientRects().length ? element.getBoundingClientRect().bottom + 8 : 0;
+    const availableTop = Math.max(baseAvailableTop, visibleBannerBottom(forecastPreview), visibleBannerBottom(seasonalGoalBanner));
     const below=gate.bottom+14,above=gate.top-availableTop-14,spaceBelow=panel.top-below-8;
     const useBelow=compact&&spaceBelow>above;
     const compactDecision = compact && !tutorialManager.isActive();
@@ -765,7 +767,6 @@ const btnHelp = document.getElementById('btn-help')!;
 const btnCloseHelp = document.getElementById('btn-close-help')!;
 
 // Metas estacionales
-const seasonalGoals: SeasonalGoal[] = seasonalGoalsData as SeasonalGoal[];
 
 // --- TRACKER GRÁFICO DE 20 TURNOS (5 AÑOS X 4 ESTACIONES) ---
 function renderTimelineTracker(): void {
@@ -814,8 +815,7 @@ function renderTimelineTracker(): void {
 
 // --- ACTUALIZACIÓN DEL DESAFÍO ESTACIONAL ---
 function getCurrentSeasonalGoal(): SeasonalGoal | undefined {
-  const state = engine.getState();
-  return seasonalGoals.find(g => g.year === state.year && g.season === state.season);
+  return engine.getCurrentSeasonalGoal();
 }
 
 function updateSeasonalGoalDisplay(): void {
@@ -827,6 +827,11 @@ function updateSeasonalGoalDisplay(): void {
   seasonalGoalBanner.style.display = 'flex';
   goalTitle.textContent = goal.title;
   goalDesc.textContent = goal.description;
+  if (engine.getState().goalRulesVersion && engine.getState().turn > 1) {
+    const st = engine.getState();
+    const b = st.isSeasonResolved ? st.seasonHistory.at(-1)?.balance : engine.previewSeason().balance;
+    if (b) goalRewardBadge.title = `${goal.hint} ${goalProgress(goal, b)}`;
+  }
   if (isFirstWinterDecision() && goal.targetCondition.type === 'CITY_AND_RESERVOIR_MIN') {
     const st = engine.getState();
     const b = engine.previewSeason().balance;
@@ -834,7 +839,7 @@ function updateSeasonalGoalDisplay(): void {
     goalDesc.textContent = `${goal.description} Previsto: ${reached ? 'encaminada' : 'todavía no alcanza'} · Ciudad ${Math.floor(b.satisfactions.population * 100)}% / meta ${goal.targetCondition.cityCoverageThreshold}% · embalse ${b.reservoirEnd} gotas / meta ${goal.targetCondition.threshold} gotas`;
   }
   goalRewardBadge.textContent = `+$${goal.reward.moneyBonus} 💰`;
-  goalRewardBadge.title = goal.hint;
+  if (!goalProgress(goal, engine.getState().isSeasonResolved ? engine.getState().seasonHistory.at(-1)!.balance : engine.previewSeason().balance)) goalRewardBadge.title = goal.hint;
 }
 
 // --- REGISTRO DE ASIGNACIÓN INICIAL DEL TURNO ---
@@ -1169,7 +1174,7 @@ function updateDistributionTip(): void {
       .every(id => balance.satisfactions[id] >= 0.7)
     ? ' Este reparto deja margen productivo para recuperar reservas.' : '';
   showToastTip('suggested_distribution', '💡 Consejo para este reparto',
-    `Río Vivo cuenta el caudal y los retornos, además del aporte extra. Previsión: Ciudad ${Math.round(balance.satisfactions.population * 100)}%, río ${Math.round(balance.satisfactions.ecosystem * 100)}%. ${pendingName} queda en ${Math.round(balance.satisfactions[pending] * 100)}%; darle más puede costar otras coberturas o reservas. ${reserveMessage}${savingsContext} Lo no asignado no se guarda todo; revisá la meta.`);
+    `Río Vivo cuenta el caudal y los retornos, además del aporte extra. Previsión: Ciudad ${Math.round(balance.satisfactions.population * 100)}%, río ${Math.round(balance.satisfactions.ecosystem * 100)}%. ${pendingName} queda en ${Math.round(balance.satisfactions[pending] * 100)}%; darle más puede costar otras coberturas o reservas. ${reserveMessage}${savingsContext} La sugerencia es un punto de partida, no garantiza cumplir el desafío. Lo no asignado no se guarda todo; revisá la meta.`);
 }
 
 btnDistributionTip.addEventListener('click', () => {
@@ -1915,6 +1920,11 @@ function renderAgileSeasonFeedback(
         : ` ${focusNames[id]} necesita un pedido mayor para cubrir su demanda.`;
   }
   fbAdviceText.replaceChildren(verdictLabel, ` ${consequence}`);
+  if (goal && !goalSuccess) {
+    const progress = goalProgress(goal, res.balance);
+    if (progress) fbAdviceText.append(` Desafío: ${progress}.`);
+    if (goal.targetCondition.type === 'CITY_AND_SECTOR') fbAdviceText.append(` ${goal.hint}`);
+  }
   const explanation = document.createElement('p');
   explanation.className = 'fb-water-line';
   explanation.textContent = verdict.message;
@@ -2238,7 +2248,7 @@ function showFinalReport(): void {
   document.getElementById('fin-trust')!.textContent = `${st.publicTrust}%`;
   document.getElementById('fin-seed')!.textContent = st.seed;
   document.getElementById('fin-scenario')!.textContent = st.scenarioName;
-  document.getElementById('fin-version')!.textContent = SimulationEngine.MODEL_VERSION;
+  document.getElementById('fin-version')!.textContent = engine.getModelVersion();
   const avgLive = Math.round(history.reduce((sum, r) => sum + r.balance.satisfactions.livestock, 0) / Math.max(1, history.length) * 100);
   document.getElementById('fin-live')!.textContent = `${avgLive}%`;
   document.getElementById('fin-quality')!.textContent = `${st.waterQuality}/100`;
@@ -2629,9 +2639,9 @@ btnCloseForecast.addEventListener('click', () => {
 // Exportar siempre la partida vigente, no los campos aún sin aplicar del Aula.
 function downloadSessionDiagnostic(): void {
   const state = engine.getState();
-  const data = createSessionExport(state, SimulationEngine.MODEL_VERSION, sessionLog,
+  const data = createSessionExport(state, engine.getModelVersion(), sessionLog,
     new Date().toISOString(), tutorialManager.isActive() ? 'tutorial' : 'game');
-  downloadJSON(JSON.stringify(data, null, 2), 'cuenca-viva-modelo-' + SimulationEngine.MODEL_VERSION + '-turno-' + state.turn + '.json');
+  downloadJSON(JSON.stringify(data, null, 2), 'cuenca-viva-modelo-' + engine.getModelVersion() + '-turno-' + state.turn + '.json');
 }
 function downloadJSON(content: string, filename: string, mimeType = 'application/json'): void {
   const url = URL.createObjectURL(new Blob([content], { type: mimeType }));
@@ -2690,7 +2700,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy-session]').forEach(butt
     if (!canUseControl(button)) return;
     const status = button.closest('.modal-backdrop')?.querySelector<HTMLElement>('[data-export-status]');
     const state = engine.getState();
-    const data = createSessionExport(state, SimulationEngine.MODEL_VERSION, sessionLog,
+    const data = createSessionExport(state, engine.getModelVersion(), sessionLog,
       new Date().toISOString(), tutorialManager.isActive() ? 'tutorial' : 'game');
     try {
       await navigator.clipboard.writeText(JSON.stringify(data, null, 2));

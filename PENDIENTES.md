@@ -6,9 +6,11 @@ Prioridad: evitar que abastecer todo agotando reservas se presente como gestión
 
 Evidencia y políticas reproducibles: [diagnóstico](artifacts/player-review/balance-2026-10-09/DIAGNOSTICO.md), [métricas](artifacts/player-review/balance-2026-10-09/summary.json), [benchmark](artifacts/player-review/balance-2026-10-09/benchmark.cjs). 72 configuraciones, dos repeticiones deterministas y 2.880 resoluciones con conservación comprobada. El HTML no permite reconstruir exactamente la cronología de compras del jugador.
 
-Orden propuesto: mostrar cobertura y preservación de reservas por separado; diseñar misiones mixtas de abastecimiento y reservas; revisar cómo salud compuesta permite que caudal/calidad compensen acuífero crítico; luego evaluar si Central debe seguir introductorio o sostener desafío intermedio durante 20 turnos. El candidato de misión anual fue evaluado sólo sobre historiales actuales, no sobre financiación modificada: todavía no está validado como regla universal ni demostrado alcanzable en toda la campaña.
+Primera mejora 2.6: misiones mixtas y variables desde primavera en nuevas partidas de Valle Central, con cobertura mínima de Ciudad/foco/otros productivos/río y metas de reservas congeladas. Se comprobó la financiación real y recuperación legacy2.5; [detalle y métricas](artifacts/player-review/missions-2.6/REVISION.md). La receta100 gana menos premios, pero cumplir todas las misiones aún puede terminar con acuífero crítico (17 en AULA-2026-260). La dificultad y la evaluación de sostenibilidad de toda la campaña siguen pendientes.
 
-Criterios de aceptación: las obras ayudan, pero pedir todo no domina en abastecimiento, reservas y recompensas; racionar en exceso tampoco representa victoria global; las semillas requieren decisiones distintas; conservar accesibilidad inicial, masa y determinismo. No se cambiaron agua, costes, demandas o recompensas al registrar este pendiente.
+Próximo orden: revisar cómo salud compuesta permite que caudal/calidad compensen acuífero crítico; evaluar objetivos de conservación acumulada y final de campaña; luego confirmar si Central debe seguir introductorio o sostener desafío intermedio durante 20 turnos. El candidato anterior de misión anual no está validado como regla universal ni demostrado alcanzable en toda la campaña. No endurecer automáticamente Árida o Lagos a partir del resultado de Central.
+
+Criterios de aceptación: las obras ayudan, pero pedir todo no domina en abastecimiento, reservas y recompensas; racionar en exceso tampoco representa victoria global; las semillas requieren decisiones distintas; conservar accesibilidad inicial, masa y determinismo. En 2.6 cambiaron las condiciones para recibir premios, no sus montos ni agua, costes, demandas o cifras de ingresos anuales. Falta QA visual final de los nuevos banners y evaluación humana de comprensión/diversión.
 
 ## Identidad visual de los escenarios
 
@@ -18,7 +20,7 @@ Criterios de aceptación: distinguir los escenarios visualmente y explicar sus c
 
 ## Variación de misiones entre partidas
 
-Revisar la campaña de objetivos: actualmente las misiones dependen sólo del año y la estación, por lo que cambiar semilla o escenario repite las mismas cuatro primeras misiones. El usuario señaló que esto resulta confuso y monótono y dificulta percibir la variedad entre partidas.
+La primera iteración 2.6 varía foco productivo, tipo de reserva y meta desde primavera en nuevas partidas de Valle Central; el primer invierno conserva la introducción. Partidas recuperadas 2.5, Árida y Lagos todavía usan misiones fijas por año/estación. Falta extender la variedad de forma defendible a esos escenarios y revisar metas de largo plazo, sin endurecerlos automáticamente.
 
 Diseñar objetivos variados según escenario, estación y situación de la cuenca, manteniendo una introducción educativa comprensible. Evitar que cambiar el texto o el orden sea la única diferencia y comprobar que los objetivos sean alcanzables y aporten decisiones distintas.
 

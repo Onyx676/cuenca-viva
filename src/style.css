@@ -2686,9 +2686,6 @@ body {
   #app:not(.tutorial-active) .allocation-panel .water-preview { grid-row: 3; }
   #app:not(.tutorial-active) .allocation-panel .panel-footer { grid-row: 4; }
 }
-@media (max-width: 640px) {
-  #app:not(.tutorial-active) .sector-editor.showing-decision .sector-card-header { display: none; }
-}
 .water-preview.warning { color: #fca5a5; }
 .sector-quick-button {
   border: 1px solid #ffffff24;
@@ -2733,7 +2730,7 @@ body {
 .sector-editor > .btn-close { position: absolute; right: 6px; top: 4px; z-index: 2; }
 .sector-editor .sector-card { display: none; position: relative; padding: 8px; border-radius: 12px; }
 .sector-editor .sector-card.selected-sector { display: flex; gap: 8px; }
-.sector-editor .sector-card-header { padding-right: 18px; }
+.sector-editor .sector-card-header { padding-right: 30px; }
 .sector-editor .sector-speech-bubble { display: flex; font-size: 0.75rem; }
 .sector-editor .sector-speaker-name { font-size: 0.82rem; }
 .sector-editor .sector-val-display { font-size: 0.75rem; }
@@ -2962,7 +2959,13 @@ button.map-network-label:focus-visible { outline: 2px solid #e0f2fe; outline-off
 #app:not(.tutorial-active) .sector-editor .sector-slider { height: 10px; }
 #app:not(.tutorial-active) .sector-editor .sector-slider::-webkit-slider-thumb { width: 28px; height: 28px; }
 #app:not(.tutorial-active) .sector-editor .sector-slider::-moz-range-thumb { width: 28px; height: 28px; }
-#app:not(.tutorial-active) .sector-editor > .btn-close { width: 36px; height: 36px; right: 4px; top: 4px; font-size: 1.5rem; color: #f8fafc; }
+.sector-editor > .btn-close { width: 44px; height: 44px; right: 4px; top: 4px; font-size: 1.5rem; color: #f8fafc; }
+.sector-keyboard-help, .sector-request-help { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.tutorial-active .sector-editor .gate-decision { font-size: 14px; line-height: 1.45; }
+.tutorial-active .sector-editor .gate-decision > div { white-space: normal; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  .sector-editor .sector-card, .sector-editor .sector-slider { transition: none; }
+}
 @media (max-width: 640px) {
   #app:not(.tutorial-active) .sector-editor { width: 340px; padding: 12px; }
 }

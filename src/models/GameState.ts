@@ -4,6 +4,7 @@ import { SectorState, SectorId } from './Sector';
 import { UpgradeState } from './Upgrade';
 import { SeasonResult, YearResult } from './Balance';
 import { GameEvent, TriggeredEventRecord } from './Event';
+import type { SeasonalGoal } from './SeasonalGoal';
 
 export interface GameScenario {
   id: string;
@@ -39,6 +40,9 @@ export interface GameState {
   scenarioName: string;
   seed: string;
   isClassroomMode: boolean;
+  // Absent in preserved model-2.5 games. New missions are frozen at turn entry.
+  goalRulesVersion?: 'contextual-v1';
+  currentSeasonalGoal?: SeasonalGoal;
 
   // Progresión temporal (5 años x 4 estaciones = 20 turnos)
   turn: number; // 1 a 20

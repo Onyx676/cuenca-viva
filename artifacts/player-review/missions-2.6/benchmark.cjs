@@ -7,13 +7,15 @@ require.extensions['.ts'] = (module, filename) => module._compile(ts.transpileMo
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText, filename);
 const { SimulationEngine } = require('../../../src/simulation/SimulationEngine.ts');
+const { checkSeasonalGoal } = require('../../../src/models/SeasonalGoal.ts');
 const uses = ['population', 'agriculture', 'livestock', 'mining'];
 const order = ['recirculacion_minera', 'reparacion_red', 'mantenimiento_canales', 'riego_eficiente',
   'planta_saneamiento', 'captacion_lluvia', 'recarga_acuifero', 'restauracion_cauces'];
-function run(scenario, seed, policy, events) {
-  const engine = new SimulationEngine(scenario, seed, true, 'legacy');
+function run(scenario, seed, policy, events, rules='contextual-v1') {
+  const engine = new SimulationEngine(scenario, seed, true, rules);
   if (!events) engine.eventSys.events = [];
   const purchases = [], decisions = [], turns = [];
+  let mixed = 0, binding = 0, coverageOnly = 0, unreachable = 0;
   for (let turn = 1; turn <= 20; turn++) {
     const st = engine.getState();
     const event = st.activeInteractiveEvent;
@@ -40,6 +42,27 @@ function run(scenario, seed, policy, events) {
     engine.setSectorAllocation('ecosystem', 0);
     let fraction = 1;
     for (const id of uses) engine.setSectorAllocation(id, st.sectors[id].currentDemand);
+    const goal = engine.getCurrentSeasonalGoal();
+    const isMixed = goal?.targetCondition.type.startsWith('COVERAGE_AND_');
+    if (isMixed) { mixed++; if (!checkSeasonalGoal(goal, st, engine.previewSeason().balance)) binding++; }
+    if (goal?.targetCondition.type === 'CITY_AND_SECTOR') coverageOnly++;
+    if (policy === 'works_mission') {
+      let best = null, bestScore = -1;
+      const original = Object.fromEntries([...uses, 'ecosystem'].map(id => [id, st.sectors[id].allocated]));
+      for (const city of [.85, 1]) for (const productive of [.7, .75, .8, .85, .9, .95, 1]) {
+        const requests = { population: Math.ceil(st.sectors.population.currentDemand * city), ecosystem: 0 };
+        for (const id of uses.filter(id => id !== 'population')) requests[id] = Math.ceil(st.sectors[id].currentDemand * Math.max(productive, id === goal?.targetCondition.sectorId ? .8 : 0));
+        for (let eco = 0; eco <= st.sectors.ecosystem.currentDemand; eco++) {
+          for (const id of [...uses, 'ecosystem']) engine.setSectorAllocation(id, id === 'ecosystem' ? eco : requests[id]);
+          const b = engine.previewSeason().balance;
+          if (!checkSeasonalGoal(goal, st, b)) continue;
+          const score = uses.reduce((v,id) => v+b.satisfactions[id],0)*10000 + b.aquiferEnd + b.reservoirEnd;
+          if (score > bestScore) { bestScore = score; best = {...requests, ecosystem:eco}; }
+        }
+      }
+      for (const id of [...uses, 'ecosystem']) engine.setSectorAllocation(id, (best ?? original)[id]);
+      if (!best) unreachable++;
+    }
     if (policy === 'works_85_productive') {
       fraction = .85;
       for (const id of uses.filter(id => id !== 'population'))
@@ -68,7 +91,7 @@ function run(scenario, seed, policy, events) {
     const resolved = JSON.stringify(st);
     engine.resolveSeason();
     assert.equal(JSON.stringify(st), resolved);
-    turns.push({ turn, climate: st.climateState, fraction, goal: result.goalAchieved, balance: b });
+    turns.push({ turn, climate: st.climateState, fraction, goal: result.goalAchieved, mission:goal, balance: b });
     if (turn < 20) engine.advanceToNextTurn();
   }
   const st = engine.getState();
@@ -76,7 +99,7 @@ function run(scenario, seed, policy, events) {
   assert.equal(st.yearHistory.length, 5);
   assert.equal(st.isGameOver, true);
   const sum = key => turns.reduce((v, t) => v + t.balance[key], 0);
-  return { scenario, seed, policy, events, summary: {
+  return { modelVersion:engine.getModelVersion(), scenario, seed, policy, events, summary: {
     completeAll: turns.filter(t => [...uses, 'ecosystem'].every(id => t.balance.satisfactions[id] === 1)).length,
     completeProductive: turns.filter(t => uses.every(id => t.balance.satisfactions[id] === 1)).length,
     coverage: Object.fromEntries([...uses, 'ecosystem'].map(id => [id, +(100 * turns.reduce((v,t) => v+t.balance.satisfactions[id],0)/20).toFixed(1)])),
@@ -87,6 +110,7 @@ function run(scenario, seed, policy, events) {
     trust: st.publicTrust, health: st.basinHealth, finalMoney: st.money,
     annualNet: st.yearHistory.reduce((v,y) => v+y.budgetEarned,0),
     goals: turns.filter(t => t.goal).length,
+    mixed, binding, coverageOnly, unreachable,
     // Offline qualification only: this does not recalculate financial progression or change rewards.
     yearsCoverageAndAquifer: st.yearHistory.filter(y => y.avgPopSatisfaction >= .95 &&
       y.avgAgriSatisfaction >= .85 && y.avgLivestockSatisfaction >= .85 && y.avgMinSatisfaction >= .85 &&
@@ -99,18 +123,29 @@ function run(scenario, seed, policy, events) {
 const results = [];
 for (const events of [false,true]) for (const scenario of ['cuenca_central','cuenca_arida','cuenca_abundante'])
   for (const seed of ['AULA-2026-001','AULA-2026-260','SEQUIA-2026'])
-    for (const policy of ['no_discretionary_works','works_full_requests','works_reserve_guard','works_85_productive']) {
+    for (const policy of ['works_full_requests','works_85_productive','works_mission']) {
       const first = run(scenario,seed,policy,events);
       assert.deepEqual(first,run(scenario,seed,policy,events), 'Same seeded actions reproduce entire run');
       results.push(first);
     }
+const previous = require('../balance-2026-10-09/summary.json').results;
+for(const events of [false,true]) for(const scenario of ['cuenca_central','cuenca_arida','cuenca_abundante'])
+  for(const seed of ['AULA-2026-001','AULA-2026-260','SEQUIA-2026']) for(const policy of ['works_full_requests','works_85_productive']) {
+    const legacy = run(scenario,seed,policy,events,'legacy');
+    assert.deepEqual(legacy,run(scenario,seed,policy,events,'legacy'));
+    const saved = previous.find(r => r.scenario===scenario && r.seed===seed && r.policy===policy && r.events===events);
+    for(const key of Object.keys(saved).filter(key=>!['scenario','seed','policy','events'].includes(key)))
+      assert.deepEqual(legacy.summary[key],saved[key], `Preserved 2.5 ${scenario}/${seed}/${policy}/${events}/${key}`);
+    results.push(legacy);
+  }
 fs.writeFileSync(path.join(__dirname,'results.json'), JSON.stringify(results,null,2));
 const sourceFiles = ['src/simulation/SimulationEngine.ts','src/simulation/WaterSystem.ts','src/simulation/DemandSystem.ts',
+  'src/simulation/MissionSystem.ts','src/models/SeasonalGoal.ts','src/simulation/RandomSystem.ts',
   'src/data/scenarios.json','src/data/upgrades.json','src/data/seasonalGoals.json','src/data/events.json'];
-fs.writeFileSync(path.join(__dirname,'summary.json'), JSON.stringify({ modelVersion:'2.5',
+fs.writeFileSync(path.join(__dirname,'summary.json'), JSON.stringify({ modelVersion:SimulationEngine.MODEL_VERSION,
   sources: Object.fromEntries(sourceFiles.map(file => [file, crypto.createHash('sha256').update(fs.readFileSync(path.resolve(__dirname,'../../..',file))).digest('hex')])),
   validation: { configurations:results.length, repetitions:2, turnsPerRun:20, seasonalChecks:results.length*40 },
-  results:results.map(({scenario,seed,policy,events,summary}) => ({scenario,seed,policy,events,...summary})) },null,2));
+  results:results.map(({modelVersion,scenario,seed,policy,events,summary}) => ({modelVersion,scenario,seed,policy,events,...summary})) },null,2));
 console.table(results.map(r => ({scenario:r.scenario,seed:r.seed,events:r.events,policy:r.policy,
   all:r.summary.completeAll,productive:r.summary.completeProductive,aq:r.summary.aquiferEnd,
   aqMin:r.summary.aquiferMin,pump:r.summary.pump,trust:r.summary.trust,health:r.summary.health,

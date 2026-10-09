@@ -19,7 +19,7 @@ export type RecoveryRead =
 export function createRecoveryPacket(state: GameState, log: SessionLog | null, savedAt: string) {
   if (!log || state.turn < 1 || state.year < 1) return null;
   return { recoverySchemaVersion: 1,
-    session: createSessionExport(state, SimulationEngine.MODEL_VERSION, log, savedAt) };
+    session: createSessionExport(state, state.goalRulesVersion === 'contextual-v1' ? SimulationEngine.MODEL_VERSION : '2.5', log, savedAt) };
 }
 
 function object(value: unknown): value is Record<string, unknown> {
@@ -61,7 +61,7 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
       return { ok: false, reason: 'Formato de copia local no compatible.' };
     }
     const data = packet.session;
-    if (data.schemaVersion !== 1 || data.modelVersion !== SimulationEngine.MODEL_VERSION) {
+    if (data.schemaVersion !== 1 || !['2.5', SimulationEngine.MODEL_VERSION].includes(data.modelVersion as string)) {
       return { ok: false, reason: 'La copia pertenece a otra versión del modelo. Se conserva sin reemplazarla.' };
     }
     const meta = data.metadata;
@@ -73,7 +73,12 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
       || recording.actions.length > MAX_ACTIONS || !recording.actions.every(validAction)) {
       return { ok: false, reason: 'La copia no contiene un registro de partida válido y completo.' };
     }
-    const engine = new SimulationEngine(meta.scenarioId, meta.seed, meta.isClassroomMode);
+    const contextual = data.modelVersion === SimulationEngine.MODEL_VERSION;
+    if (!object(recording.initialState) || (contextual ? recording.initialState.goalRulesVersion !== 'contextual-v1' || meta.goalRulesVersion !== 'contextual-v1'
+      : Object.hasOwn(recording.initialState, 'goalRulesVersion') || Object.hasOwn(recording.initialState, 'currentSeasonalGoal') || Object.hasOwn(meta, 'goalRulesVersion'))) {
+      return { ok: false, reason: 'Las reglas de misiones no corresponden a la versión guardada. Se conserva la copia original.' };
+    }
+    const engine = new SimulationEngine(meta.scenarioId, meta.seed, meta.isClassroomMode, contextual ? 'contextual-v1' : 'legacy');
     if (engine.getState().scenarioId !== meta.scenarioId || !equalJSON(engine.getState(), recording.initialState)) {
       return { ok: false, reason: 'Las fuentes o datos del modelo cambiaron; se conserva la copia original.' };
     }

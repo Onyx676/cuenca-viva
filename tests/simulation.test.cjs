@@ -567,7 +567,7 @@ test('Escala introductoria: primer reparto legal tras obras, reserva y sectores 
     assert.equal(b.massBalanceError, 0);
   }
   for (const scenario of ['cuenca_arida', 'cuenca_abundante']) {
-    const engine = new SimulationEngine(scenario, 'AULA-2026-001', true);
+    const engine = new SimulationEngine(scenario, 'AULA-2026-001', true, 'legacy');
     const baseline = new BaselineEngine(scenario, 'AULA-2026-001', true);
     assert.deepEqual(engine.getState(), baseline.getState());
     assert.deepEqual(suggestDistribution(engine, firstGoal), FIRST_GOAL_DISTRIBUTION);

@@ -49,7 +49,8 @@ export function createSessionExport(state: GameState, modelVersion: string,
     modelVersion,
     exportedAt,
     metadata: { scenarioId: state.scenarioId, seed: state.seed,
-      isClassroomMode: state.isClassroomMode, context },
+      isClassroomMode: state.isClassroomMode, context,
+      ...(state.goalRulesVersion ? { goalRulesVersion: state.goalRulesVersion } : {}) },
     recording: log ? { kind: 'complete-action-log' as const, ...log.snapshot(state) }
       : { kind: 'snapshot-only' as const, reason: context === 'tutorial'
         ? 'Práctica del tutorial; no es una partida reproducible.'
