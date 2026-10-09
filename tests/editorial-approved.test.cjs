@@ -38,3 +38,13 @@ test('Editorial: más cobertura no prueba más volumen; carpincho sólo en conte
     assert.doesNotMatch(mapStory('ecosystem', 1, undefined, turn, 'AULA').text, /carpincho/);
   }
 });
+test('Editorial: Tito y la reserva sólo aparecen en Ciudad cuando crece el embalse', () => {
+  const approved = bank.find(row => row.id === 'A-MAP-26').text;
+  const eligible = new Set();
+  for (let turn = 1; turn <= 20; turn++) {
+    eligible.add(mapStory('population', 1, undefined, turn, 'AULA', false, false, true).text);
+    assert.notEqual(mapStory('population', 1, undefined, turn, 'AULA').text, approved);
+    assert.notEqual(mapStory('mining', 1, undefined, turn, 'AULA', false, false, true).text, approved);
+  }
+  assert.ok(eligible.has(approved));
+});

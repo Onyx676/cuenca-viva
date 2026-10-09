@@ -31,7 +31,7 @@ export function sectorArticle(sector: EditorialSector, rate: number, previous: n
   return pickEditorial(ids, turn, seed, `heraldo:${sector}:${band}`);
 }
 export function mapStory(sector: SectorId, rate: number, previous: number | undefined, turn: number, seed: string,
-  carpinchoEvent = false, receivedMore = false): { text: string; variant: number } {
+  carpinchoEvent = false, receivedMore = false, reservoirRecovered = false): { text: string; variant: number } {
   if (!EDITORIAL_SECTORS.includes(sector as EditorialSector)) return { text: '', variant: 0 };
   const id = sector as EditorialSector, band = coverageBand(id, rate);
   const improved = previous !== undefined && rate > previous;
@@ -47,6 +47,8 @@ export function mapStory(sector: SectorId, rate: number, previous: number | unde
     ecosystem: band === 'complete' ? carpinchoEvent ? ['08'] : [] : ['25']
   };
   if (band !== 'partial') ids.push(...extra[id].map(suffix => `A-MAP-${suffix}`));
+  // Diálogo ficticio de Tito y Sofía, contextualizado por la reserva real.
+  if (id === 'population' && reservoirRecovered) ids.push('A-MAP-26');
   const choice = pickEditorial(ids, turn, seed, `valle:${id}:${band}`);
   return choice ? { text: choice.text ?? '', variant: Number(choice.id.slice(-2)) % 3 }
     : { text: 'Quedó una parte de la necesidad por cubrir.', variant: 0 };

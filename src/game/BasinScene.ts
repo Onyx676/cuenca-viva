@@ -1266,7 +1266,8 @@ export class BasinScene extends Phaser.Scene {
         && row.events?.some(record => record.event.id === 'clara_carpincho')) ?? false;
       const resolved = previousResult ?? state.seasonHistory?.find(row => row.turn === resultTurn);
       const receivedMore = !!prior && !!resolved && resolved.balance.suppliedAllocations[sector] > prior.balance.suppliedAllocations[sector];
-      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, state.seed ?? 'VALLE', carpinchoEvent, receivedMore);
+      const reservoirRecovered = !!resolved && resolved.balance.reservoirEnd > resolved.balance.reservoirStart;
+      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, state.seed ?? 'VALLE', carpinchoEvent, receivedMore, reservoirRecovered);
       this.resultSceneVariants[sector] = story.variant;
       return { sector, title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`, text: story.text };
     });
