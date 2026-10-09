@@ -298,6 +298,10 @@ const fbMoney = document.getElementById('fb-money')!;
 const fbAdviceText = document.getElementById('fb-advice-text')!;
 const btnFbContinue = document.getElementById('btn-fb-continue')!;
 const btnOpenNewspaper = document.getElementById('btn-open-newspaper') as HTMLButtonElement | null;
+const btnViewValley = document.getElementById('btn-view-valley') as HTMLButtonElement;
+// Baseline de UI: posterior a eventos/compras y anterior al reparto. No se inventa
+// al recuperar una partida resuelta, cuyo estado histórico mezcla otras decisiones.
+let resolvedImpact: { result: SeasonResult; trust: number; health: number } | null = null;
 
 // Modal: El Heraldo del Valle (Periódico)
 const modalNewspaper = document.getElementById('modal-newspaper') as HTMLElement | null;
@@ -444,8 +448,11 @@ function selectMapSector(id: PlayableSectorId, focusSlider = true): void {
     ? "Pedís agua extra al humedal. Con pedido 0 también puede llegar agua por el río."
     : "Subí la compuerta para pedir más; bajala para cerrar. También podés usar este control.";
   if (!tutorialManager.isActive()) sectorEditor.querySelector('.sector-editor-hint')!.textContent = id === 'ecosystem'
-    ? 'El agua continúa aguas abajo. Dorado: aporte adicional entregado.'
-    : '↑ Pedí más · ↓ Pedí menos. La marca indica lo que necesita el sector.';
+    ? 'El caudal ayuda a la salud de cuenca; calidad y acuífero también cuentan.'
+    : id === 'population' ? 'Abastecer Ciudad sostiene confianza y recaudación. La recaudación llega al cierre del año.'
+      : id === 'agriculture' ? 'La cobertura de Cultivos aporta al presupuesto anual; una brecha grande también afecta confianza.'
+        : id === 'mining' ? 'La cobertura de Mina aporta regalías al cierre del año; una brecha grande afecta confianza.'
+          : 'La cobertura de Granja aporta al presupuesto al cerrar el año.';
   for (const sector of PLAYABLE_SECTORS) {
     sectorUI[sector].card.classList.toggle('selected-sector', sector === id);
     document.querySelector(`[data-quick-sector="${sector}"]`)?.setAttribute('aria-pressed', String(sector === id));
@@ -1576,7 +1583,10 @@ btnResolveSeason.addEventListener('click', () => {
   const currentGoal = getCurrentSeasonalGoal();
 
   sessionLog?.captureAllocations(st);
+  const impactBaseline = { trust: st.publicTrust, health: st.basinHealth };
   const seasonResult = engine.resolveSeason();
+  resolvedImpact = { result: seasonResult,
+    trust: st.publicTrust - impactBaseline.trust, health: st.basinHealth - impactBaseline.health };
   sessionLog?.record({ type: 'resolve', turn: st.turn });
   saveRecovery();
 
@@ -1787,6 +1797,22 @@ function renderAgileSeasonFeedback(
   }
 
   renderSeasonWaterSummary(res);
+  const impact = document.getElementById('fb-sector-impact')!;
+  impact.replaceChildren();
+  impact.hidden = resolvedImpact?.result !== res;
+  if (!impact.hidden && resolvedImpact) {
+    const caption = document.createElement('div');
+    caption.className = 'fb-impact-caption';
+    caption.textContent = 'Efectos del reparto y desafío';
+    impact.appendChild(caption);
+    for (const [label, delta] of [['Confianza', resolvedImpact.trust], ['Salud de cuenca', resolvedImpact.health]] as const) {
+      const chip = document.createElement('span');
+      chip.dataset.tone = delta > 0 ? 'gain' : delta < 0 ? 'loss' : 'steady';
+      chip.textContent = `${label}: ${delta === 0 ? 'sin cambio' : `${delta > 0 ? '+' : ''}${delta} ${Math.abs(delta) === 1 ? 'punto' : 'puntos'}`}`;
+      chip.title = 'Cambio al resolver el reparto, incluida la recompensa del desafío. Los eventos previos ya estaban aplicados. Puede combinar varios sectores, reservas, calidad y obras; los topes limitan el cambio.';
+      impact.appendChild(chip);
+    }
+  }
 
   const popSat = Math.round(res.balance.satisfactions.population * 100);
   fbPop.textContent = `${popSat}%`;
@@ -1883,6 +1909,32 @@ btnOpenNewspaper?.addEventListener('click', () => {
   showNewspaperModal(lastNewspaperEdition);
 });
 
+btnViewValley.addEventListener('click', () => {
+  if (!canUseControl(btnViewValley) || !cardSeasonFeedback.classList.contains('open') || !engine.getState().isSeasonResolved) return;
+  cardSeasonFeedback.classList.remove('open');
+  cardSeasonFeedback.inert = true;
+  BasinScene.instance?.replayResultReactions();
+  btnResolveSeason.hidden = true;
+  btnReturnSummary.hidden = false;
+  btnReturnSummary.focus();
+});
+const btnReturnSummary = document.createElement('button');
+btnReturnSummary.type = 'button';
+btnReturnSummary.id = 'btn-return-summary';
+btnReturnSummary.className = 'btn-huge-action';
+btnReturnSummary.textContent = 'Volver al resumen';
+btnReturnSummary.hidden = true;
+btnResolveSeason.parentElement!.appendChild(btnReturnSummary);
+btnReturnSummary.addEventListener('click', () => {
+  if (!canUseControl(btnReturnSummary) || !engine.getState().isSeasonResolved || btnReturnSummary.hidden) return;
+  btnReturnSummary.hidden = true;
+  btnResolveSeason.hidden = false;
+  cardSeasonFeedback.inert = false;
+  cardSeasonFeedback.classList.add('open');
+  // El observer debe liberar la tarjeta antes de enfocar su botón.
+  requestAnimationFrame(() => { if (canUseControl(btnFbContinue)) btnFbContinue.focus(); });
+});
+
 function closeNewspaperToSummary(): void {
   const st = engine.getState();
   if (!modalNewspaper?.classList.contains('open') || tutorialManager.isActive()
@@ -1916,6 +1968,8 @@ function continueResolvedSeason(): void {
   cancelPendingNewspaper();
   modalNewspaper?.classList.remove('open');
   cardSeasonFeedback.classList.remove('open');
+  btnReturnSummary.hidden = true;
+  btnResolveSeason.hidden = false;
 
   if (st.isYearEndPhase) {
     showYearEndModal();
@@ -1953,7 +2007,7 @@ function showYearEndModal(): void {
 
   yearendBreakdown.innerHTML = `
     <div class="year-breakdown-item"><span>Recaudación urbana:</span><strong>+$${popInc}</strong></div>
-    <div class="year-breakdown-item"><span>Producción agrícola:</span><strong>+$${agriInc}</strong></div>
+    <div class="year-breakdown-item"><span>Aporte de Cultivos:</span><strong>+$${agriInc}</strong></div>
     <div class="year-breakdown-item"><span>Actividad de Granja:</span><strong>+$${livestockInc}</strong></div>
     <div class="year-breakdown-item"><span>Regalías mineras:</span><strong>+$${minInc}</strong></div>
     <div class="year-breakdown-item"><span>Bono ecológico:</span><strong>+$${ecoBonus}</strong></div>
@@ -2778,7 +2832,8 @@ updateSoundButtonLabel();
 // Leer el estado y el modal en cada entrada: el observer sólo sincroniza DOM/Phaser.
 function activeInteractionSurface(): HTMLElement | null {
   const modals = Array.from(document.querySelectorAll<HTMLElement>('.modal-backdrop.open'));
-  return modals.at(-1) ?? (cardSeasonFeedback.classList.contains('open') ? cardSeasonFeedback : null);
+  return modals.at(-1) ?? (cardSeasonFeedback.classList.contains('open') ? cardSeasonFeedback
+    : typeof btnReturnSummary !== 'undefined' && !btnReturnSummary.hidden ? btnReturnSummary : null);
 }
 
 function backgroundInteractionBlocked(): boolean {
@@ -2797,7 +2852,7 @@ function canUseControl(control: Element | null): boolean {
 function focusInteractionSurface(surface: HTMLElement | null): void {
   const target = surface?.querySelector<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, a[href], [tabindex="0"]')
     ?? surface ?? document.getElementById('app');
-  if (target) { if (target === surface || target === document.getElementById('app')) target.tabIndex = -1; target.focus({ preventScroll: true }); }
+  if (target) { if ((target === surface && target.tagName !== 'BUTTON') || target === document.getElementById('app')) target.tabIndex = -1; target.focus({ preventScroll: true }); }
 }
 
 const interactionPointerStyles = new WeakMap<HTMLElement, string>();
@@ -2827,7 +2882,7 @@ function guardBackgroundEvent(event: Event): void {
   const target = event.target instanceof Node ? event.target : null;
   if (surface && target && surface.contains(target)) {
     if (event instanceof KeyboardEvent && event.key === 'Tab') {
-      const items = Array.from(surface.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, a[href], [tabindex="0"]'))
+      const items = [...(surface.tagName === 'BUTTON' ? [surface] : []), ...Array.from(surface.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), summary, a[href], [tabindex="0"]'))]
         .filter(el => !el.closest('[inert]') && el.getClientRects().length > 0);
       const next = event.shiftKey ? items.at(-1) : items[0];
       if (next && (event.shiftKey ? target === items[0] : target === items.at(-1))) { event.preventDefault(); next.focus(); }

@@ -89,6 +89,10 @@ export class BasinScene extends Phaser.Scene {
   private mapZones: Phaser.GameObjects.Zone[] = [];
   private builtWorks = new Map<string, Phaser.GameObjects.Graphics>();
   private reactionText?: Phaser.GameObjects.Text;
+  private resultActivityGraphics?: Phaser.GameObjects.Graphics;
+  private resultActivityLabel?: Phaser.GameObjects.Text;
+  private resolvedCoverage?: Partial<Record<SectorId, number>>;
+  private resolvedRiverHealthy = false;
   private reactionTurn = 0;
   private reactionVisibleMs = 0;
   private resultReactions: { sector: SectorId; text: string }[] = [];
@@ -446,6 +450,8 @@ export class BasinScene extends Phaser.Scene {
   public updateGameState(newState: GameState, preview?: SeasonWaterBalance): void {
     if (newState.turn < this.reactionTurn || (this.gameState !== newState && newState.turn === 1)) {
       this.resultReactions = [];
+      this.resolvedCoverage = undefined;
+      this.resultActivityLabel?.setVisible(false);
       this.reactionTurn = 0;
       this.reactionText?.setVisible(false);
     }
@@ -453,6 +459,8 @@ export class BasinScene extends Phaser.Scene {
     this.gameState = newState;
     this.decisionPreview = preview;
     if (newState.isSeasonResolved && newState.turn !== this.reactionTurn) this.prepareResultReactions(newState);
+    if (!newState.isSeasonResolved && newState.seasonHistory.at(-1)?.turn !== this.reactionTurn
+      && newState.seasonHistory.length) this.prepareResultReactions(newState);
     if (!this.skyLayer) return;
 
     // Redibujar todo el diorama si hubo cambio de estación, clima, año o reservas base
@@ -504,6 +512,11 @@ export class BasinScene extends Phaser.Scene {
       this.clearWaterReplay();
       this.reactionText?.destroy();
       this.reactionText = undefined;
+      this.resultActivityGraphics?.destroy();
+      this.resultActivityGraphics = undefined;
+      this.resultActivityLabel?.destroy();
+      this.resultActivityLabel = undefined;
+      this.resolvedCoverage = undefined;
       this.resultReactions = [];
     });
     if (!this.gameState && BasinScene.initialGameState) {
@@ -552,6 +565,7 @@ export class BasinScene extends Phaser.Scene {
     this.initAtmosphereParticles(width, height);
 
     if (this.gameState) {
+      if (this.gameState.isSeasonResolved || this.gameState.seasonHistory.length) this.prepareResultReactions(this.gameState);
       this.renderBasin();
     }
 
@@ -1224,38 +1238,129 @@ export class BasinScene extends Phaser.Scene {
   // Copiamos el resultado: avanzar estación no convierte la reacción anterior en preview.
   private prepareResultReactions(state: GameState): void {
     const sectors: SectorId[] = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'];
-    const ordered = [...sectors].sort((a, b) => state.sectors[a].satisfactionRate - state.sectors[b].satisfactionRate);
+    const previousResult = !state.isSeasonResolved ? state.seasonHistory?.at(-1) : undefined;
+    const coverage = Object.fromEntries(sectors.map(id => [id, previousResult?.balance.satisfactions[id] ?? state.sectors[id].satisfactionRate])) as Record<SectorId, number>;
+    const resultTurn = previousResult?.turn ?? state.turn;
+    const ordered = [...sectors].sort((a, b) => coverage[a] - coverage[b]);
     const voices: Partial<Record<SectorId, [string, string]>> = {
-      population: ['Sofía: «La canilla no acepta discursos».', 'Sofía: «Hoy la canilla trabaja sin escribano».'],
-      agriculture: ['Jacinto: «El zapallo exige abogado».', 'Jacinto: «El zapallo retira la queja».'],
-      livestock: ['Berta: «La vaca pide un megáfono».', 'Berta: «La vaca devuelve el megáfono».'],
-      mining: ['Ferrada: «El casco pide un mate».', 'Ferrada: «El casco archiva la queja».'],
-      ecosystem: ['Clara: «Pipo pide río, no pintura azul».', 'Clara: «Pipo propone inaugurar el charco».']
+      population: ['Sofía: «La comisión tiene agua mineral. El barrio, una reunión».', 'Sofía: «Hoy celebramos algo extraordinario: abrir la canilla».'],
+      agriculture: ['Jacinto: «El informe floreció. El campo espera su turno».', 'Jacinto: «Buen riego. Por una vez, la cosecha no depende del discurso».'],
+      livestock: ['Berta: «El corral presentó un reclamo. Tiene más firmas que vecinos».', 'Berta: «Bebederos atendidos. Se suspende la asamblea del corral».'],
+      mining: ['Ferrada: «Con este reparto sobra tiempo para redactar el reclamo».', 'Ferrada: «Agua para trabajar. El comunicado de éxito ya estaba escrito».'],
+      ecosystem: ['Clara: «Al río le asignaron una declaración de buenas intenciones».', 'Clara: «El río sigue corriendo. Sin cortar cinta, por favor».']
     };
     const names: Partial<Record<SectorId, string>> = { population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Caudal del río' };
     const selected = [ordered[0]];
-    const wellSupplied = [...ordered].reverse().find(id => id !== selected[0] && state.sectors[id].satisfactionRate >= .85);
+    const wellSupplied = [...ordered].reverse().find(id => id !== selected[0] && coverage[id] >= .85);
     if (wellSupplied) selected.push(wellSupplied);
     this.resultReactions = selected.map(sector => ({
       sector,
-      text: `Resultado T${state.turn} · ${names[sector]} ${Math.round(state.sectors[sector].satisfactionRate * 100)}%\n${voices[sector]![state.sectors[sector].satisfactionRate >= .85 ? 1 : 0]}`
+      text: `Resultado T${resultTurn} · ${names[sector]} ${Math.round(coverage[sector] * 100)}%\n${voices[sector]![coverage[sector] >= .85 ? 1 : 0]}`
     }));
-    this.reactionTurn = state.turn;
+    this.reactionTurn = resultTurn;
     this.reactionVisibleMs = 0;
+    this.resolvedCoverage = coverage;
+    this.resolvedRiverHealthy = (previousResult?.balance.waterQuality ?? state.waterQuality) >= 70
+      && (previousResult?.balance.basinHealth ?? state.basinHealth) >= 70;
+  }
+
+  /** Reabre el feedback del último reparto, sin recalcular ni consumir azar. */
+  public replayResultReactions(): void {
+    this.reactionVisibleMs = 0;
+  }
+
+  // Escenas simbólicas de respuesta al reparto anterior. No estiman cosecha,
+  // población ni producción: los únicos datos usados son cobertura y turno.
+  private drawResultActivity(): void {
+    if (!this.resolvedCoverage) {
+      this.resultActivityGraphics?.clear();
+      this.resultActivityLabel?.setVisible(false);
+      return;
+    }
+    if (!this.resultActivityGraphics) this.resultActivityGraphics = this.add.graphics().setDepth(5);
+    const g = this.resultActivityGraphics;
+    g.clear();
+    if (this.waterReplay || document.querySelector('.modal-backdrop.open, #card-season-feedback.open')) {
+      this.resultActivityLabel?.setVisible(false);
+      return;
+    }
+    const layout = this.getMapLayout();
+    if (!this.resultActivityLabel) this.resultActivityLabel = this.add.text(0, 0, '', {
+      fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#f8fafc',
+      backgroundColor: 'rgba(15, 23, 42, .94)', padding: { x: 8, y: 5 }
+    }).setDepth(6);
+    this.resultActivityLabel.setText(`Reacciones al último reparto · T${this.reactionTurn}`)
+      .setPosition(10, layout.top + layout.height - 30).setVisible(true);
+    const scale = Math.max(.65, Math.min(1, layout.width / 850));
+    // No bobbing/tweens: reduced-motion gets exactly the same legible scene.
+    for (const id of ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as SectorId[]) {
+      const coverage = this.resolvedCoverage[id] ?? 0;
+      const covered = coverage >= .85;
+      const anchor = this.getMapAnchor(id);
+      const x = Math.max(22, anchor.x - 86 * scale), y = anchor.y + 22 * scale;
+      g.fillStyle(0x0f172a, .25); g.fillEllipse(x, y + 15 * scale, 54 * scale, 14 * scale);
+      if (id === 'ecosystem') {
+        // Caudal atendido permite vida; sin calidad/estado adecuados no festejar.
+        const healthy = covered && this.resolvedRiverHealthy;
+        g.lineStyle(3 * scale, healthy ? 0xf8fafc : 0x9ca3af);
+        for (const offset of healthy ? [-10, 8] : [0]) {
+          g.lineBetween(x + offset * scale, y, x + (offset - 6) * scale, y - 5 * scale);
+          g.lineBetween(x + offset * scale, y, x + (offset + 6) * scale, y - 5 * scale);
+        }
+        continue;
+      }
+      if (id === 'agriculture') {
+        // Cajones llenos/vacíos son ilustración del abastecimiento, no rendimiento.
+        for (const offset of [-14, 6]) {
+          g.fillStyle(0x9a6b3e); g.fillRect(x + offset * scale, y, 17 * scale, 13 * scale);
+          g.lineStyle(scale, 0xdbc08a); g.strokeRect(x + offset * scale, y, 17 * scale, 13 * scale);
+          if (covered) {
+            g.fillStyle(0xe5ac47); g.fillCircle(x + (offset + 5) * scale, y + 4 * scale, 4 * scale);
+            g.fillCircle(x + (offset + 12) * scale, y + 4 * scale, 4 * scale);
+          }
+        }
+      } else {
+        // Vecinos/operarios/corral: un gesto persistente suficientemente grande.
+        for (const offset of [-12, 10]) {
+          const px = x + offset * scale;
+          g.fillStyle(0xe4b38f); g.fillCircle(px, y - 17 * scale, 4 * scale);
+          g.lineStyle(5 * scale, id === 'mining' ? 0xe2a23a : id === 'livestock' ? 0x916744 : 0x5f9bbb);
+          g.lineBetween(px, y - 11 * scale, px, y + 2 * scale);
+          g.lineStyle(2.5 * scale, 0xe4b38f);
+          g.lineBetween(px, y - 7 * scale, px - 8 * scale, y - (covered ? 18 : 1) * scale);
+          g.lineBetween(px, y - 7 * scale, px + 8 * scale, y - (covered ? 18 : 1) * scale);
+          g.lineStyle(3 * scale, 0x334155);
+          g.lineBetween(px, y + 2 * scale, px - 4 * scale, y + 12 * scale);
+          g.lineBetween(px, y + 2 * scale, px + 4 * scale, y + 12 * scale);
+        }
+      }
+      // Bandera de celebración o cartel de reclamo, distinguibles sin animación.
+      g.lineStyle(2 * scale, 0xc5c0a9); g.lineBetween(x + 27 * scale, y + 10 * scale, x + 27 * scale, y - 25 * scale);
+      g.fillStyle(covered ? 0x34b28c : 0xedba54);
+      g.fillRect(x + 20 * scale, y - 28 * scale, 20 * scale, 12 * scale);
+      g.lineStyle(2 * scale, 0x0f172a);
+      if (covered) {
+        g.lineBetween(x + 24 * scale, y - 22 * scale, x + 28 * scale, y - 19 * scale);
+        g.lineBetween(x + 28 * scale, y - 19 * scale, x + 35 * scale, y - 25 * scale);
+      } else {
+        g.lineBetween(x + 30 * scale, y - 26 * scale, x + 30 * scale, y - 22 * scale);
+        g.fillStyle(0x0f172a); g.fillCircle(x + 30 * scale, y - 19 * scale, scale);
+      }
+    }
   }
 
   private updateResultReaction(delta: number): void {
     const blocked = !!this.waterReplay || !!document.querySelector('.modal-backdrop.open, #card-season-feedback.open');
-    const index = Math.floor(this.reactionVisibleMs / 5000);
+    const index = Math.floor(this.reactionVisibleMs / 9000);
     if (blocked || !this.resultReactions[index]) {
       this.reactionText?.setVisible(false);
       return;
     }
     if (!this.reactionText) {
       this.reactionText = this.add.text(0, 0, '', {
-        fontFamily: 'system-ui, sans-serif', fontSize: '13px', color: '#f8fafc',
-        backgroundColor: 'rgba(15, 23, 42, 0.94)', padding: { x: 9, y: 6 },
-        wordWrap: { width: 180 }, lineSpacing: 3
+        fontFamily: 'system-ui, sans-serif', fontSize: '15px', color: '#f8fafc',
+        backgroundColor: 'rgba(15, 23, 42, 0.97)', padding: { x: 11, y: 9 },
+        wordWrap: { width: 205 }, lineSpacing: 5
       }).setDepth(6).setOrigin(0, .5);
     }
     const reaction = this.resultReactions[index];
@@ -1290,6 +1395,7 @@ export class BasinScene extends Phaser.Scene {
     this.updateWaterFlow(width, effectiveH);
     this.updateAtmosphere(width, effectiveH);
     this.drawWaterReplay();
+    this.drawResultActivity();
     this.updateResultReaction(safeDelta);
   }
 

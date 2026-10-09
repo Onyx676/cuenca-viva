@@ -22,27 +22,27 @@ export interface NewspaperEdition {
 // Comentarios editoriales de personajes: no son sucesos ni daños simulados.
 // Azar editorial independiente y reproducible, sin acceso al PRNG de gameplay.
 const VOICES = {
-  population: ['Sofía: «La canilla exige un escribano. Me rindo».', 'Sofía: «Puse una peluca al trámite. Sigue siendo un trámite».', 'Sofía: «El mapache selló mi taza. Ahora soy expediente».', 'Sofía: «¿Y si nombramos ministro al flotante del tanque?».'],
-  agriculture: ['Jacinto: «Si las actas regaran, tendría arroz en el techo».', 'Jacinto: «Mi zapallo pide abogado. Se cree concesionario».', 'Jacinto: «El espantapájaros cobra viáticos. Yo sigo acá».', 'Jacinto: «Regar con discursos: aprobado por los cactus».'],
-  livestock: ['Berta: «Las vacas piden megáfono. Ya bastante opinan».', 'Berta: «Una vaca quiere ser concejal. Tiene cara de acta».', 'Berta: «El comité rumia. La vaca pide que no la imiten».', 'Berta: «Les puse corbata. Ahora mugen por ventanilla».'],
-  mining: ['Ferrada: «Mi casco pide vacaciones. Le ofrecí un tupper».', 'Ferrada: «El mapache audita con un colador. Me preocupa».', 'Ferrada: «La planilla tiene sed. No pienso regar Excel».', 'Ferrada: «Pipo trajo un pico de juguete. Quiere ascenso».'],
-  ecosystem: ['Clara: «Pipo vino de inspector. El chaleco le queda de carpa».', 'Clara: «El mapache exige peaje. Le pagué con una hoja».', 'Clara: «Pipo quiere un río con wifi. Primero, un río».', 'Clara: «Una rana pidió el acta en idioma charco».'],
-  reservoir: ['Sofía: «El embalse no acepta cuotas ni un abrazo».', 'Jacinto: «El verano vino con sorbete. No lo dejen pasar».', 'Berta: «La vaca quiere guardar lluvia en un tupper».', 'Ferrada: «El mapache declaró al embalse caja chica».'],
-  waterQuality: ['Clara: «Pipo trajo un colador. Dice que es tecnología».', 'Ferrada: «El mapache lava el informe. Sigue sin servir».', 'Sofía: «Agua perfumada: idea rechazada por la rana».', 'Clara: «Pipo pide agua clara, no un PowerPoint celeste».'],
-  basinHealth: ['Clara: «La rana preside. Prohibió croar por encima de ella».', 'Sofía: «Pipo dibujó un río en el acta. Pide flotadores».', 'Jacinto: «El mapache propone regar las fotocopias».', 'Clara: «Pipo llevó salvavidas a una reunión de Zoom».']
+  population: ['Sofía: «El vecino entiende mejor una canilla que un comunicado».', 'Sofía: «El trámite urgente tiene la misma fila, con otro cartel».', 'Sofía: «La oficina promete escuchar; atender es otro expediente».', 'Sofía: «Antes de anunciar, conviene probar la canilla».'],
+  agriculture: ['Jacinto: «El calendario de siembra no espera al consejo».', 'Jacinto: «Si las actas regaran, tendría arroz en el techo».', 'Jacinto: «La cosecha no entiende de prórrogas administrativas».', 'Jacinto: «La asamblea terminó. Ahora empieza mi jornada».'],
+  livestock: ['Berta: «Los animales comen todos los días, incluso los feriados».', 'Berta: «Me piden paciencia. El ganado pide otra cosa».', 'Berta: «Traje las cuentas; el asesor trajo saludos».', 'Berta: «El bebedero queda lejos de la conferencia de prensa».'],
+  mining: ['Ferrada: «La producción necesita agua; el informe necesita honestidad».', 'Ferrada: «Pido un plan, no una foto con casco».', 'Ferrada: «El Excel aguanta cualquier promesa. La máquina, menos».', 'Ferrada: «El turno empieza antes que la reunión del consejo».'],
+  ecosystem: ['Clara: «El río también tiene necesidades, aunque no mande facturas».', 'Clara: «El humedal no puede pedir turno por internet».', 'Clara: «Cuidar el río queda mejor en el reparto que en el afiche».', 'Clara: «La foto panorámica no reemplaza mirar aguas abajo».'],
+  reservoir: ['Sofía: «La reserva no se renueva aprobando el presupuesto».', 'Jacinto: «El embalse no acepta promesas para la próxima cosecha».', 'Berta: «Guardar para después también es una decisión».', 'Ferrada: «La capacidad no es lo mismo que el contenido».'],
+  waterQuality: ['Clara: «Un adjetivo en el folleto no cuenta como tratamiento».', 'Ferrada: «Un informe prolijo puede describir agua que no lo es».', 'Sofía: «La campaña puede esperar. El análisis, menos».', 'Clara: «Diluir no elimina lo que volvió al río».'],
+  basinHealth: ['Clara: «El paisaje no lee nuestro plan de recuperación».', 'Sofía: «La cuenca no tiene botón para aprobar el acta».', 'Jacinto: «Lo que pasa aguas arriba también termina por acá».', 'Clara: «Caudal y calidad: el consejo prefiere leer uno por vez».']
 } as const;
 
 const NAMES = { population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Río Vivo', reservoir: 'Embalse', waterQuality: 'Calidad del agua', basinHealth: 'Salud del río' } as const;
 
 const EXTRA_VOICES = {
-  population: ['Sofía: «El vecino trajo la canilla a la asamblea».', 'Sofía: «Pipo vende turnos para mirar la fuente».', 'Sofía: «Un balde pidió ser secretario».', 'Sofía: «La fila de trámites llegó al tanque».'],
-  agriculture: ['Jacinto: «El tomate pide escolta para ir al riego».', 'Jacinto: «El maíz contrató al abogado del zapallo».', 'Jacinto: «El cactus vende cursos de paciencia».', 'Jacinto: «El espantapájaros pide oficina con sombra».'],
-  livestock: ['Berta: «La vaca trajo un silbato. Grave error».', 'Berta: «El toro exige un bebedero con reposabrazos».', 'Berta: «La asamblea terminó: se comieron el acta».', 'Berta: «Las vacas contrataron al gallo de vocero».'],
-  mining: ['Ferrada: «El casco exige aire acondicionado».', 'Ferrada: «Pipo fiscaliza usando una lupa de juguete».', 'Ferrada: «La máquina pide una hamaca paraguaya».', 'Ferrada: «El ventilador se anotó como asesor».'],
-  ecosystem: ['Clara: «La rana quiere una oficina flotante».', 'Clara: «Pipo exige casco para entrar al charco».', 'Clara: «Las totoras fundaron una comisión».', 'Clara: «El flamenco vino a pedir estacionamiento».'],
-  reservoir: ['Berta: «El tupper no pasó la inspección de represas».', 'Sofía: «Pipo ofrece un seguro contra sorbetes».', 'Jacinto: «La nube no acepta que le cobren expensas».', 'Ferrada: «El embalse rechazó un pagaré mojado».'],
-  waterQuality: ['Clara: «La rana rechaza el detergente de Pipo».', 'Sofía: «El perfume no reemplaza al tratamiento».', 'Ferrada: «Pipo quiere filtrar el agua con una media».', 'Clara: «El colador tiene más prensa que utilidad».'],
-  basinHealth: ['Clara: «Las totoras pidieron silla en el consejo».', 'Berta: «La rana controla el orden del día».', 'Jacinto: «Pipo propone darles vacaciones a los peces».', 'Sofía: «La reunión flotante terminó en remojo».']
+  population: ['Sofía: «Cada barrio explica por qué debería ir primero».', 'Sofía: «Al comunicado le falta el domicilio del reclamo».', 'Sofía: «El vecino pidió agua. Le ofrecieron una encuesta».', 'Sofía: «Hay consenso sobre quién debe arreglarlo: otro».'],
+  agriculture: ['Jacinto: «El pronóstico viene con letra chica; la siembra no».', 'Jacinto: «En la reunión todos conocen el campo desde la ruta».', 'Jacinto: «Pido previsión. No hace falta que venga en tapa dura».', 'Jacinto: «El asesor propone esperar; nunca sembró con fecha».'],
+  livestock: ['Berta: «El protocolo supone que la granja abre a las nueve».', 'Berta: «La sombra sirve más que una visita con fotógrafo».', 'Berta: «La vaca no leyó el plan y aun así detectó el problema».', 'Berta: «Acepto consejos. Preferentemente después de escuchar».'],
+  mining: ['Ferrada: «El casco de la visita todavía conserva la etiqueta».', 'Ferrada: «La eficiencia se mide; el entusiasmo se declara».', 'Ferrada: «La máquina no distingue una excusa bien redactada».', 'Ferrada: «El ahorro prometido necesita pasar por la planta».'],
+  ecosystem: ['Clara: «El río nunca llegó tarde a una reunión: no lo invitan».', 'Clara: «El sendero tiene cartel. El caudal necesita algo más».', 'Clara: «La naturaleza no archiva el reclamo al cerrar la oficina».', 'Clara: «No todo lo que importa tiene una ventanilla».'],
+  reservoir: ['Berta: «La reserva es para usar con criterio, no para coleccionar».', 'Sofía: «El próximo verano todavía no presentó sus demandas».', 'Jacinto: «Una reserva llena no garantiza una cosecha regada».', 'Ferrada: «La obra grande también puede quedar vacía».'],
+  waterQuality: ['Clara: «La muestra no mejora porque el informe llegue en color».', 'Sofía: «Primero el tratamiento; después el acto de presentación».', 'Ferrada: «La calidad no negocia con el departamento de prensa».', 'Clara: «El retorno lleva agua y también lo que le dejamos».'],
+  basinHealth: ['Clara: «El informe anual no marca el calendario del río».', 'Berta: «La cuenca comparte problemas, aunque cambie el dueño».', 'Jacinto: «Las consecuencias no respetan límites de parcela».', 'Sofía: «El balance del valle necesita más que el balance de caja».']
 } as const;
 
 // Una escena editorial y la decisión que sí está registrada. No atribuye
@@ -52,16 +52,16 @@ export function getEventRecap(record: SeasonResult['events'][number], turn: numb
   const option = record.event.options?.find(item => item.id === record.chosenOptionId);
   if (!option) return null;
   const scenes: Record<string, readonly string[]> = {
-    berta_calor: ['Berta: «La vaca pidió hielo y una sombrillita»', 'Berta: «El toro quiso hacer bombita en el bebedero»'],
-    ferrada_molienda: ['Ferrada: «La máquina trajo su propio abanico»', 'Ferrada: «El casco pidió sentarse frente al ventilador»'],
-    sofia_aniversario: ['Sofía: «Pipo quiso cortar la cinta con los dientes»', 'Sofía: «El vecino vino al acto con patas de rana»'],
-    jacinto_festival: ['Jacinto: «El maíz exige una alfombra roja»', 'Jacinto: «El zapallo quiere ser jurado de la cosecha»'],
-    clara_carpincho: ['Clara: «Pipo reclamó agua por triplicado»', 'Clara: «La rana le negó el cargo de ministro del charco»'],
-    fugas_red_ciudad: ['Sofía: «Pipo propuso tapar la fuga con un sello»', 'Sofía: «La cuadrilla retiró una media del plano de Pipo»'],
-    flamencos_turismo: ['Clara: «Los flamencos pidieron habitaciones con vista»', 'Clara: «El flamenco quiso pagar el paseo con plumas»'],
-    falla_saneamiento: ['Clara: «El colador de Pipo no pasó la inspección»', 'Clara: «Pipo confundió el filtro con un perchero»'],
-    sequia_severa: ['Jacinto: «El sol vino con sorbete; nadie lo invitó»', 'Berta: «La vaca pidió negociar directamente con una nube»'],
-    lluvia_extraordinaria: ['Sofía: «Pipo sacó el flotador antes que el paraguas»', 'Clara: «La rana quiso presidir desde una reposera»']
+    berta_calor: ['Berta: «El ganado no pidió permiso para tener calor»', 'Berta: «El protocolo supone que el verano atiende reclamos»', 'Berta: «La sombra trabaja sin esperar el acta»', 'Berta: «El bebedero no tiene oficina de prensa»'],
+    ferrada_molienda: ['Ferrada: «La máquina no se enfría con una nota interna»', 'Ferrada: «El turno de producción no espera al asesor»', 'Ferrada: «La eficiencia necesita algo más que un anuncio»', 'Ferrada: «El casco de la visita sigue impecable»'],
+    sofia_aniversario: ['Sofía: «El aniversario llega antes que el consenso»', 'Sofía: «El discurso no debería durar más que la fiesta»', 'Sofía: «La foto oficial no incluye la cuenta del lunes»', 'Sofía: «Hay más ideas para el festejo que responsables»'],
+    jacinto_festival: ['Jacinto: «El calendario de siembra no negocia feriados»', 'Jacinto: «La cosecha no acepta una promesa por escrito»', 'Jacinto: «La fiesta empieza cuando termina el trabajo»', 'Jacinto: «El campo tiene menos micrófonos que la inauguración»'],
+    clara_carpincho: ['Clara: «El humedal figura en el folleto, no siempre en la agenda»', 'Clara: «El carpincho llegó sin pedir turno»', 'Clara: «La reserva natural no es una reserva de discursos»', 'Clara: «La visita al río empieza cuando termina la foto»'],
+    fugas_red_ciudad: ['Sofía: «La fuga sigue abierta; el expediente también»', 'Sofía: «El agua encontró la salida antes que el trámite»', 'Sofía: «La cuadrilla necesita un plano, no otra reunión»', 'Sofía: «La cañería no distingue hábiles de feriados»'],
+    flamencos_turismo: ['Clara: «Los flamencos llegaron antes que el folleto turístico»', 'Clara: «La naturaleza no pidió un acto de apertura»', 'Clara: «El paisaje también necesita mantenimiento sin público»', 'Clara: «El humedal no vive de la temporada de fotos»'],
+    falla_saneamiento: ['Clara: «El filtro no responde al comunicado de calma»', 'Clara: «El tratamiento no funciona por resolución municipal»', 'Clara: «La reparación necesita menos adjetivos»', 'Clara: «La muestra no espera a que termine la reunión»'],
+    sequia_severa: ['Jacinto: «El pronóstico no acepta un pedido de prórroga»', 'Berta: «Las restricciones también necesitan un plan»', 'Sofía: «La emergencia no respeta el horario de atención»', 'Ferrada: «La reserva no alcanza por declaración»'],
+    lluvia_extraordinaria: ['Sofía: «La lluvia llegó sin consultar el cronograma»', 'Clara: «La crecida no pidió autorización al consejo»', 'Jacinto: «El pronóstico trajo más de lo que decía el título»', 'Berta: «El temporal no tiene formulario de reclamo»']
   };
   const choices: Record<string, string> = {
     agua_fresca_berta: 'Elegiste renovar los piletones con agua fresca.', bebederos_sombra: 'Elegiste sombra y bebederos térmicos.',
@@ -81,9 +81,39 @@ export function getEventRecap(record: SeasonResult['events'][number], turn: numb
 }
 
 const RESERVE_HEADLINES = {
-  draw: ['El embalse pagó: Pipo dejó la propina en hojas', 'La reserva bajó; Berta inventa la alcancía para lluvia', 'Pipo audita el embalse con una cucharita', 'El embalse prestó agua; Jacinto ofrece devolver sandías', 'Sofía busca al que anotó «agua infinita» en el presupuesto', 'Berta prohíbe a las vacas sorber el embalse con pajita', 'El embalse pide vacaciones; le ofrecen un feriado seco', 'Ferrada trae un termo: el embalse rechaza la garantía', 'Pipo declara al tupper reserva estratégica del valle', 'El embalse pagó; el verano pregunta si hay otra ronda', 'Sofía propone un tesorero que sepa cerrar la canilla', 'Jacinto guarda una nube dibujada: el banco no la acepta', 'Berta funda el Club de Amigos del Agua que Quedó', 'Pipo cuenta la reserva; pierde la cuenta al mojarse', 'Ferrada presenta un pagaré: el embalse no sabe leer', 'La reserva financió el reparto; la vaca pide el balance', 'Sofía suspende el concurso de llenar piletas con discursos', 'Jacinto ofrece empeñar el zapallo para cuidar la reserva', 'El embalse prestó otra vez; Pipo exige un garante con botas', 'Berta declara al tupper patrimonio hídrico familiar'],
-  recovery: ['Embalse repuesto: Pipo propone un brindis con mate vacío', 'Embalse repuesto: la vaca exige un tupper más grande', 'Embalse repuesto: el mapache quiere cobrar expensas', 'Embalse repuesto: el verano se anota con sorbete']
+  draw: [
+    'El embalse puso el agua; el consejo, la firma',
+    'Se usó la reserva: el verano todavía no pasó por caja',
+    'El reparto recurrió al embalse; el mañana pide atención',
+    'La reserva bajó y el discurso mantuvo su nivel',
+    'Carta de lectores: «¿Y lo que queda para después?»',
+    'Sofía pide incluir la próxima estación en la conversación',
+    'El valle atendió el presente con parte de sus ahorros',
+    'El embalse ayudó; no adjuntó promesa de reposición',
+    'La reserva financió el reparto, sin cuotas automáticas',
+    'Pipo propone celebrar antes de leer el saldo',
+    'Jacinto agradece el agua y pregunta por la próxima siembra',
+    'El acta destaca lo entregado; Berta señala lo que queda',
+    'El comité descubre que la reserva tiene fondo',
+    'El abastecimiento pasó por el embalse; la cuenta sigue abierta',
+    'Ferrada pide un plan para el después de la urgencia',
+    'Los ahorros del valle entraron en servicio',
+    'El presupuesto no registra la deuda con la próxima estación',
+    'Clara recuerda que el agua guardada también tiene destino',
+    'Entrevista a la reserva: hoy prefirió mostrar el nivel',
+    'Se recurrió al embalse; el consejo archiva «agua ilimitada»'
+  ]
 } as const;
+
+// Contar la familia de portada, no el sector: cambiar de foco no vuelve
+// a sortear los mismos títulos desde cero. Calidad tiene prioridad editorial.
+function headlineTopic(result: SeasonResult, previous: SeasonResult | undefined, verdict: SeasonVerdict): string {
+  return verdict.kind !== 'crisis' && verdict.kind !== 'error'
+    && (['normal', 'good', 'opportunity'].includes(verdict.kind)
+      || (previous && previous.balance.waterQuality - result.balance.waterQuality >= 8))
+    && previous && result.balance.waterQuality < previous.balance.waterQuality
+    ? 'qualityDrop' : verdict.kind;
+}
 
 // Sólo narra resultados resueltos. El sorteo editorial no consume PRNG de gameplay.
 export function generateNewspaperEdition(
@@ -99,19 +129,22 @@ export function generateNewspaperEdition(
   const variant = ((result.turn - 1) % 20 + 20) % 20;
   // Cada situación tiene una bolsa barajada. Se agota antes de repetir;
   // reconstruirla desde semilla/historial conserva la edición al reabrir o recuperar.
-  const occurrence = history.length ? history.filter(row => row.turn < result.turn &&
-    getSeasonVerdict(row, history.find(item => item.turn === row.turn - 1)).kind === verdict.kind &&
-    getSeasonVerdict(row, history.find(item => item.turn === row.turn - 1)).focus === verdict.focus).length : variant;
-  const pick = (lines: readonly string[], topic = verdict.kind as string) => {
+  const topic = headlineTopic(result, previous, verdict);
+  const occurrence = history.length ? history.filter(row => {
+    const prior = history.find(item => item.turn === row.turn - 1);
+    return row.turn < result.turn && headlineTopic(row, prior, getSeasonVerdict(row, prior)) === topic;
+  }).length : variant;
+  const pick = (lines: readonly string[], editorialTopic = topic, voiceEdition = false) => {
     const bag = [...lines];
-    const editorialRandom = new SeededRandom(`${editorialSeed}:heraldo:${topic}:${Math.floor(occurrence / bag.length)}`);
+    const indexInBag = voiceEdition ? variant : occurrence;
+    const editorialRandom = new SeededRandom(`${editorialSeed}:heraldo:${editorialTopic}:${Math.floor(indexInBag / bag.length)}`);
     for (let index = bag.length - 1; index > 0; index--) {
       const swap = editorialRandom.rangeInt(0, index);
       [bag[index], bag[swap]] = [bag[swap], bag[index]];
     }
-    return bag[occurrence % bag.length];
+    return bag[indexInBag % bag.length];
   };
-  const voice = (topic: keyof typeof VOICES) => pick([...VOICES[topic], ...EXTRA_VOICES[topic]], `voice:${topic}`);
+  const voice = (topic: keyof typeof VOICES) => pick([...VOICES[topic], ...EXTRA_VOICES[topic]], `voice:${topic}`, true);
   const productive = ['agriculture', 'livestock', 'mining'] as const;
   const lowest = [...productive].sort((a, c) => s[a] - s[c])[0];
   const usesReturned = b.returns.population + b.returns.agriculture + b.returns.livestock + b.returns.mining;
@@ -188,10 +221,7 @@ export function generateNewspaperEdition(
   // o una celebración. Ante recuperación o uso de reservas, sólo domina si cayó
   // al menos 8 puntos, la magnitud que el veredicto usa para recuperar calidad.
   // Crisis y alertas conservan prioridad; no cambiamos las reglas del veredicto.
-  if (verdict.kind !== 'crisis' && verdict.kind !== 'error'
-    && (['normal', 'good', 'opportunity'].includes(verdict.kind)
-      || (previous && previous.balance.waterQuality - b.waterQuality >= 8))
-    && previous && b.waterQuality < previous.balance.waterQuality) {
+  if (topic === 'qualityDrop') {
     covered.add('waterQuality');
     subhead = `${qualityFact} ${hints.waterQuality}`;
     photoEmoji = '🔎';
@@ -233,7 +263,7 @@ export function generateNewspaperEdition(
     covered.add('population');
     covered.add('ecosystem');
     headline = pick(NEWSPAPER_HEADLINES.good);
-    subhead = `${result.goalAchieved ? '¡Meta cumplida! ' : ''}Buen abastecimiento y calidad. El reparto funcionó; la ceremonia de Pipo es discutible.`;
+    subhead = `${result.goalAchieved ? '¡Meta cumplida! ' : ''}Buen abastecimiento y calidad: una estación lograda por el reparto.`;
     photoEmoji = '🎉';
   } else if (verdict.kind === 'opportunity') {
     const record = result.events.find(item => item.event.type === 'OPPORTUNITY_INTERACTIVE' && item.chosenOptionId)!;
@@ -269,8 +299,8 @@ export function generateNewspaperEdition(
     }
   };
   // Alertas complementarias antes que curiosidades, sin duplicar la portada.
-  if (s.population < 0.8) add('population', 'Sofía: «La canilla no lee comunicados»', facts.population);
-  if (s.ecosystem < 0.75) add('ecosystem', 'Clara: «Pipo pide río, no un dibujo azul»', facts.ecosystem);
+  if (s.population < 0.8) add('population', voice('population'), facts.population);
+  if (s.ecosystem < 0.75) add('ecosystem', voice('ecosystem'), facts.ecosystem);
   if (b.waterQuality < 60 || (previous && b.waterQuality < previous.balance.waterQuality))
     add('waterQuality', voice('waterQuality'), qualityFact);
   if (b.basinHealth < 60) add('basinHealth', voice('basinHealth'), facts.basinHealth);
@@ -285,17 +315,17 @@ export function generateNewspaperEdition(
     ['waterQuality', voice('waterQuality'), `${qualityFact} Más caudal no garantiza mejor calidad.`],
     ['reservoir', voice('reservoir'), reserveFact],
     ['ecosystem', voice('ecosystem'), `Caudal ecológico: ${percent(s.ecosystem)}. Cuenta también el agua que sigue y retorna.`],
-    ['returns', 'Clara: «El agua no ficha salida: sigue viaje»', `Ciudad y actividades devolvieron ${usesReturned} 💧 al río. Aguas abajo pasaron ${b.downstreamFlow} 💧 en total; esos retornos ya están incluidos.`],
+    ['returns', 'Clara: «El reparto no termina donde termina el canal»', `Ciudad y actividades devolvieron ${usesReturned} 💧 al río. Aguas abajo pasaron ${b.downstreamFlow} 💧 en total; esos retornos ya están incluidos.`],
     ['population', voice('population'), facts.population],
     ['agriculture', voice('agriculture'), `Cobertura de Cultivos: ${percent(s.agriculture)}.`],
     ['livestock', voice('livestock'), `Cobertura de Granja: ${percent(s.livestock)}.`],
     ['mining', voice('mining'), `Cobertura de Mina: ${percent(s.mining)}.`]
   ];
-  if (b.snowMelt > 0) briefs.push(['snow', 'Pipo: «La montaña manda agua sin estampilla»', 'Hubo deshielo: agua de la reserva de nieve llegó al río.']);
-  if (b.seasonRainfall > 0) briefs.push(['rain', 'Jacinto: «Llueve. Suspendan el baile del zapallo»', b.soilInfiltration > 0 ? 'Una parte de la lluvia se infiltró en el suelo.' : 'Llovió; este balance no registró infiltración al suelo.']);
+  if (b.snowMelt > 0) briefs.push(['snow', 'La montaña aporta deshielo; el consejo aún discute el calendario', 'Hubo deshielo: agua de la reserva de nieve llegó al río.']);
+  if (b.seasonRainfall > 0) briefs.push(['rain', 'La lluvia llega sin completar el formulario de ingreso', b.soilInfiltration > 0 ? 'Una parte de la lluvia se infiltró en el suelo.' : 'Llovió; este balance no registró infiltración al suelo.']);
   const event = result.events[0];
   if (event) briefs.push(['event', event.event.name, event.chosenOptionId ? eventFact(event) : 'Suceso registrado esta estación. El balance incluye sus efectos; no permite aislarlos del clima y del reparto.']);
-  briefs.push(['aquifer', 'Berta: «La reserva de abajo no es un sótano de mates»', b.aquiferWithdrawal > 0 ? 'Hubo bombeo del acuífero para abastecer el reparto.' : 'Esta estación no se bombeó agua del acuífero.']);
+  briefs.push(['aquifer', 'La reserva subterránea tampoco admite retiros ilimitados', b.aquiferWithdrawal > 0 ? 'Hubo bombeo del acuífero para abastecer el reparto.' : 'Esta estación no se bombeó agua del acuífero.']);
   const start = variant % briefs.length;
   for (const brief of [...briefs.slice(start), ...briefs.slice(0, start)]) add(...brief);
 

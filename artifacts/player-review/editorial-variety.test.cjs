@@ -14,6 +14,8 @@ test('Bancos: quince escenas distintas y sorteo editorial separado, reproducible
   for (const [kind, lines] of Object.entries(NEWSPAPER_HEADLINES)) {
     assert.ok(lines.length >= 15, kind);
     assert.equal(new Set(lines).size, lines.length, kind);
+    const limit = kind === 'crisis' || kind === 'error' ? 58 : 65;
+    assert.ok(lines.every(line => line.length <= limit), `${kind}: titulares legibles aun con el foco más largo`);
   }
   const engine = new SimulationEngine('cuenca_central', 'AZAR-EDITORIAL', false);
   const original = engine.resolveSeason();
@@ -70,7 +72,7 @@ test('Anécdota de vacas visible relata elección, no inventa suministro ni vari
   const record = { event, chosenOptionId: 'agua_fresca_berta', waterAdjustment: { reservoirChange: 0, aquiferChange: 0 } };
   const before = JSON.stringify(record);
   const recap = getEventRecap(record, 15);
-  assert.match(recap.headline, /Berta.*toro.*bebedero/);
+  assert.match(recap.headline, /Berta.*bebedero/);
   assert.equal(recap.decision, 'Elegiste renovar los piletones con agua fresca.');
   assert.doesNotMatch(JSON.stringify(recap), /gotas|\d|llenaste|recibieron/);
   assert.equal(JSON.stringify(record), before);
@@ -78,4 +80,46 @@ test('Anécdota de vacas visible relata elección, no inventa suministro ni vari
   assert.equal(getEventRecap({ event, chosenOptionId: 'inexistente' }, 15), null);
   const fallback = getEventRecap({ event: { id: 'otro', name: 'Otro evento', options: [{ id: 'x', label: 'Elegir algo' }] }, chosenOptionId: 'x' }, 2);
   assert.deepEqual(fallback, { headline: 'Otro evento', decision: 'Elegiste «Elegir algo».' });
+});
+
+test('Cambiar el sector de alerta no reinicia la bolsa editorial', () => {
+  const engine = new SimulationEngine('cuenca_central', 'FOCOS', false);
+  const original = engine.resolveSeason();
+  const history = [];
+  const scenes = new Set();
+  for (let turn = 1; turn <= 15; turn++) {
+    const row = structuredClone(original);
+    row.turn = turn;
+    row.events = [];
+    Object.assign(row.balance.satisfactions, { population: turn % 2 ? .4 : 1, ecosystem: turn % 2 ? 1 : .4, agriculture: 1, livestock: 1, mining: 1 });
+    Object.assign(row.balance, { waterQuality: 80, basinHealth: 80 });
+    history.push(row);
+    const edition = generateNewspaperEdition(row, history.at(-2), undefined, history, 'FOCOS');
+    assert.equal(edition.kind, 'crisis');
+    const scene = edition.mainArticle.headline.replace(/^(Crisis en [^:]+|Ciudad sin pedido): /, '');
+    assert.ok(!scenes.has(scene), scene);
+    scenes.add(scene);
+  }
+});
+
+test('Caídas de calidad alternadas con otras portadas conservan su propia bolsa', () => {
+  const engine = new SimulationEngine('cuenca_central', 'CALIDAD', false);
+  const original = engine.resolveSeason();
+  const history = [];
+  const scenes = new Set();
+  for (let turn = 1; turn <= 20; turn++) {
+    const row = structuredClone(original);
+    row.turn = turn;
+    row.events = [];
+    Object.assign(row.balance.satisfactions, { population: 1, ecosystem: 1, agriculture: 1, livestock: 1, mining: 1 });
+    Object.assign(row.balance, { waterQuality: turn % 2 ? 90 : 80, basinHealth: 80, reservoirStart: 60, reservoirEnd: 60, reservoirWithdrawal: 0 });
+    history.push(row);
+    const edition = generateNewspaperEdition(row, history.at(-2), undefined, history, 'CALIDAD');
+    if (turn % 2 === 0) {
+      assert.match(edition.mainArticle.subhead, /pasó de 90 a 80/);
+      assert.ok(!scenes.has(edition.mainArticle.headline), edition.mainArticle.headline);
+      scenes.add(edition.mainArticle.headline);
+    }
+  }
+  assert.equal(scenes.size, 10);
 });
