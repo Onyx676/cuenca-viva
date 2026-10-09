@@ -1,0 +1,109 @@
+{
+  "states": {
+    "VERY_DRY": {
+      "name": "Muy Seco",
+      "description": "Precipitaciones mínimas y alto calor. Peligro de sequía severa.",
+      "rainfallFactor": 0.45,
+      "snowFactor": 0.40,
+      "tempModifier": 2.5,
+      "evaporationFactor": 1.45,
+      "color": "#ef4444"
+    },
+    "DRY": {
+      "name": "Seco",
+      "description": "Lluvias y nevadas por debajo del promedio histórico.",
+      "rainfallFactor": 0.70,
+      "snowFactor": 0.65,
+      "tempModifier": 1.2,
+      "evaporationFactor": 1.20,
+      "color": "#f97316"
+    },
+    "NORMAL": {
+      "name": "Normal",
+      "description": "Condiciones climáticas típicas de la cuenca.",
+      "rainfallFactor": 1.0,
+      "snowFactor": 1.0,
+      "tempModifier": 0.0,
+      "evaporationFactor": 1.0,
+      "color": "#10b981"
+    },
+    "WET": {
+      "name": "Húmedo",
+      "description": "Precipitaciones abundantes que permiten recuperar reservas.",
+      "rainfallFactor": 1.30,
+      "snowFactor": 1.25,
+      "tempModifier": -0.8,
+      "evaporationFactor": 0.90,
+      "color": "#06b6d4"
+    },
+    "VERY_WET": {
+      "name": "Muy Húmedo",
+      "description": "Lluvias torrenciales y nevadas extraordinarias. Riesgo de crecidas.",
+      "rainfallFactor": 1.65,
+      "snowFactor": 1.55,
+      "tempModifier": -1.5,
+      "evaporationFactor": 0.80,
+      "color": "#3b82f6"
+    }
+  },
+  "transitions": {
+    "VERY_DRY": {
+      "VERY_DRY": 0.40,
+      "DRY": 0.35,
+      "NORMAL": 0.20,
+      "WET": 0.05,
+      "VERY_WET": 0.00
+    },
+    "DRY": {
+      "VERY_DRY": 0.20,
+      "DRY": 0.45,
+      "NORMAL": 0.25,
+      "WET": 0.10,
+      "VERY_WET": 0.00
+    },
+    "NORMAL": {
+      "VERY_DRY": 0.05,
+      "DRY": 0.20,
+      "NORMAL": 0.50,
+      "WET": 0.20,
+      "VERY_WET": 0.05
+    },
+    "WET": {
+      "VERY_DRY": 0.00,
+      "DRY": 0.10,
+      "NORMAL": 0.35,
+      "WET": 0.40,
+      "VERY_WET": 0.15
+    },
+    "VERY_WET": {
+      "VERY_DRY": 0.00,
+      "DRY": 0.05,
+      "NORMAL": 0.30,
+      "WET": 0.40,
+      "VERY_WET": 0.25
+    }
+  },
+  "enso": {
+    "NEUTRAL": {
+      "name": "Neutral",
+      "description": "Condiciones oceánicas medias en el Pacífico.",
+      "rainModifier": 1.0,
+      "snowModifier": 1.0,
+      "tempModifier": 0.0
+    },
+    "EL_NINO": {
+      "name": "El Niño",
+      "description": "Fase cálida del ENSO: mayores precipitaciones en cordillera y riesgo de tormentas.",
+      "rainModifier": 1.25,
+      "snowModifier": 1.30,
+      "tempModifier": 0.5
+    },
+    "LA_NINA": {
+      "name": "La Niña",
+      "description": "Fase fría del ENSO: tendencia a sequías prolongadas y menor nieve.",
+      "rainModifier": 0.75,
+      "snowModifier": 0.70,
+      "tempModifier": -0.4
+    }
+  }
+}

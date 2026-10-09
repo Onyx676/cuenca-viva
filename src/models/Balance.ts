@@ -18,6 +18,11 @@ export interface SeasonWaterBalance {
 
   riverInflow: number;
   riverFlowTotal: number;
+  baseFlow: number; // Aporte externo simplificado, no extraído del acuífero modelado
+  directRiverIntake: number;
+  downstreamFlow: number;
+  runoffBypass: number;
+  soilEvaporation: number;
 
   reservoirStart: number;
   reservoirInflow: number;
@@ -28,12 +33,16 @@ export interface SeasonWaterBalance {
 
   aquiferStart: number;
   aquiferNaturalRecharge: number;
+  aquiferRiverRecharge: number; // Transferencia interna desde el tramo fluvial permeable
   aquiferArtificialRecharge: number;
   aquiferWithdrawal: number;
   aquiferEnd: number;
+  aquiferOverflow: number;
 
   // Asignaciones y consumos sectoriales
   allocations: Record<SectorId, number>;
+  suppliedAllocations: Record<SectorId, number>;
+  returnQualities: Record<SectorId, number>;
   consumptions: Record<SectorId, number>;
   returns: Record<SectorId, number>;
   satisfactions: Record<SectorId, number>;
@@ -41,7 +50,9 @@ export interface SeasonWaterBalance {
   // Balances
   totalWaterAvailable: number;
   totalWaterSupplied: number;
-  unallocatedStored: number; // Agua no asignada que permanece en reserva
+  unallocatedStored: number; // Incrementos positivos netos de almacenamiento, no toda el agua sin asignar
+  unmetAllocation: number;
+  massBalanceError: number; // Entradas + reservas iniciales − salidas − reservas finales
 
   waterQuality: number;
   basinHealth: number;
@@ -57,6 +68,7 @@ export interface SeasonResult {
   balance: SeasonWaterBalance;
   events: TriggeredEventRecord[];
   adviceMessage: string;
+  goalAchieved: boolean;
 }
 
 export interface YearResult {
@@ -64,6 +76,7 @@ export interface YearResult {
   seasons: SeasonResult[];
   avgPopSatisfaction: number;
   avgAgriSatisfaction: number;
+  avgLivestockSatisfaction: number;
   avgMinSatisfaction: number;
   avgEcoSatisfaction: number;
   reservoirEnd: number;

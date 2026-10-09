@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💧</text></svg>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cuenca Viva - Maqueta Interactiva de Gestión Hídrica</title>
   <link rel="stylesheet" href="./src/style.css" />
 </head>
@@ -41,7 +41,7 @@
         <button id="btn-tutorial-toggle" class="btn-icon" title="Repetir o abrir el tutorial">
           🎓 Tutorial
         </button>
-        <button id="btn-forecast" class="btn-icon" title="Ver pronóstico de la próxima estación">
+        <button id="btn-forecast" class="btn-icon" title="Ver la pista del clima para la próxima estación" aria-label="Ver la pista del clima para la próxima estación">
           📡 Clima
         </button>
         <button id="btn-classroom" class="btn-icon" title="Modo Aula con código compartido">
@@ -58,19 +58,29 @@
       <!-- Generado dinámicamente con las 20 estaciones -->
     </nav>
 
+    <!-- Previsión visible antes de operar las tomas; detalle opcional existente. -->
+    <section id="forecast-preview" class="forecast-preview" aria-label="Pista del clima para la próxima estación" hidden>
+      <div class="forecast-heading">
+        <strong id="forecast-title"></strong>
+        <button id="btn-forecast-detail" type="button" aria-label="Ver detalles de la pista del clima y qué cuidar" aria-haspopup="dialog" aria-controls="modal-forecast">Detalle</button>
+      </div>
+      <p id="forecast-meaning"></p>
+      <div id="forecast-confidence" class="forecast-confidence" aria-live="polite"></div>
+    </section>
+
     <!-- BANNER DEL TUTORIAL (AÑO 0) -->
     <div id="tutorial-guide-banner" class="tutorial-guide-banner" style="display: none;">
       <div class="tutorial-banner-header">
-        <div class="tutorial-badge" id="tut-phase-badge">Tutorial: Año 0 (Fase 1/9)</div>
+        <button type="button" class="tutorial-badge" id="tut-phase-badge" aria-expanded="true" aria-controls="tutorial-practice-body tutorial-practice-actions" title="Plegar o desplegar la guía">Tutorial: Año 0 (Fase 1/4)</button>
         <button id="btn-skip-tutorial" class="btn-skip-tut">Omitir Tutorial ✕</button>
       </div>
-      <div class="tutorial-body">
+      <div class="tutorial-body" id="tutorial-practice-body">
         <div id="tut-title" class="tut-title">Fase 1: De dónde viene el agua</div>
         <div id="tut-desc" class="tut-desc">Observa la nieve acumulándose en la cordillera.</div>
         <div id="tut-choices" class="tut-choices" style="display: none;"></div>
         <div id="tut-feedback" class="tut-feedback" style="display: none;"></div>
       </div>
-      <div class="tutorial-actions">
+      <div class="tutorial-actions" id="tutorial-practice-actions">
         <button id="btn-tut-next" class="btn-huge-action">Continuar ➡️</button>
       </div>
     </div>
@@ -86,8 +96,8 @@
     </div>
 
     <!-- TARJETA FLOTANTE: RESERVAS NATURALES DE AGUA -->
-    <aside class="water-reserves-card">
-      <div class="reserve-header">Reservas Naturales</div>
+    <details class="water-reserves-card">
+      <summary class="reserve-header">💧 Reservas naturales</summary>
 
       <div class="reserve-row clickable" id="row-reserve-snow" title="Toca para ver información de la Cordillera y Nieve">
         <div class="reserve-info">
@@ -118,7 +128,7 @@
           <div id="bar-aqui" class="reserve-fill" style="width: 100%; background: #10b981;"></div>
         </div>
       </div>
-    </aside>
+    </details>
 
     <!-- FICHA CONTEXTUAL LATERAL FLOTANTE (NO BLOQUEANTE AL TOCAR EL MAPA) -->
     <aside id="contextual-card" class="contextual-card">
@@ -146,14 +156,14 @@
       </div>
     </aside>
 
-    <!-- TOAST DE TIPS CONTEXTUALES (APARECEN UNA SOLA VEZ) -->
+    <!-- CONSEJO CONTEXTUAL: SE ABRE A PEDIDO -->
     <div id="toast-tip" class="toast-tip">
       <div class="toast-icon">💡</div>
       <div class="toast-content">
         <div id="toast-tip-title" class="toast-title">Consejo Hidrológico</div>
         <div id="toast-tip-desc" class="toast-desc"></div>
       </div>
-      <button id="btn-close-toast" class="btn-close" style="font-size: 1.1rem;">&times;</button>
+      <button id="btn-close-toast" aria-label="Cerrar consejo" class="btn-close" style="font-size: 1.1rem;">&times;</button>
     </div>
 
     <!-- TARJETA ÁGIL DE FEEDBACK POST-ESTACIÓN (RÁPIDA Y ANIMADA) -->
@@ -163,15 +173,14 @@
         <span id="fb-goal-badge" class="fb-goal-badge">🎯 ¡Desafío Cumplido!</span>
       </div>
 
-      <div class="feedback-metrics-grid">
-        <div class="fb-metric-box">
-          <span class="fb-lbl">Embalse</span>
-          <strong id="fb-res" class="fb-val" style="color: #38bdf8;">+12 💧</strong>
-        </div>
-        <div class="fb-metric-box">
-          <span class="fb-lbl">Acuífero</span>
-          <strong id="fb-aqui" class="fb-val" style="color: #10b981;">+3 💧</strong>
-        </div>
+      <p id="fb-reserves-brief" class="fb-reserves-brief"></p>
+      <div id="fb-event-recap" class="fb-event-recap" aria-label="Anécdota y decisión del evento" hidden></div>
+      <details id="fb-water-details" class="fb-water-details">
+        <summary>Ver balance del agua, eventos y obras</summary>
+        <section id="fb-water-summary" class="fb-water-summary" aria-label="Cómo cambiaron las reservas de agua"></section>
+      </details>
+
+      <div class="feedback-metrics-grid" hidden>
         <div class="fb-metric-box">
           <span class="fb-lbl">Ciudad</span>
           <strong id="fb-pop" class="fb-val" style="color: #60a5fa;">92%</strong>
@@ -207,20 +216,21 @@
       <div class="allocation-summary-bar">
         <div class="balance-stats-row">
           <div class="water-metric-pill" title="Agua total aprovechable en esta estación">
-            💧 Disponible: <strong id="val-water-available">80</strong>
+            💧 Para repartir: <strong id="val-water-available">80</strong>
           </div>
           <div class="water-metric-pill" title="Suma del agua repartida a los 5 sectores">
-            ⚖️ Asignada: <strong id="val-total-allocated">63</strong>
+            ⚖️ Repartiste: <strong id="val-total-allocated">63</strong>
           </div>
-          <div class="water-metric-pill reserve-pill" id="pill-reserve" title="Agua no asignada que queda guardada en el embalse">
-            🌊 Reserva: <strong id="val-water-reserve">17</strong>
+          <div class="water-metric-pill reserve-pill" id="pill-reserve" title="Agua que no repartiste. No se guarda toda automáticamente en el embalse.">
+            💧 Sin repartir: <strong id="val-water-reserve">17</strong>
           </div>
         </div>
 
         <div class="dist-tools-group">
-          <button id="btn-suggested-dist" class="btn-tool-action" title="Calcula un reparto de partida equilibrado">
+          <button id="btn-suggested-dist" class="btn-tool-action" title="Propone prioridades de reparto; revisá coberturas, reservas y meta">
             💡 Distribución Sugerida
           </button>
+          <button id="btn-distribution-tip" class="btn-tool-action" aria-controls="toast-tip" aria-expanded="false">💡 Consejo</button>
           <button id="btn-reset-dist" class="btn-tool-action" title="Vuelve a la asignación inicial del turno">
             ↺ Restablecer
           </button>
@@ -348,7 +358,7 @@
               <span class="sector-avatar" id="avatar-eco">👩‍🔬🦫</span>
               <div class="sector-title-box">
                 <span class="sector-speaker-name" id="speaker-eco">Dra. Clara & Pipo</span>
-                <span class="sector-sublabel" style="color: #22d3ee;">🐟 Río Vivo</span>
+                <span class="sector-sublabel" style="color: #22d3ee;">🐟 Aporte adicional al humedal</span>
               </div>
             </div>
             <span class="sector-mood" id="mood-eco">🐬</span>
@@ -379,7 +389,14 @@
           🚀 Resolver Estación y Ver Balance
         </button>
       </div>
+      <div id="water-preview" class="water-preview" aria-live="polite"></div>
     </section>
+
+    <div id="map-sector-labels" aria-label="Sectores de la cuenca"></div>
+    <aside id="sector-editor" class="sector-editor" hidden aria-label="Asignación contextual">
+      <button id="btn-close-sector" class="btn-close" aria-label="Cerrar asignación">×</button>
+      <div class="sector-editor-hint">Arrastrá el círculo. La rayita marca cuánto hace falta.</div>
+    </aside>
 
     <!-- MODAL: EVENTO INTERACTIVO CON DECISIONES A / B / C -->
     <div id="modal-interactive-event" class="modal-backdrop">
@@ -418,7 +435,8 @@
           </div>
         </div>
 
-        <div class="report-grid">
+        <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 8px;">Coberturas medias de las 4 estaciones del año:</p>
+        <div class="report-grid" style="grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));">
           <div class="report-stat-box">
             <div class="report-stat-label">Satisfacción Urbana</div>
             <div class="report-stat-value" id="yearend-pop" style="color: #60a5fa;">90%</div>
@@ -428,11 +446,15 @@
             <div class="report-stat-value" id="yearend-agri" style="color: #34d399;">85%</div>
           </div>
           <div class="report-stat-box">
+            <div class="report-stat-label">Granja</div>
+            <div class="report-stat-value" id="yearend-livestock" style="color: #fbbf24;">0%</div>
+          </div>
+          <div class="report-stat-box">
             <div class="report-stat-label">Satisfacción Minera</div>
             <div class="report-stat-value" id="yearend-min" style="color: #c084fc;">80%</div>
           </div>
           <div class="report-stat-box">
-            <div class="report-stat-label">Salud del Río</div>
+            <div class="report-stat-label">Cobertura del caudal ecológico</div>
             <div class="report-stat-value" id="yearend-eco" style="color: #22d3ee;">78%</div>
           </div>
         </div>
@@ -456,7 +478,10 @@
     <div id="modal-upgrades" class="modal-backdrop">
       <div class="modal-window">
         <div class="modal-header">
-          <div class="modal-title">🛠️ Proyectos y Obras para la Cuenca</div>
+          <div>
+            <div class="modal-title">🛠️ Proyectos y Obras para la Cuenca</div>
+            <div id="upgrades-budget" class="upgrades-budget" aria-live="polite"></div>
+          </div>
           <button class="btn-close" id="btn-close-upgrades">&times;</button>
         </div>
 
@@ -474,78 +499,80 @@
     </div>
 
     <!-- MODAL: INFORME FINAL (AÑO 5 COMPLETADO) -->
-    <div id="modal-final-report" class="modal-backdrop">
-      <div class="modal-window" style="max-width: 720px;">
-        <div class="modal-header">
-          <div class="modal-title">🏆 ¡Completaste los 5 Años de Gestión!</div>
-        </div>
-
-        <p style="font-size: 0.95rem; color: #cbd5e1; line-height: 1.5;">
-          ¡Felicitaciones! Has administrado el ciclo del agua a lo largo de <strong>20 estaciones completas</strong>. Así quedó el balance final de la cuenca:
-        </p>
-
-        <!-- TÍTULO HONORÍFICO Y MEDALLA CÓMICA -->
-        <div id="fin-honor-banner" class="honor-title-banner">
-          <div class="honor-medal-icon" id="fin-honor-icon">👑</div>
-          <div class="honor-text-wrap">
-            <div class="honor-label">Título Otorgado por el Pueblo de la Cuenca:</div>
-            <div class="honor-title" id="fin-honor-title">"El Hacedor de Lluvia"</div>
-            <div class="honor-desc" id="fin-honor-desc">Equilibrio maestro: lograste abastecer a todos los sectores sin sobreexplotar el agua subterránea.</div>
+    <div id="modal-final-report" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="final-heading">
+      <div class="modal-window final-report-window">
+        <div class="final-report-body">
+          <header class="final-heading"><span>20 estaciones · 5 años de gestión</span><h2 id="final-heading">Así quedó tu cuenca</h2></header>
+          <div id="fin-honor-banner" class="final-conclusion">
+            <span id="fin-honor-icon" aria-hidden="true">🧭</span>
+            <div><h3 id="fin-honor-title"></h3><p id="fin-honor-desc"></p></div>
           </div>
-        </div>
-
+          <section class="final-reserves" aria-label="Agua al cierre">
+            <article><span>Embalse al cierre</span><strong id="fin-reservoir"></strong><small id="fin-reserve-change"></small></article>
+            <article><span>Acuífero al cierre</span><strong id="fin-aqui"></strong><small id="fin-aquifer-change"></small></article>
+            <article><span>Río al cierre</span><strong id="fin-river-close"></strong><small id="fin-river-note"></small></article>
+          </section>
+          <section aria-labelledby="fin-moments-heading"><h3 class="final-section-title" id="fin-moments-heading">Lo que cuenta esta partida</h3><div id="fin-milestones" class="final-milestones"></div></section>
+          <section class="final-relation"><h3>Recargar ↔ abastecer</h3><p id="fin-relation"></p></section>
+          <p id="fin-period-note"></p><details class="final-details">
+            <summary>Explorar obras, datos y preguntas de aula</summary>
+            <h3>Obras que quedaron</h3><ul id="fin-works" class="final-works"></ul>
+            <h3>Datos para comparar</h3>
         <div class="report-grid">
           <div class="report-stat-box">
-            <div class="report-stat-label">Población y Ciudad</div>
+            <div class="report-stat-label">Población y Ciudad · cobertura media</div>
             <div class="report-stat-value" id="fin-pop" style="color: #60a5fa;">92%</div>
           </div>
           <div class="report-stat-box">
-            <div class="report-stat-label">Cultivos y Riego</div>
+            <div class="report-stat-label">Cultivos y Riego · cobertura media</div>
             <div class="report-stat-value" id="fin-agri" style="color: #34d399;">88%</div>
           </div>
           <div class="report-stat-box">
-            <div class="report-stat-label">Industria y Mina</div>
+            <div class="report-stat-label">Mina · cobertura media</div>
             <div class="report-stat-value" id="fin-min" style="color: #c084fc;">85%</div>
           </div>
           <div class="report-stat-box">
-            <div class="report-stat-label">Ríos y Ecosistema</div>
+            <div class="report-stat-label">Ríos y Ecosistema · cobertura media</div>
             <div class="report-stat-value" id="fin-eco" style="color: #22d3ee;">78%</div>
           </div>
+
           <div class="report-stat-box">
-            <div class="report-stat-label">Salud del Acuífero</div>
-            <div class="report-stat-value" id="fin-aqui" style="color: #10b981;">Saludable</div>
-          </div>
-          <div class="report-stat-box">
-            <div class="report-stat-label">Confianza Pública</div>
+            <div class="report-stat-label">Confianza Pública · al cierre</div>
             <div class="report-stat-value" id="fin-trust" style="color: #fbbf24;">82%</div>
           </div>
+          <div class="report-stat-box"><div class="report-stat-label">Granja · cobertura media</div><div class="report-stat-value" id="fin-live"></div></div>
+          <div class="report-stat-box"><div class="report-stat-label">Calidad conceptual · al cierre</div><div class="report-stat-value" id="fin-quality"></div></div>
+          <div class="report-stat-box"><div class="report-stat-label">Salud ecológica · al cierre</div><div class="report-stat-value" id="fin-health"></div></div>
+
+          <div class="report-stat-box"><div class="report-stat-label">Nieve final</div><div class="report-stat-value" id="fin-snow"></div></div>
+          <div class="report-stat-box"><div class="report-stat-label">Presupuesto final</div><div class="report-stat-value" id="fin-money"></div></div>
         </div>
 
-        <div style="font-weight: 800; font-size: 1.05rem; margin-top: 6px; color: #38bdf8;">
-          🧠 Preguntas para Debatir en Clase:
-        </div>
 
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          <div class="reflection-card">
-            <div class="reflection-question">1. ¿Cómo cambió la demanda de agua entre el Invierno y el Verano?</div>
-            <div class="reflection-tip">Observa cómo la evaporación y el calor aumentan la necesidad de riego y consumo en la ciudad.</div>
-          </div>
-          <div class="reflection-card">
-            <div class="reflection-question">2. ¿El acuífero subterráneo se mantuvo en buen estado?</div>
-            <div class="reflection-tip">Recuerda que el agua bajo tierra no es un océano infinito: reside entre poros y fisuras de rocas y tarda años en recargarse.</div>
-          </div>
-          <div class="reflection-card">
-            <div class="reflection-question">3. ¿Qué obras de infraestructura te permitieron ahorrar más agua?</div>
-            <div class="reflection-tip">El riego por goteo, la reparación de cañerías y el tratamiento de aguas residuales multiplican la eficiencia.</div>
-          </div>
+            <p id="fin-economy"></p><p id="fin-flow-detail"></p>
+            <h3>Para conversar en clase</h3>
+            <ol class="final-questions">
+              <li>¿En qué estación hubo más cobertura? ¿Cómo estaban las reservas en ese momento?</li>
+              <li>¿Cómo se comparan recarga y bombeo? ¿Qué agua quedó guardada para el siguiente ciclo?</li>
+              <li>¿Qué cambiarías al repetir la partida con las mismas condiciones? Compara las obras sin atribuirles ahorros que el historial no mide.</li>
+            </ol>
+            <p class="model-note">Gotas y calidad son medidas conceptuales del juego. Estos datos describen la partida, no miden aprendizaje ni predicen una cuenca real.</p>
+            <p class="model-note"><span id="fin-scenario"></span> · modelo <span id="fin-version"></span> · semilla <span id="fin-seed"></span></p>
+          </details>
         </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-          <span style="font-size: 0.85rem; color: #94a3b8;">Código de Aula: <strong id="fin-seed" style="color: white;">AULA-2026-001</strong></span>
-          <button id="btn-restart" class="btn-huge-action">
-            🔄 Jugar Otra Partida
-          </button>
-        </div>
+        <footer class="final-report-footer">
+          <div class="final-results-actions">
+            <button type="button" class="btn-secondary-action" data-save-results>Guardar datos</button>
+            <button type="button" class="btn-secondary-action" data-print-results>Imprimir resultados</button>
+          </div>
+          <details class="final-record-options">
+            <summary>Compartir el registro completo</summary>
+            <button type="button" class="btn-secondary-action" data-copy-session>Copiar datos de la partida</button>
+            <button type="button" class="btn-secondary-action" data-export-session>Descargar registro completo</button>
+          </details>
+          <p data-export-status role="status" hidden></p>
+          <button id="btn-restart" class="btn-huge-action">🔄 Probar otra estrategia en la misma cuenca</button>
+        </footer>
       </div>
     </div>
 
@@ -553,27 +580,29 @@
     <div id="modal-forecast" class="modal-backdrop">
       <div class="modal-window" style="max-width: 480px;">
         <div class="modal-header">
-          <div class="modal-title">📡 Pronóstico de la Próxima Estación</div>
-          <button class="btn-close" id="btn-close-forecast">&times;</button>
+          <div class="modal-title">📡 Pista del clima: próxima estación</div>
+          <button class="btn-close" id="btn-close-forecast" aria-label="Cerrar la pista del clima">&times;</button>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.95rem;">
           <div class="report-stat-box" style="text-align: left; padding: 14px;">
             <div style="font-weight: 800; color: #38bdf8; margin-bottom: 6px;">
-              Previsión Meteorológica:
+              ¿Qué podría venir?
             </div>
-            <div id="fc-state" style="font-size: 1.2rem; font-weight: 900; margin-bottom: 4px;">Normal</div>
-            <div id="fc-desc" style="color: #cbd5e1; font-size: 0.88rem;">Se esperan lluvias y nevadas normales.</div>
+            <div id="fc-state" style="font-size: 1.2rem; font-weight: 900; margin-bottom: 4px;"></div>
+            <div id="fc-desc" style="color: #cbd5e1; font-size: 0.88rem;"></div>
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
             <div class="report-stat-box">
               <div class="report-stat-label">Riesgo de Sequía</div>
               <div class="report-stat-value" id="fc-drought" style="font-size: 1.1rem; color: #f59e0b;">Media</div>
+              <div id="fc-drought-advice" style="font-size: 0.88rem;"></div>
             </div>
             <div class="report-stat-box">
               <div class="report-stat-label">Riesgo de Crecida</div>
               <div class="report-stat-value" id="fc-storm" style="font-size: 1.1rem; color: #38bdf8;">Baja</div>
+              <div id="fc-storm-advice" style="font-size: 0.88rem;"></div>
             </div>
           </div>
 
@@ -589,12 +618,27 @@
           <div class="modal-title">🏫 Modo Aula Escolar</div>
           <button class="btn-close" id="btn-close-classroom">&times;</button>
         </div>
+        <p data-recovery-status role="status">La copia local se guarda al jugar; el diagnóstico JSON puede descargarse aparte.</p>
+        <p><button type="button" class="btn-secondary-action" data-export-session>Descargar registro completo</button><br/><small>Registro técnico para compartir una partida y revisar problemas. Al terminar podés guardar e imprimir tus resultados.</small></p>
 
         <div style="display: flex; flex-direction: column; gap: 14px; font-size: 0.92rem;">
           <p style="color: #cbd5e1;">
-            Con el mismo código de aula, todos los alumnos de la clase vivirán exactamente el <strong>mismo clima estacional, sequías y eventos</strong> en cada uno de los 5 años. ¡Así podrán comparar quién tomó las mejores decisiones!
+            Con el mismo código, cuenca y versión del modelo, todos vivirán el <strong>mismo clima y sorteos externos</strong>. Las obras y decisiones pueden habilitar conflictos distintos. Con las mismas acciones se reproducen exactamente los resultados.
           </p>
 
+          <details class="learning-note">
+            <summary>Caso real: río San Juan y Valle de Tulum</summary>
+            <p>En esta cuenca cordillerana, el deshielo alimenta el río. Parte del agua que circula por tramos permeables se infiltra y recarga el acuífero de Tulum; también aportan canales y riego. Mantener agua en el cauce puede ayudar a la reserva subterránea.</p>
+            <p><strong>¿Qué representa esta versión?</strong> Nieve estacional → río → abastecimiento, embalse y acuífero → pozos. También recargan la lluvia infiltrada y la escorrentía derivada por una obra. El tramo permeable transfiere 10% del agua que sigue por el cauce tras la toma y el embalse, limitado por el espacio del acuífero. Es un supuesto didáctico, no una tasa medida en Tulum; cantidades pequeñas pueden redondear a cero. Todavía no calcula recarga de canales/riego, glaciares persistentes, capas confinadas ni tiempos de viaje bajo tierra.</p>
+            <p>Los escenarios son conceptuales: el mapa, los actores y las gotas no reproducen instalaciones ni volúmenes reales de San Juan. Las fuentes respaldan mecanismos del caso real; <strong>no validan el juego ni sus coeficientes</strong>. La revisión experta está pendiente. No usar para decisiones reales.</p>
+            <p>Fuentes primarias: <a href="https://www.argentina.gob.ar/noticias/dique-ullum-el-ina-participo-en-tareas-de-recuperacion-de-volumenes-en-los-acuiferos" target="_blank" rel="noopener noreferrer">INA: recarga desde Ullum (2023)</a> · <a href="https://exactas.unsj.edu.ar/wp-content/uploads/2026/03/CIGIAA-Sexto-Informe-Tecnico-de-Coyuntura-1.pdf" target="_blank" rel="noopener noreferrer">CIGIAA/UNSJ (2026), pp. 1–2</a> · <a href="https://bicyt.conicet.gov.ar/fichas/produccion/en/8426231" target="_blank" rel="noopener noreferrer">IANIGLA/CONICET: inventario de Ansilta</a>. Los enlaces requieren conexión; el juego no los carga para funcionar.</p>
+          </details>
+          <details class="learning-note">
+            <summary>Desafío de aula: explicá tus decisiones</summary>
+            <p>1. Tocá el acuífero: ¿de dónde entra agua en esta versión? ¿Qué conexión del caso real falta?</p>
+            <p>2. Cerrá una estación: compará entradas, bombeo y desborde. ¿Por qué subió o bajó la reserva?</p>
+            <p>3. En Obras, compará el próximo nivel antes de comprar. ¿Baja la necesidad, el bombeo o ambas cosas? ¿Qué cambia si ajustás el pedido?</p>
+          </details>
           <div>
             <label style="display: block; font-weight: 700; margin-bottom: 6px;">Código del Aula:</label>
             <input type="text" id="input-seed" value="AULA-2026-001" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.5); color: white; font-weight: 800; font-family: monospace; font-size: 1.1rem;" />
@@ -603,7 +647,7 @@
           <div>
             <label style="display: block; font-weight: 700; margin-bottom: 6px;">Elegir Tipo de Cuenca:</label>
             <select id="select-scenario" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.25); background: #1e293b; color: white; font-size: 0.95rem;">
-              <option value="cuenca_central">Valle Central (Equilibrada - Cordillera y Río)</option>
+              <option value="cuenca_central">Valle Central (Introductoria · comunidad pequeña)</option>
               <option value="cuenca_arida">Oasis Árido (Casi no llueve, mucha nieve en invierno)</option>
               <option value="cuenca_abundante">Lagos del Sur (Mucha lluvia y bosque templado)</option>
             </select>
@@ -634,66 +678,63 @@
           <div class="modal-title">💧 ¿Cómo Jugar a Cuenca Viva?</div>
           <button class="btn-close" id="btn-close-help">&times;</button>
         </div>
+        <p data-recovery-status role="status">La copia local se guarda al jugar; el diagnóstico JSON puede descargarse aparte.</p>
+        <p><button type="button" class="btn-secondary-action" data-export-session>Descargar registro completo</button><br/><small>Registro técnico para compartir una partida y revisar problemas. Al terminar podés guardar e imprimir tus resultados.</small></p>
 
         <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem; line-height: 1.5; color: #e2e8f0;">
           <p>
             Tu misión es administrar el agua de la cuenca a lo largo de <strong>5 años (20 estaciones: Invierno, Primavera, Verano y Otoño)</strong>.
           </p>
           <div class="report-stat-box" style="text-align: left; padding: 12px;">
-            <strong>Reglas fundamentales:</strong><br/>
-            • <strong>Usa los sliders para repartir:</strong> Mueve el control de cada sector para fijar su caudal en tiempo real.<br/>
-            • <strong>El agua no asignada se guarda:</strong> Lo que dejes como reserva queda almacenado automáticamente en el embalse.<br/>
-            • <strong>Cuidado con sobrepasar el agua disponible:</strong> Cualquier sobregasto se bombea del acuífero subterráneo.<br/>
-            • <strong>¡Toca el mapa!:</strong> Haz clic en ríos, embalse o sectores para ver sus fichas didácticas.
+            <strong>¿Qué hago en cada estación?</strong><br/>
+            1. <strong>Tocá un lugar del mapa.</strong> Ciudad, cultivos, granja y mina necesitan agua. Río Vivo muestra el agua que llega al humedal y continúa aguas abajo. Podés pedir un aporte adicional.<br/>
+            2. <strong>Arrastrá el círculo para repartir agua.</strong> La rayita marca cuánto necesita cada lugar.<br/>
+            3. <strong>Mirá cuánto quedaría guardado.</strong> Si pedís más, puede hacer falta sacar agua del embalse o de pozos.<br/>
+            4. <strong>Terminá la estación.</strong> Mirá qué cambió y prepará el próximo reparto.
           </div>
+          <p><strong>💧 Las gotas son unidades conceptuales.</strong> Sirven para comparar entradas, usos y reservas dentro del juego. No tienen una equivalencia validada en litros o m³. Los porcentajes de cobertura y calidad tampoco predicen una cuenca real.</p>
+          <p>Parte del agua usada vuelve al río, pero puede volver menos limpia. Tener agua y tener agua limpia son dos cosas distintas.</p>
         </div>
       </div>
     </div>
 
     <!-- MODAL: BIENVENIDA / ONBOARDING "¿PRIMERA VEZ?" -->
     <div id="modal-welcome" class="modal-backdrop open">
-      <div class="modal-window welcome-modal" style="max-width: 620px;">
+      <div class="modal-window welcome-modal" style="max-width: 580px;">
         <div class="welcome-header">
-          <div class="welcome-badge">🌱 CUENCA VIVA v0.5</div>
-          <h2 class="welcome-title">Simulador de Gestión Hídrica</h2>
+          <div class="welcome-emblem" aria-hidden="true">💧</div>
+          <div class="welcome-badge">Tu valle. Tus decisiones.</div>
+          <h2 class="welcome-title">Cuenca Viva</h2>
           <p class="welcome-desc">
-            Administra el ciclo del agua a lo largo de 5 años: nieve de cordillera, embalses, acuíferos subterráneos y demandas de la ciudad, el campo y la industria.
+            Repartí el agua, escuchá al valle y descubrí qué pasa después.
           </p>
         </div>
 
-        <div class="welcome-choices-grid">
-          <div class="welcome-choice-card tutorial-focus">
-            <div class="choice-pill-tag">Recomendado para nuevos alumnos</div>
-            <div class="choice-icon">🎓</div>
-            <div class="choice-title">Modo Tutorial Guiado</div>
-            <div class="choice-subtitle">Año 0: 9 fases interactivas</div>
-            <p class="choice-text">
-              Aprende paso a paso cómo mover los sliders, qué pasa si agotas las reservas y experimenta las consecuencias reales de tus decisiones.
-            </p>
-            <button id="btn-welcome-tutorial" class="btn-huge-action" style="width: 100%; justify-content: center;">
-              ▶️ Jugar Tutorial Guiado
-            </button>
-          </div>
+        <section id="welcome-recovery" class="welcome-saved-game" hidden aria-labelledby="recovery-heading">
+          <h3 id="recovery-heading">Tu última partida</h3>
+          <p id="recovery-description" role="status"></p>
+          <button id="btn-continue-recovery" type="button" class="btn-huge-action">▶ Continuar</button>
+          <button id="btn-restart-recovery" type="button" class="btn-secondary-action">Nueva partida</button>
+          <details class="welcome-save-options">
+            <summary>Recuperar datos de la partida anterior</summary>
+            <button id="btn-download-recovery" type="button" class="btn-secondary-action">Guardar datos anteriores</button>
+            <small>Tu progreso se guarda en este navegador. Al iniciar otra partida se conserva una copia anterior.</small>
+          </details>
+        </section>
 
-          <div class="welcome-choice-card">
-            <div class="choice-pill-tag tag-direct">Para alumnos avanzados</div>
-            <div class="choice-icon">🚀</div>
-            <div class="choice-title">Comenzar Partida Directa</div>
-            <div class="choice-subtitle">Año 1 al 5: 20 turnos competitivos</div>
-            <p class="choice-text">
-              Comienza inmediatamente el Año 1 con el código de aula activo (<strong style="color: #38bdf8;">AULA-2026-001</strong>) y compite por la cuenca más sostenible.
-            </p>
-            <button id="btn-welcome-play" class="btn-secondary-action" style="width: 100%; justify-content: center;">
-              Ir al Año 1 Directamente ➡️
-            </button>
-          </div>
+        <div id="welcome-new-choices" class="welcome-play-actions">
+          <button id="btn-welcome-play" class="btn-huge-action">▶ Nueva partida</button>
+        </div>
+        <div class="welcome-learn">
+          <button id="btn-welcome-tutorial" class="btn-secondary-action">🎓 Aprender a jugar</button>
+          <small>Cuatro pasos para conocer el agua y las compuertas.</small>
         </div>
       </div>
     </div>
 
     <!-- MODAL: EL HERALDO DEL VALLE (PERIÓDICO DE LA CUENCA) -->
     <div id="modal-newspaper" class="modal-backdrop">
-      <div class="modal-window newspaper-window" style="max-width: 650px;">
+      <div class="modal-window newspaper-window">
         <div class="newspaper-topline">
           <span>🗞️ DIARIO INDEPENDIENTE DEL VALLE</span>
           <span id="news-date">Año 1 • Primavera</span>
@@ -741,11 +782,8 @@
         </div>
 
         <div class="newspaper-footer" style="margin-top: 14px; display: flex; gap: 10px; justify-content: flex-end;">
-          <button id="btn-close-newspaper" class="btn-secondary-action" style="padding: 10px 18px; font-size: 0.9rem; border: 1px solid #a8a29e; color: #1c1917; background: #e7e5e4;">
-            ↩️ Volver al Resumen
-          </button>
           <button id="btn-news-continue" class="btn-huge-action" style="padding: 10px 22px; font-size: 0.95rem;">
-            Siguiente Estación ➡️
+            Ver resumen
           </button>
         </div>
       </div>

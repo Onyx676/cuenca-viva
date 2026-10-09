@@ -8,6 +8,7 @@ export interface SeasonalHydrologyInputs {
   soilInfiltration: number;
   surfaceRunoff: number;
   directRiverRain: number;
+  baseFlow: number;
   evaporatedRain: number;
 
   snowReserveStart: number;
@@ -31,6 +32,19 @@ export interface SeasonalHydrologyInputs {
 }
 
 export class WaterSystem {
+  // Supuesto didáctico: 10% del bypass de un tramo permeable, no del río total.
+  // Sensibilidad 0/10/20/30% documentada; no es una tasa medida para San Juan.
+  public static readonly RIVER_RECHARGE_FRACTION = 0.10;
+  public allocationBudget(riverFlow: number, reservoirVolume: number, reservoirCapacity: number,
+    aquiferVolume: number, evaporationFactor: number, evaporationMultiplier: number): number {
+    const riverIntake = Math.round(riverFlow * 0.65);
+    const retained = Math.round((riverFlow - riverIntake) * 0.70);
+    const evap = Math.min(reservoirVolume, Math.round(3 * evaporationFactor * evaporationMultiplier
+      * reservoirVolume / Math.max(1, reservoirCapacity)));
+    const stored = Math.min(reservoirCapacity, reservoirVolume + retained - evap);
+    return riverIntake + Math.round(stored * 0.65) + Math.round(aquiferVolume * 0.18);
+  }
+
   public resolveSeason(
     inputs: SeasonalHydrologyInputs,
     currentSectors: Record<SectorId, SectorState>,
@@ -52,6 +66,7 @@ export class WaterSystem {
       soilInfiltration,
       surfaceRunoff,
       directRiverRain,
+      baseFlow,
       evaporatedRain,
       snowReserveStart,
       snowAccumulated,
@@ -69,22 +84,14 @@ export class WaterSystem {
     } = inputs;
 
     // 1. Caudal de entrada al río principal desde deshielo cordillerano y escorrentía superficial
-    const baseSpringFlow = 5;
-    const riverInflow = Math.round(snowMelt + surfaceRunoff * 0.45 + directRiverRain + baseSpringFlow);
+    // directRiverRain YA es la fracción (45%) de escorrentía que llega a cabecera.
+    const riverInflow = snowMelt + directRiverRain + baseFlow;
     const riverFlowTotal = riverInflow;
 
     // 2. Embalse: Inflow natural, evaporación estacional y retención
-    const baseReservoirEvap = Math.round(
+    const baseReservoirEvap = Math.min(reservoirStart, Math.round(
       3 * evaporationFactor * evaporationMultiplier * (reservoirStart / Math.max(1, reservoirCapacity))
-    );
-    let reservoirWater = reservoirStart + Math.round(riverInflow * 0.70) - baseReservoirEvap;
-    reservoirWater = Math.max(0, reservoirWater);
-
-    let reservoirSpill = 0;
-    if (reservoirWater > reservoirCapacity) {
-      reservoirSpill = reservoirWater - reservoirCapacity;
-      reservoirWater = reservoirCapacity;
-    }
+    ));
 
     // 3. Demanda total asignada por el jugador (excluyendo reserva, que es agua no asignada)
     const consumptiveAllocated =
@@ -98,13 +105,21 @@ export class WaterSystem {
     const directRiverIntake = Math.min(Math.round(riverInflow * 0.65), consumptiveAllocated);
     const deficitAfterRiver = Math.max(0, consumptiveAllocated - directRiverIntake);
 
+    // Retener sólo el caudal que no se captó: evita ofrecer dos veces la misma agua.
+    const remainingRiver = riverInflow - directRiverIntake;
+    const reservoirInflow = Math.round(remainingRiver * 0.70);
+    const riverBypass = remainingRiver - reservoirInflow;
+    const reservoirWaterBeforeSpill = reservoirStart + reservoirInflow - baseReservoirEvap;
+    const reservoirSpill = Math.max(0, reservoirWaterBeforeSpill - reservoirCapacity);
+    const reservoirWater = Math.min(reservoirCapacity, reservoirWaterBeforeSpill);
+
     // Prioridad 2: Extracción del embalse (hasta el 65% del volumen actual almacenado en la estación)
     const maxReservoirDraw = Math.round(reservoirWater * 0.65);
     const reservoirWithdrawal = Math.min(maxReservoirDraw, deficitAfterRiver);
     const reservoirEnd = Math.max(0, Math.round(reservoirWater - reservoirWithdrawal));
 
     // Prioridad 3: Bombeo del acuífero para cubrir el remanente
-    const aquiferWithdrawal = Math.max(0, deficitAfterRiver - reservoirWithdrawal);
+    const requestedAquiferWithdrawal = Math.max(0, deficitAfterRiver - reservoirWithdrawal);
 
     // 4. Acuífero: Infiltración natural + recarga artificial gestionada - extracción
     let aquiferNaturalRecharge = Math.round(soilInfiltration * 0.85);
@@ -112,11 +127,36 @@ export class WaterSystem {
     const rechargeLevel = upgrades['recarga_acuifero'] || 0;
     if (rechargeLevel >= 1) {
       const bonusRate = rechargeLevel === 1 ? 0.20 : rechargeLevel === 2 ? 0.35 : 0.50;
-      aquiferArtificialRecharge = Math.round(surfaceRunoff * bonusRate);
+      // Derivación desde escorrentía que todavía NO entró al río.
+      aquiferArtificialRecharge = Math.min(surfaceRunoff - directRiverRain, Math.round(surfaceRunoff * bonusRate));
     }
 
-    let aquiferWater = aquiferStart + aquiferNaturalRecharge + aquiferArtificialRecharge - aquiferWithdrawal;
-    const aquiferEnd = Math.max(0, Math.min(aquiferCapacity, Math.round(aquiferWater)));
+    const aquiferBeforeRiver = aquiferStart + aquiferNaturalRecharge + aquiferArtificialRecharge;
+    // Transferencia interna, limitada al cauce tras toma/embalse y al espacio
+    // disponible antes del bombeo. Un acuífero lleno deja esa agua en el río.
+    const aquiferRiverRecharge = Math.min(riverBypass,
+      Math.round(riverBypass * WaterSystem.RIVER_RECHARGE_FRACTION),
+      Math.max(0, aquiferCapacity - aquiferBeforeRiver));
+    const aquiferBeforeSpill = aquiferBeforeRiver + aquiferRiverRecharge;
+    const aquiferOverflow = Math.max(0, aquiferBeforeSpill - aquiferCapacity);
+    const aquiferWater = Math.min(aquiferCapacity, aquiferBeforeSpill);
+    const aquiferWithdrawal = Math.min(aquiferWater, requestedAquiferWithdrawal);
+    const aquiferEnd = aquiferWater - aquiferWithdrawal;
+    const totalWaterSupplied = directRiverIntake + reservoirWithdrawal + aquiferWithdrawal;
+    const unmetAllocation = consumptiveAllocated - totalWaterSupplied;
+    const suppliedAllocations = { ...allocations, reserve: 0 };
+    if (unmetAllocation > 0) {
+      // Racionamiento proporcional portable; las fracciones sobrantes se asignan por orden fijo.
+      const ids: SectorId[] = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'];
+      for (const id of ids) suppliedAllocations[id] = Math.floor(allocations[id] * totalWaterSupplied / consumptiveAllocated);
+      let remainder = totalWaterSupplied - ids.reduce((sum, id) => sum + suppliedAllocations[id], 0);
+      for (const id of ids) {
+        if (remainder > 0 && suppliedAllocations[id] < allocations[id]) {
+          suppliedAllocations[id]++;
+          remainder--;
+        }
+      }
+    }
 
     // Nivel de estrés freático del acuífero (Sección 12):
     // >70% saludable, 40-70% atención, 20-40% estrés, <20% crítico
@@ -159,28 +199,28 @@ export class WaterSystem {
     };
 
     // POBLACIÓN (Urbana)
-    const popAlloc = allocations.population || 0;
+    const popAlloc = suppliedAllocations.population || 0;
     const popDemand = Math.max(1, currentSectors.population.currentDemand);
     satisfactions.population = Math.min(1.0, popAlloc / popDemand);
     consumptions.population = Math.round(popAlloc * 0.30);
     returns.population = Math.max(0, popAlloc - consumptions.population);
 
     // AGRICULTURA
-    const agriAlloc = allocations.agriculture || 0;
+    const agriAlloc = suppliedAllocations.agriculture || 0;
     const agriDemand = Math.max(1, currentSectors.agriculture.currentDemand);
     satisfactions.agriculture = Math.min(1.0, agriAlloc / agriDemand);
     consumptions.agriculture = Math.round(agriAlloc * 0.70);
     returns.agriculture = Math.max(0, agriAlloc - consumptions.agriculture);
 
     // GANADERÍA
-    const liveAlloc = allocations.livestock || 0;
+    const liveAlloc = suppliedAllocations.livestock || 0;
     const liveDemand = Math.max(1, currentSectors.livestock.currentDemand);
     satisfactions.livestock = Math.min(1.0, liveAlloc / liveDemand);
     consumptions.livestock = Math.round(liveAlloc * 0.75);
     returns.livestock = Math.max(0, liveAlloc - consumptions.livestock);
 
     // MINERÍA
-    const minAlloc = allocations.mining || 0;
+    const minAlloc = suppliedAllocations.mining || 0;
     const minDemand = Math.max(1, currentSectors.mining.currentDemand);
     satisfactions.mining = Math.min(1.0, minAlloc / minDemand);
     const minRecircLevel = upgrades['recirculacion_minera'] || 0;
@@ -195,17 +235,21 @@ export class WaterSystem {
     } else {
       consumptions.mining = Math.round(minAlloc * 0.75);
       returns.mining = Math.round(minAlloc * 0.15);
+      // El resto es uso consuntivo/retención de proceso en esta abstracción.
+      consumptions.mining = minAlloc - returns.mining;
     }
 
     // ECOSISTEMA (Caudal ambiental)
-    const ecoAlloc = allocations.ecosystem || 0;
+    const ecoAlloc = suppliedAllocations.ecosystem || 0;
     const ecoDemand = Math.max(1, currentSectors.ecosystem.currentDemand);
     satisfactions.ecosystem = Math.min(1.0, ecoAlloc / ecoDemand);
     consumptions.ecosystem = Math.round(ecoAlloc * 0.15);
     returns.ecosystem = Math.max(0, ecoAlloc - consumptions.ecosystem);
 
     // Agua no asignada que queda en la cuenca como reserva natural
-    const unallocatedStored = Math.max(0, availableWater - consumptiveAllocated);
+    const unallocatedStored = Math.max(0, reservoirEnd - reservoirStart) + Math.max(0, aquiferEnd - aquiferStart);
+    const runoffBypass = surfaceRunoff - directRiverRain - aquiferArtificialRecharge;
+    const soilEvaporation = soilInfiltration - aquiferNaturalRecharge;
 
     // 6. Calidad del Agua
     const sanitationLevel = upgrades['planta_saneamiento'] || 0;
@@ -213,12 +257,16 @@ export class WaterSystem {
     const agriReturnQuality = (upgrades['riego_eficiente'] || 0) > 0 ? 80 : 65;
     const minReturnQuality = minRecircLevel >= 3 ? 100 : minRecircLevel >= 1 ? 75 : 50;
 
-    const cleanRiverWater = Math.max(1, riverInflow * 0.5 + ecoAlloc);
-    const totalReturnFlow = returns.population + returns.agriculture + returns.mining;
+    const cleanRiverWater = riverBypass - aquiferRiverRecharge + reservoirSpill + runoffBypass + aquiferOverflow + returns.ecosystem;
+    const totalReturnFlow = returns.population + returns.agriculture + returns.livestock + returns.mining;
+    const downstreamFlow = cleanRiverWater + totalReturnFlow;
+    // Río Vivo mide continuidad aguas abajo, incluyendo retornos; la calidad se evalúa aparte.
+    satisfactions.ecosystem = Math.min(1, downstreamFlow / ecoDemand);
 
     let weightedReturnScore =
       (returns.population * urbanReturnQuality +
         returns.agriculture * agriReturnQuality +
+        returns.livestock * 60 +
         returns.mining * minReturnQuality) /
       Math.max(1, totalReturnFlow);
 
@@ -260,6 +308,14 @@ export class WaterSystem {
 
     const newPublicTrust = Math.max(10, Math.min(100, currentPublicTrust + trustDelta));
 
+    const returnQualities: Record<SectorId, number> = {
+      population: urbanReturnQuality, agriculture: agriReturnQuality,
+      livestock: 60, mining: minReturnQuality, ecosystem: 100, reserve: 100
+    };
+    const totalConsumed = Object.values(consumptions).reduce((sum, value) => sum + value, 0);
+    const massBalanceError = reservoirStart + aquiferStart + snowReserveStart + seasonRainfall + snowAccumulated + baseFlow
+      - reservoirEnd - aquiferEnd - snowReserveEnd - evaporatedRain - soilEvaporation - baseReservoirEvap - totalConsumed - downstreamFlow;
+
     const balance: SeasonWaterBalance = {
       seasonRainfall,
       rainfallIntensity,
@@ -274,9 +330,14 @@ export class WaterSystem {
 
       riverInflow,
       riverFlowTotal,
+      baseFlow,
+      directRiverIntake,
+      downstreamFlow,
+      runoffBypass,
+      soilEvaporation,
 
       reservoirStart,
-      reservoirInflow: Math.round(riverInflow * 0.70),
+      reservoirInflow,
       reservoirWithdrawal,
       reservoirEvaporation: baseReservoirEvap,
       reservoirSpill,
@@ -284,18 +345,24 @@ export class WaterSystem {
 
       aquiferStart,
       aquiferNaturalRecharge,
+      aquiferRiverRecharge,
       aquiferArtificialRecharge,
       aquiferWithdrawal,
       aquiferEnd,
+      aquiferOverflow,
 
       allocations,
+      suppliedAllocations,
+      returnQualities,
       consumptions,
       returns,
       satisfactions,
 
       totalWaterAvailable: availableWater,
-      totalWaterSupplied: consumptiveAllocated,
+      totalWaterSupplied,
       unallocatedStored,
+      unmetAllocation,
+      massBalanceError,
 
       waterQuality: newWaterQuality,
       basinHealth: newBasinHealth,

@@ -1,4 +1,4 @@
-import { PlayableSectorId } from '../main';
+import type { PlayableSectorId } from '../main';
 
 export type MoodType = 'ECSTATIC' | 'HAPPY' | 'NEUTRAL' | 'WORRIED' | 'FURIOUS';
 
@@ -219,7 +219,7 @@ export const SECTOR_CHARACTERS: Record<PlayableSectorId, SectorCharacter> = {
 };
 
 export function getMood(coveragePct: number): MoodType {
-  if (coveragePct >= 110) return 'ECSTATIC';
+  if (coveragePct >= 100) return 'ECSTATIC';
   if (coveragePct >= 85) return 'HAPPY';
   if (coveragePct >= 65) return 'NEUTRAL';
   if (coveragePct >= 40) return 'WORRIED';
