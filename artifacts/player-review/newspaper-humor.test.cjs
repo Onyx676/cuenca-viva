@@ -11,6 +11,39 @@ require.extensions['.ts'] = (module, filename) => {
 const { SimulationEngine } = require('../../src/simulation/SimulationEngine.ts');
 const { generateNewspaperEdition } = require('../../src/game/Newspaper.ts');
 
+test('Heraldo: quince bajadas por sector, explicación única y causas de entrega distintas', () => {
+  const engine = new SimulationEngine('cuenca_central', 'BAJADAS-2026', true);
+  const result = structuredClone(engine.resolveSeason());
+  Object.assign(result.balance.satisfactions, { population: 1, ecosystem: 1, agriculture: .67, livestock: .67, mining: .62 });
+  for (const id of ['agriculture', 'livestock', 'mining']) {
+    result.balance.allocations[id] = 10; result.balance.suppliedAllocations[id] = 10;
+  }
+  Object.assign(result.balance, { waterQuality: 85, basinHealth: 85, reservoirStart: 65, reservoirEnd: 38 });
+  result.events = []; result.goalAchieved = false;
+  const before = JSON.stringify([result, engine.getState(), engine.rng]);
+  const variants = [new Set(), new Set()];
+  const primary = new Set();
+  for (let turn = 1; turn <= 15; turn++) {
+    const current = { ...result, turn };
+    const edition = generateNewspaperEdition(current);
+    assert.deepEqual(generateNewspaperEdition(current), edition);
+    assert.doesNotMatch(JSON.stringify(edition), /no cubría la demanda/);
+    assert.equal(edition.secondaryArticles.length, 2);
+    edition.secondaryArticles.forEach((article, i) => {
+      variants[i].add(article.subhead);
+      assert.doesNotMatch(article.subhead, /pedido|asignad|envío|entero|completo/);
+      assert.match(article.subhead, /67%/);
+    });
+    const normalized = edition.secondaryArticles.map(article => article.subhead.replace(/Cultivos|Granja/g, 'Sector'));
+    assert.notEqual(normalized[0], normalized[1], 'Dos breves no usan la misma estructura cambiando sólo el sector');
+    assert.match(edition.mainArticle.subhead, /pedido|asignad|asignar|autorizad|acordad/);
+    primary.add(edition.mainArticle.subhead);
+  }
+  variants.forEach(lines => assert.equal(lines.size, 15));
+  assert.equal(primary.size, 15);
+  assert.equal(JSON.stringify([result, engine.getState(), engine.rng]), before);
+});
+
 test('Heraldo: humor editorial variado, breve y sin alterar partida/PRNG', () => {
   const engine = new SimulationEngine('cuenca_central', 'HUMOR-2026', true);
   if (engine.getState().activeInteractiveEvent) {

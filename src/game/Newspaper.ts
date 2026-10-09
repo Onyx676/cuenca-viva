@@ -134,7 +134,7 @@ export function generateNewspaperEdition(
     const prior = history.find(item => item.turn === row.turn - 1);
     return row.turn < result.turn && headlineTopic(row, prior, getSeasonVerdict(row, prior)) === topic;
   }).length : variant;
-  const pick = (lines: readonly string[], editorialTopic = topic, voiceEdition = false) => {
+  const pick = (lines: readonly string[], editorialTopic = topic, voiceEdition = false, positionOffset = 0) => {
     const bag = [...lines];
     const indexInBag = voiceEdition ? variant : occurrence;
     const editorialRandom = new SeededRandom(`${editorialSeed}:heraldo:${editorialTopic}:${Math.floor(indexInBag / bag.length)}`);
@@ -142,20 +142,67 @@ export function generateNewspaperEdition(
       const swap = editorialRandom.rangeInt(0, index);
       [bag[index], bag[swap]] = [bag[swap], bag[index]];
     }
-    return bag[indexInBag % bag.length];
+    return bag[(indexInBag + positionOffset) % bag.length];
   };
   const voice = (topic: keyof typeof VOICES) => pick([...VOICES[topic], ...EXTRA_VOICES[topic]], `voice:${topic}`, true);
   const productive = ['agriculture', 'livestock', 'mining'] as const;
+  const coverageFact = (id: 'population' | typeof productive[number]) => {
+    const name = NAMES[id], rate = percent(s[id]);
+    const lines = id === 'agriculture' ? [
+      `El riego de Cultivos alcanzó el ${rate} de lo necesario.`,
+      `Cultivos recibió agua para cubrir el ${rate} de sus necesidades.`,
+      `La dotación de Cultivos cubrió el ${rate} del requerimiento.`,
+      `Para Cultivos, el reparto alcanzó una cobertura del ${rate}.`,
+      `Cultivos cerró con el ${rate} de sus necesidades atendidas.`,
+      `El agua entregada a Cultivos cubrió el ${rate} de lo requerido.`
+    ] : id === 'livestock' ? [
+      `Granja tuvo cubierto el ${rate} de su abastecimiento.`,
+      `El reparto atendió el ${rate} de las necesidades de Granja.`,
+      `A Granja le llegó agua para el ${rate} de lo que necesitaba.`,
+      `La dotación de Granja alcanzó una cobertura del ${rate}.`,
+      `Granja cerró con el ${rate} de su requerimiento atendido.`,
+      `El abastecimiento de Granja llegó al ${rate} de lo necesario.`
+    ] : id === 'mining' ? [
+      `Mina recibió el ${rate} del agua que necesitaba.`,
+      `El abastecimiento de Mina cubrió el ${rate} del requerimiento.`,
+      `La dotación de Mina alcanzó el ${rate} de lo necesario.`,
+      `Mina cerró con el ${rate} de sus necesidades atendidas.`,
+      `El reparto dejó a Mina con una cobertura del ${rate}.`,
+      `Para Mina, el agua entregada cubrió el ${rate} de lo requerido.`
+    ] : [
+      `Ciudad recibió el ${rate} del agua que necesitaba.`,
+      `El abastecimiento urbano cubrió el ${rate} del requerimiento.`,
+      `La dotación de Ciudad alcanzó el ${rate} de lo necesario.`,
+      `Ciudad cerró con el ${rate} de sus necesidades atendidas.`,
+      `El reparto atendió el ${rate} del abastecimiento de Ciudad.`,
+      `${name} tuvo una cobertura del ${rate}.`
+    ];
+    lines.push(
+      `${name}: el agua recibida alcanzó el ${rate} de lo necesario.`,
+      `Balance de ${name}: ${rate} de las necesidades cubiertas.`,
+      `La entrega a ${name} atendió el ${rate} del requerimiento.`,
+      `El cierre de ${name} dejó una cobertura del ${rate}.`,
+      `${name} terminó la estación con el ${rate} de lo requerido.`,
+      `De lo que necesitaba ${name}, se cubrió el ${rate}.`,
+      `El abastecimiento llegó al ${rate} del requerimiento de ${name}.`,
+      `${name} contó con agua para el ${rate} de sus necesidades.`,
+      `En ${name}, el agua entregada representó el ${rate} de lo necesario.`
+    );
+    // Misma bolsa de estructuras, posiciones distintas: dos sectores de una
+    // edición no reciben la misma frase con sólo el nombre cambiado.
+    const offsets = { population: 0, agriculture: 4, livestock: 8, mining: 12 };
+    return pick(lines, 'coverage-phrasing', true, offsets[id]);
+  };
   const lowest = [...productive].sort((a, c) => s[a] - s[c])[0];
   const usesReturned = b.returns.population + b.returns.agriculture + b.returns.livestock + b.returns.mining;
   const requestFact = (id: 'population' | typeof productive[number]) =>
     b.allocations[id] === 0 ? `${NAMES[id]} no tuvo agua asignada.`
       : b.suppliedAllocations[id] < b.allocations[id] ? 'No llegó todo lo asignado.'
-      : s[id] < 1 ? 'Llegó todo lo pedido; no cubría la demanda.' : '';
+      : '';
   const deficitFact = (id: typeof productive[number]) =>
     b.allocations[id] === 0 ? `${NAMES[id]} no tuvo agua asignada.`
       : b.suppliedAllocations[id] < b.allocations[id] ? `${NAMES[id]} cubrió ${percent(s[id])}: recibió ${b.suppliedAllocations[id]} 💧 de ${b.allocations[id]} asignadas. ${requestFact(id)}`
-      : `${NAMES[id]} cubrió ${percent(s[id])} de su demanda. ${requestFact(id)}`;
+      : coverageFact(id);
   const chosen = result.events.find(item => item.chosenOptionId);
   const eventFact = (record: SeasonResult['events'][number]) => {
     const option = record.event.options?.find(item => item.id === record.chosenOptionId);
@@ -203,7 +250,7 @@ export function generateNewspaperEdition(
     : delta < 0 ? `El embalse bajó; quedan ${b.reservoirEnd} 💧 para la próxima estación.`
       : `El embalse conserva ${b.reservoirEnd} 💧, igual que al inicio del reparto.`;
   const facts = {
-    population: b.allocations.population === 0 ? requestFact('population') : `Ciudad recibió ${percent(s.population)} de su demanda. ${requestFact('population')}`.trim(),
+    population: b.allocations.population === 0 ? requestFact('population') : `${coverageFact('population')} ${requestFact('population')}`.trim(),
     ecosystem: `El caudal ecológico cubrió ${percent(s.ecosystem)} de su referencia.`,
     waterQuality: qualityFact,
     basinHealth: `La salud del río cerró en ${b.basinHealth}/100.`
@@ -257,7 +304,7 @@ export function generateNewspaperEdition(
     covered.add(beneficiary);
     covered.add('reservoir');
     headline = pick(RESERVE_HEADLINES.draw);
-    subhead = `${NAMES[beneficiary]} cubrió ${percent(s[beneficiary])} de su demanda. El reparto usó reservas y el embalse bajó.`;
+    subhead = `${coverageFact(beneficiary)} El reparto usó reservas y el embalse bajó.`;
     photoEmoji = '🏦';
   } else if (verdict.kind === 'good') {
     covered.add('population');
@@ -291,6 +338,28 @@ export function generateNewspaperEdition(
     covered.add(id);
   }
 
+  // Una sola explicación de pedido insuficiente en portada. Las breves cuentan
+  // otros sectores sin repetir la misma lección. No confundirlo con falta de entrega.
+  const shortRequest = (['population', ...productive] as const).find(id => covered.has(id)
+    && b.allocations[id] > 0 && b.suppliedAllocations[id] >= b.allocations[id] && s[id] < 1);
+  if (shortRequest) subhead += ` ${pick([
+    'Se entregó todo lo asignado; el pedido era menor que lo necesario.',
+    'El envío llegó completo, pero se había pedido menos de lo necesario.',
+    'La entrega cumplió el pedido; para cubrir la necesidad había que pedir más.',
+    'El faltante venía del reparto: lo asignado no alcanzaba para la necesidad.',
+    'Se recibió todo el pedido. La necesidad del sector era mayor.',
+    'El pedido llegó entero; quedaba una parte de la necesidad sin asignar.',
+    'La dotación se entregó completa; faltó asignar agua para el resto.',
+    'Se cumplió la entrega acordada, que era menor que el requerimiento.',
+    'El envío no quedó a medias: el pedido inicial se había quedado corto.',
+    'Todo lo autorizado llegó. La necesidad superaba esa autorización.',
+    'El reparto fijó un pedido por debajo de lo que el sector necesitaba.',
+    'Se entregó el pedido sin recortes; la necesidad era mayor.',
+    'La entrega alcanzó lo acordado, aunque lo acordado no alcanzaba.',
+    'El pedido se completó. Para atender el resto hacía falta asignar más.',
+    'No faltó parte del envío: faltó incluir más agua en el pedido.'
+  ], 'short-request-explanation', true)}`;
+
   const secondaryArticles: NewspaperEdition['secondaryArticles'] = [];
   const add = (topic: string, headline: string, fact: string) => {
     if (!covered.has(topic) && secondaryArticles.length < 2) {
@@ -317,9 +386,9 @@ export function generateNewspaperEdition(
     ['ecosystem', voice('ecosystem'), `Caudal ecológico: ${percent(s.ecosystem)}. Cuenta también el agua que sigue y retorna.`],
     ['returns', 'Clara: «El reparto no termina donde termina el canal»', `Ciudad y actividades devolvieron ${usesReturned} 💧 al río. Aguas abajo pasaron ${b.downstreamFlow} 💧 en total; esos retornos ya están incluidos.`],
     ['population', voice('population'), facts.population],
-    ['agriculture', voice('agriculture'), `Cobertura de Cultivos: ${percent(s.agriculture)}.`],
-    ['livestock', voice('livestock'), `Cobertura de Granja: ${percent(s.livestock)}.`],
-    ['mining', voice('mining'), `Cobertura de Mina: ${percent(s.mining)}.`]
+    ['agriculture', voice('agriculture'), coverageFact('agriculture')],
+    ['livestock', voice('livestock'), coverageFact('livestock')],
+    ['mining', voice('mining'), coverageFact('mining')]
   ];
   if (b.snowMelt > 0) briefs.push(['snow', 'La montaña aporta deshielo; el consejo aún discute el calendario', 'Hubo deshielo: agua de la reserva de nieve llegó al río.']);
   if (b.seasonRainfall > 0) briefs.push(['rain', 'La lluvia llega sin completar el formulario de ingreso', b.soilInfiltration > 0 ? 'Una parte de la lluvia se infiltró en el suelo.' : 'Llovió; este balance no registró infiltración al suelo.']);
