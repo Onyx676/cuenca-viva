@@ -3086,3 +3086,25 @@ button.map-network-label:focus-visible { outline: 2px solid #e0f2fe; outline-off
 }
 
 .event-option-card .event-opt-desc, .event-option-card .event-opt-impact, .event-option-card .event-opt-prereq { display: block; }
+
+/* Metas escolares: texto completo, recompensa aparte y detalle contextual. */
+.seasonal-goal-banner {
+  width: 480px;
+  max-width: calc(100vw - 20px);
+  max-height: min(300px, 35dvh);
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.seasonal-goal-banner .goal-content { min-width: 0; gap: 4px; line-height: 1.45; }
+.seasonal-goal-banner .goal-title { font-size: 16px; line-height: 1.4; }
+.seasonal-goal-banner .goal-desc { font-size: 15px; line-height: 1.45; white-space: pre-line; }
+.seasonal-goal-banner .goal-reward { display: block; align-self: flex-start; font-size: 14px; line-height: 1.4; }
+.goal-details { font-size: 15px; line-height: 1.45; }
+.goal-details[hidden] { display: none; }
+.goal-details summary { padding: 5px 0; color: #bae6fd; cursor: pointer; }
+.goal-requirements { border-top: 1px solid #ffffff24; padding-top: 6px; }
+.goal-requirements p { margin: 0; }
+.goal-requirements p + p { margin-top: 7px; }

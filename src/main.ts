@@ -14,7 +14,6 @@ import { getSeasonVerdict } from './seasonVerdict';
 import { describeRequestGaps, describeStorageHistory } from './waterClarity';
 import { suggestDistribution } from './suggestedDistribution';
 import { SeasonalGoal, checkSeasonalGoal } from './models/SeasonalGoal';
-import { goalProgress } from './simulation/MissionSystem';
 import { TutorialManager } from './tutorial/TutorialManager';
 import tutorialData from './data/tutorial.json';
 import { sound } from './audio/SoundFX';
@@ -114,6 +113,9 @@ const seasonalGoalBanner = document.getElementById('seasonal-goal-banner')!;
 const goalTitle = document.getElementById('goal-title')!;
 const goalDesc = document.getElementById('goal-desc')!;
 const goalRewardBadge = document.getElementById('goal-reward-badge')!;
+const goalDetails = document.getElementById('goal-details') as HTMLDetailsElement;
+const goalRequirements = document.getElementById('goal-requirements')!;
+goalDetails.addEventListener('toggle', () => positionMapControls());
 
 // Reservas de agua
 const indSnow = document.getElementById('ind-snow')!;
@@ -818,6 +820,39 @@ function getCurrentSeasonalGoal(): SeasonalGoal | undefined {
   return engine.getCurrentSeasonalGoal();
 }
 
+const goalSectorNames: Record<PlayableSectorId, string> = {
+  population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Río'
+};
+function contextualGoalLines(goal: SeasonalGoal): string[] {
+  const c = goal.targetCondition;
+  if (!['COVERAGE_AND_AQUIFER', 'COVERAGE_AND_RESERVOIR', 'CITY_AND_SECTOR'].includes(c.type) || !c.sectorId) return [];
+  const otherSectors = (['agriculture', 'livestock', 'mining'] as const)
+    .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]).join(' y ');
+  const lines = [
+    `Ciudad: al menos ${c.cityCoverageThreshold ?? 85}%. ${goalSectorNames[c.sectorId]}: al menos ${c.threshold}%.`,
+    `${otherSectors}: al menos ${c.minimumProductiveCoverage ?? 70}% cada uno. Río: al menos ${c.riverCoverageThreshold ?? 80}%.`
+  ];
+  if (c.type !== 'CITY_AND_SECTOR') lines.push(`${c.type === 'COVERAGE_AND_AQUIFER' ? 'Agua bajo tierra' : 'Embalse'}: al menos ${c.reserveTarget} gotas al cierre.`);
+  return lines;
+}
+function readableGoalProgress(goal: SeasonalGoal, balance: SeasonWaterBalance): string {
+  const c = goal.targetCondition;
+  if (!contextualGoalLines(goal).length || !c.sectorId) return '';
+  const progress: string[] = [];
+  const addCoverage = (id: PlayableSectorId, target: number) => {
+    if (balance.satisfactions[id] < target / 100) progress.push(`${goalSectorNames[id]} ${Math.floor(balance.satisfactions[id] * 100)}% (meta: ${target}%)`);
+  };
+  addCoverage('population', c.cityCoverageThreshold ?? 85);
+  addCoverage(c.sectorId, c.threshold);
+  for (const id of ['agriculture', 'livestock', 'mining'] as const) {
+    if (id !== c.sectorId) addCoverage(id, c.minimumProductiveCoverage ?? 70);
+  }
+  addCoverage('ecosystem', c.riverCoverageThreshold ?? 80);
+  if (c.type === 'COVERAGE_AND_AQUIFER' && balance.aquiferEnd < c.reserveTarget!) progress.push(`Agua bajo tierra ${balance.aquiferEnd} gotas (meta: ${c.reserveTarget})`);
+  if (c.type === 'COVERAGE_AND_RESERVOIR' && balance.reservoirEnd < c.reserveTarget!) progress.push(`Embalse ${balance.reservoirEnd} gotas (meta: ${c.reserveTarget})`);
+  return progress.length ? `Faltó: ${progress.join('; ')}` : '';
+}
+
 function updateSeasonalGoalDisplay(): void {
   const goal = getCurrentSeasonalGoal();
   if (!goal) {
@@ -826,20 +861,42 @@ function updateSeasonalGoalDisplay(): void {
   }
   seasonalGoalBanner.style.display = 'flex';
   goalTitle.textContent = goal.title;
-  goalDesc.textContent = goal.description;
-  if (engine.getState().goalRulesVersion && engine.getState().turn > 1) {
-    const st = engine.getState();
-    const b = st.isSeasonResolved ? st.seasonHistory.at(-1)?.balance : engine.previewSeason().balance;
-    if (b) goalRewardBadge.title = `${goal.hint} ${goalProgress(goal, b)}`;
+  const st = engine.getState();
+  const lines = st.goalRulesVersion === 'contextual-v1' ? contextualGoalLines(goal) : [];
+  const displayKey = `${st.turn}:${goal.id}`;
+  if (goalDetails.dataset.goalId !== displayKey) goalDetails.open = false;
+  goalDetails.dataset.goalId = displayKey;
+  goalDetails.hidden = !lines.length;
+  goalDetails.querySelector('summary')!.textContent = 'Ver metas';
+  goalRequirements.replaceChildren();
+  goalDesc.textContent = goal.description.replaceAll('≥', 'al menos ');
+  if (lines.length) {
+    const c = goal.targetCondition;
+    const reserve = c.type === 'COVERAGE_AND_AQUIFER' ? 'Agua bajo tierra' : 'Embalse';
+    goalDesc.textContent = `${goalSectorNames[c.sectorId!]}: al menos ${c.threshold}% de cobertura.${c.type === 'CITY_AND_SECTOR' ? '' : `\n${reserve}: guardar al menos ${c.reserveTarget} gotas.`}`;
+    const otherNames = (['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const)
+      .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]);
+    goalDetails.querySelector('summary')!.textContent = `Ver más metas: ${otherNames.slice(0, -1).join(', ')} y ${otherNames.at(-1)}`;
+    for (const line of lines) {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = line;
+      goalRequirements.appendChild(paragraph);
+    }
   }
   if (isFirstWinterDecision() && goal.targetCondition.type === 'CITY_AND_RESERVOIR_MIN') {
-    const st = engine.getState();
     const b = engine.previewSeason().balance;
     const reached = checkSeasonalGoal(goal, st, b);
-    goalDesc.textContent = `${goal.description} Previsto: ${reached ? 'encaminada' : 'todavía no alcanza'} · Ciudad ${Math.floor(b.satisfactions.population * 100)}% / meta ${goal.targetCondition.cityCoverageThreshold}% · embalse ${b.reservoirEnd} gotas / meta ${goal.targetCondition.threshold} gotas`;
+    goalDesc.textContent = `Ciudad: al menos ${goal.targetCondition.cityCoverageThreshold ?? 95}%. Embalse: al menos ${goal.targetCondition.threshold} gotas al cierre.`;
+    goalDetails.hidden = false;
+    goalDetails.querySelector('summary')!.textContent = 'Ver cómo quedaría el reparto';
+    const paragraph = document.createElement('p');
+    paragraph.textContent = `Con este reparto: Ciudad ${Math.floor(b.satisfactions.population * 100)}% y embalse ${b.reservoirEnd} gotas. La meta ${reached ? 'está encaminada' : 'todavía no se alcanza'}.`;
+    goalRequirements.appendChild(paragraph);
   }
-  goalRewardBadge.textContent = `+$${goal.reward.moneyBonus} 💰`;
-  if (!goalProgress(goal, engine.getState().isSeasonResolved ? engine.getState().seasonHistory.at(-1)!.balance : engine.previewSeason().balance)) goalRewardBadge.title = goal.hint;
+  const b = st.isSeasonResolved ? st.seasonHistory.at(-1)?.balance : engine.previewSeason().balance;
+  const progress = b ? readableGoalProgress(goal, b) : '';
+  goalRewardBadge.textContent = `Recompensa: +$${goal.reward.moneyBonus} 💰`;
+  goalRewardBadge.title = `${goal.hint}${progress ? ` ${progress}` : ''}`;
 }
 
 // --- REGISTRO DE ASIGNACIÓN INICIAL DEL TURNO ---
@@ -1921,8 +1978,8 @@ function renderAgileSeasonFeedback(
   }
   fbAdviceText.replaceChildren(verdictLabel, ` ${consequence}`);
   if (goal && !goalSuccess) {
-    const progress = goalProgress(goal, res.balance);
-    if (progress) fbAdviceText.append(` Desafío: ${progress}.`);
+    const progress = readableGoalProgress(goal, res.balance);
+    if (progress) fbAdviceText.append(` ${progress}.`);
     if (goal.targetCondition.type === 'CITY_AND_SECTOR') fbAdviceText.append(` ${goal.hint}`);
   }
   const explanation = document.createElement('p');

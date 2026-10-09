@@ -33,3 +33,11 @@ Durante una condición de consecuencia más extensa el editor móvil llegó a so
 ## QA posterior de misión 2.6 pendiente
 
 Se intentó validar nuevamente invierno → primavera, misión contextual móvil, ajuste de posición por banners y flujo Heraldo → Valle → Resumen con explicación de misión fallida, en origen temporal `http://127.0.0.1:5185/`. El navegador dejó de estar disponible: crear pestaña IAB respondió «Browser is not available: iab» y el inventario devolvió `browsers: []`. No se inició esa partida ni se capturó evidencia de ese flujo. El servidor temporal 5185 se detuvo. Las capturas anteriores documentan sólo la accesibilidad y la tipografía verificadas previamente; no prueban las nuevas misiones ni la corrección posterior de posicionamiento.
+
+## Presentación escolar del desafío
+
+Cambios posteriores sólo en `src/main.ts`, `index.html` y `src/style.css`: título de 16 px, descripción de 15 px / 1.45, ancho de 480 px limitado al viewport y recompensa en fila propia. El estado cerrado muestra mínimo del sector foco y reserva en gotas; el desplegable nombra los demás sectores y muestra todas las metas desde los campos guardados. Se conserva abierto al ajustar repartos y se cierra al cambiar de turno/meta. Primer invierno conserva sus mínimos explícitos y ofrece previsión desplegable. Las descripciones antiguas sustituyen el signo ≥ por palabras sin modificar el snapshot.
+
+El resumen de misión fallida enumera sólo requisitos incumplidos: por ejemplo «Faltó: Ciudad 92% (meta: 95%); Embalse 44 gotas (meta: 53)». No modifica condiciones ni recompensas.
+
+Validación final de esta presentación: `npm run build` y `npx --no-install tsc --noEmit` aprobados. `node artifacts/control-accessibility/verify-goal-presentation.cjs` aprobado: verifica campos de metas no estándar, sectores explícitos, exclusión de requisitos cumplidos, misión sin mutaciones y bindings HTML. No se ejecutó validación visual final: inventario IAB volvió a devolver `browsers: []`. Las capturas anteriores no representan esta última tarjeta.
