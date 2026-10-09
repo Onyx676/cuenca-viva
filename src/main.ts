@@ -621,7 +621,7 @@ function openPendingNewspaper(): void {
     cancelPendingNewspaper();
     return;
   }
-  // Si el jugador consultó otro modal durante el replay, esperar a su salida.
+  // Si hay otro modal abierto, esperar a su salida.
   const modals = document.querySelectorAll('.modal-backdrop');
   if (Array.from(modals).some(modal => modal.classList.contains('open'))) {
     cardSeasonFeedback.classList.remove('open');
@@ -1597,20 +1597,8 @@ btnResolveSeason.addEventListener('click', () => {
   closeSectorEditor();
   renderAgileSeasonFeedback(seasonResult, currentGoal, seasonResult.goalAchieved);
   updateUI();
-  const resolvedEngine = engine;
-  const edition = lastNewspaperEdition;
-  const replayToken = newspaperReplayToken;
-  const onReplayComplete = () => {
-    const state = engine.getState();
-    if (replayToken !== newspaperReplayToken || engine !== resolvedEngine
-        || edition !== lastNewspaperEdition || tutorialManager.isActive()
-        || !state.isSeasonResolved || edition?.editionNumber !== state.turn) return;
-    newspaperReplayToken++;
-    pendingNewspaperEdition = edition;
-    openPendingNewspaper();
-  };
-  if (BasinScene.instance) BasinScene.instance.replaySeasonWater(seasonResult.balance, onReplayComplete);
-  else onReplayComplete();
+  pendingNewspaperEdition = lastNewspaperEdition;
+  openPendingNewspaper();
 });
 
 function renderSeasonWaterSummary(res: SeasonResult): void {
@@ -1857,7 +1845,7 @@ function renderAgileSeasonFeedback(
     btnFbContinue.textContent = `Pasar a ${SEASONS_INFO[nextS].name} ${SEASONS_INFO[nextS].icon} ➡️`;
   }
 
-  // Preparar el resumen breve sin abrirlo durante el replay: primero el diario.
+  // Preparar el resumen breve sin abrirlo: primero el diario y el valle.
   cardSeasonFeedback.classList.remove('open');
   cardSeasonFeedback.inert = true;
 }

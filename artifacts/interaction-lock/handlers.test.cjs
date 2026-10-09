@@ -176,7 +176,12 @@ for (const scenario of ['cuenca_central', 'cuenca_arida', 'cuenca_abundante']) t
     for (const id of sectors) c.engine.setSectorAllocation(id, Math.floor(st.sectors[id].currentDemand * .8));
     c.__handlers.btnResolveSeason(); c.__handlers.btnResolveSeason();
     c.syncInteractionLock(); assert.equal(c.background.inert, true); assert.equal(c.map.style.pointerEvents, 'none'); assert.equal(c.BasinScene.instance.input.enabled, false);
-    blockedActions(c); const done = c.callbacks.at(-1); done(); done();
+    blockedActions(c);
+    if (process.env.INTERACTION_LOCK_USE_ROOT === '1') {
+      assert.equal(c.callbacks.length, 0, 'Heraldo opens immediately without a water animation');
+      assert.equal(c.cardSeasonFeedback.classList.contains('water-replay-active'), false);
+    }
+    const done = c.callbacks.at(-1); done?.(); done?.();
     c.syncInteractionLock(); assert.ok(c.modalNewspaper.classList.contains('open')); assert.equal(c.modalNewspaper.inert, false); blockedActions(c);
     c.__handlers.btnNewsContinue(); c.__handlers.btnNewsContinue(); c.syncInteractionLock();
     if (c.__handlers.btnReturnSummary) {
@@ -185,7 +190,7 @@ for (const scenario of ['cuenca_central', 'cuenca_arida', 'cuenca_abundante']) t
       c.__handlers.btnReturnSummary(); c.syncInteractionLock();
     }
     assert.ok(c.cardSeasonFeedback.classList.contains('open')); assert.equal(c.cardSeasonFeedback.inert, false); blockedActions(c);
-    c.__handlers.btnFbContinue(); c.__handlers.btnFbContinue(); done();
+    c.__handlers.btnFbContinue(); c.__handlers.btnFbContinue(); done?.();
     if (turn % 4 === 0) {
       c.syncInteractionLock(); assert.ok(c.modalYearEnd.classList.contains('open')); assert.equal(st.turn, turn);
       if (turn < 20) {
@@ -204,7 +209,7 @@ for (const scenario of ['cuenca_central', 'cuenca_arida', 'cuenca_abundante']) t
   assert.ok(events > 0); assert.ok(purchases > 0);
   const data = replay(c); assert.equal(data.recording.actions.filter(a => a.type === 'advance').length, 19); assert.equal(data.recording.actions.filter(a => a.type === 'resolve').length, 20);
   assert.equal(c.finalReports, 1); c.syncInteractionLock(); assert.equal(c.modalFinalReport.inert, false);
-  c.__handlers.btnRestart(); c.callbacks.at(-1)(); c.syncInteractionLock(); assert.equal(c.engine.getState().turn, 1); assert.equal(c.background.inert, false); replay(c);
+  c.__handlers.btnRestart(); c.callbacks.at(-1)?.(); c.syncInteractionLock(); assert.equal(c.engine.getState().turn, 1); assert.equal(c.background.inert, false); replay(c);
 });
 test('capture blocks pointer/click/input/keyboard and focuses active surface; modal controls stay enabled', () => {
   const c = fixture(); c.engine.resolveSeason(); c.syncInteractionLock();
@@ -221,7 +226,7 @@ test('closed purchase modal and stale event controls cannot mutate/log; resolved
   const c = fixture(); c.buyButton.setAttribute('data-id', 'reparacion_red');
   const initial = JSON.stringify(c.engine.getState()); c.__buyUpgrade({ currentTarget: c.buyButton }); assert.equal(JSON.stringify(c.engine.getState()), initial);
   c.__handlers.btnResolveSeason(); const before = JSON.stringify(c.engine.getState()); c.__buyUpgrade({ currentTarget: c.buyButton }); assert.equal(JSON.stringify(c.engine.getState()), before);
-  c.cancelPendingNewspaper(); c.callbacks.at(-1)(); c.syncInteractionLock(); assert.equal(c.background.inert, true); assert.equal(c.BasinScene.instance.input.enabled, false);
+  c.cancelPendingNewspaper(); c.callbacks.at(-1)?.(); c.syncInteractionLock(); assert.equal(c.background.inert, true); assert.equal(c.BasinScene.instance.input.enabled, false);
 });
 test('help/classroom active controls work; background cannot open another modal or modify map', () => {
   const c = fixture();
