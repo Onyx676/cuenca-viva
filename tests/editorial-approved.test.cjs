@@ -82,7 +82,7 @@ test('Editorial: bolsas variables agotan IDs válidos y reabrir no consume otra 
     });
   };
   assert.deepEqual(run(), run());
-  for (const ids of [['V-CIU-01', 'V-CIU-12', 'V-CIU-02'], ['V-MIN-02', 'A-MAP-21', 'V-MIN-01']]) {
+  for (const ids of [['V-CIU-01', 'V-CIU-12', 'A-MAP-19'], ['V-MIN-02', 'A-MAP-21', 'V-MIN-01']]) {
     const ledger = createEditorialLedger();
     const first = pickEditorial([ids[0]], 1, 'AULA', 'map', ledger);
     const second = pickEditorial(ids, 2, 'AULA', 'map', ledger);
@@ -92,29 +92,73 @@ test('Editorial: bolsas variables agotan IDs válidos y reabrir no consume otra 
   assert.equal(pickEditorial(['V-RIO-12'], 1, 'AULA', 'river'), undefined);
 });
 
+test('Editorial: cinco partidas de igual semilla varían aperturas, sin perro en partidas consecutivas', () => {
+  const { editorialSeed, createEditorialSessionCounter } = require('../src/game/EditorialSession.ts');
+  const storage = new Map();
+  const access = () => ({ getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) });
+  const next = createEditorialSessionCounter(access);
+  const openings = Array.from({ length: 5 }, () => mapStory('population', 1, undefined, 1, editorialSeed('AULA-2026-001', next())).text);
+  assert.equal(new Set(openings).size, 5);
+  for (let index = 1; index < openings.length; index++) {
+    assert.ok(!(/perro/.test(openings[index]) && /perro/.test(openings[index - 1])));
+  }
+  assert.equal(createEditorialSessionCounter(access)(), 5, 'El contador continúa al recargar');
+  const inaccessible = createEditorialSessionCounter(() => { throw new Error('Storage bloqueado'); });
+  assert.deepEqual(Array.from({ length: 5 }, inaccessible), [0, 1, 2, 3, 4]);
+});
+
+test('Editorial: ordinal fuera del modelo recupera la edición sin alterar snapshot ni PRNG', () => {
+  const { editorialSeed } = require('../src/game/EditorialSession.ts');
+  const { SimulationEngine } = require('../src/simulation/SimulationEngine.ts');
+  const { SessionLog } = require('../src/sessionExport.ts');
+  const { createRecoveryPacket, replayRecovery } = require('../src/sessionRecovery.ts');
+  const engine = new SimulationEngine('cuenca_central', 'AULA-2026-001', true);
+  const log = new SessionLog(engine.getState());
+  const before = JSON.stringify(engine.getState());
+  const legacy = createRecoveryPacket(engine.getState(), log, '2026-10-09T00:00:00Z');
+  assert.equal(Object.hasOwn(legacy, 'editorialSession'), false);
+  for (let ordinal = 0; ordinal < 5; ordinal++) {
+    mapStory('population', 1, undefined, 1, editorialSeed(engine.getState().seed, ordinal));
+    const packet = createRecoveryPacket(engine.getState(), log, '2026-10-09T00:00:00Z', ordinal);
+    assert.deepEqual(packet.session, legacy.session);
+    const replay = replayRecovery(JSON.parse(JSON.stringify(packet)));
+    assert.equal(replay.ok, true);
+    assert.equal(replay.editorialSession, ordinal);
+    assert.equal(JSON.stringify(replay.engine.getState()), before);
+    assert.deepEqual(mapStory('population', 1, undefined, 1, editorialSeed(replay.engine.getState().seed, replay.editorialSession)),
+      mapStory('population', 1, undefined, 1, editorialSeed(engine.getState().seed, ordinal)));
+  }
+  assert.equal(replayRecovery(legacy).editorialSession, 0);
+  assert.equal(replayRecovery({ ...legacy, editorialSession: -1 }).editorialSession, 0);
+  assert.equal(JSON.stringify(engine.getState()), before);
+});
+
 test('Editorial: reconstruye mapa y Heraldo de 20 turnos sin depender de consultas previas', () => {
   const { SimulationEngine } = require('../src/simulation/SimulationEngine.ts');
   const { generateNewspaperEdition } = require('../src/game/Newspaper.ts');
+  const { editorialSeed } = require('../src/game/EditorialSession.ts');
+  const seed = editorialSeed('AULA', 2);
   const engine = new SimulationEngine();
   const initial = JSON.stringify(engine.getState());
   // Historial editorial sintético: sólo necesitamos un resultado real como forma base.
   const base = engine.resolveSeason();
   const history = Array.from({ length: 20 }, (_, index) => ({ ...base, turn: index + 1,
     balance: { ...base.balance, satisfactions: { ...base.balance.satisfactions, population: 1, mining: 1, ecosystem: 1 } } }));
-  const map = sector => history.map(row => mapStory(sector, 1, 1, row.turn, 'AULA', false, false, false, history).text);
+  const map = sector => history.map(row => mapStory(sector, 1, 1, row.turn, seed, false, false, false, history).text);
   const city = map('population'), mine = map('mining');
   for (const lines of [city, mine]) for (let i = 1; i < lines.length; i++) assert.notEqual(lines[i], lines[i - 1]);
   for (let i = 1; i < 20; i++) {
     assert.ok(!(/silenció/.test(city[i]) && /silenció/.test(city[i - 1])));
+    assert.ok(!(/perro/.test(city[i]) && /perro/.test(city[i - 1])));
     assert.ok(!(/foto.*Ferrada/.test(mine[i]) && /foto.*Ferrada/.test(mine[i - 1])));
   }
   assert.deepEqual(map('population'), city);
   assert.doesNotMatch(map('ecosystem').join(' '), /no tuvo que corregir/);
-  const editions = history.map((row, index) => generateNewspaperEdition(row, history[index - 1], undefined, history, 'AULA'));
-  for (const index of [19, 0, 7, 3]) assert.deepEqual(generateNewspaperEdition(history[index], history[index - 1], undefined, history, 'AULA'), editions[index]);
+  const editions = history.map((row, index) => generateNewspaperEdition(row, history[index - 1], undefined, history, seed));
+  for (const index of [19, 0, 7, 3]) assert.deepEqual(generateNewspaperEdition(history[index], history[index - 1], undefined, history, seed), editions[index]);
   assert.notEqual(initial, JSON.stringify(engine.getState())); // Sólo resolveSeason avanzó el motor.
   const resolved = JSON.stringify(engine.getState());
   map('mining');
-  generateNewspaperEdition(history[19], history[18], undefined, history, 'AULA');
+  generateNewspaperEdition(history[19], history[18], undefined, history, seed);
   assert.equal(JSON.stringify(engine.getState()), resolved);
 });

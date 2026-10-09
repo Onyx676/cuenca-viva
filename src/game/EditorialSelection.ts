@@ -2,6 +2,7 @@ import bank from './ApprovedEditorial.json';
 import { SeededRandom } from '../simulation/RandomSystem';
 import type { SectorId } from '../models/Sector';
 import type { SeasonResult } from '../models/Balance';
+import { unpackEditorialSeed } from './EditorialSession';
 export const EDITORIAL_SECTORS = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const;
 export type EditorialSector = typeof EDITORIAL_SECTORS[number];
 const codes = { population: 'CIU', agriculture: 'CUL', livestock: 'GRA', mining: 'MIN', ecosystem: 'RIO' };
@@ -18,7 +19,8 @@ const rejected = new Set(['V-RIO-12']);
 // Familias del banco aprobado que cuentan esencialmente el mismo chiste.
 // Los nuevos textos pueden declarar family explícitamente.
 const relatedFamilies: Record<string, string> = {
-  'V-CIU-01': 'sofia-silencia-grupo', 'V-CIU-12': 'sofia-silencia-grupo',
+  'V-CIU-01': 'grupo-barrio-perro', 'V-CIU-02': 'grupo-barrio-perro',
+  'V-CIU-12': 'grupo-barrio-perro', 'A-MAP-01': 'grupo-barrio-perro',
   'V-MIN-02': 'rosa-fotografia-ferrada', 'A-MAP-21': 'rosa-fotografia-ferrada',
   'P-MIN-01': 'rosa-fotografia-ferrada', 'P-MIN-12': 'rosa-fotografia-ferrada', 'P-MIN-19': 'rosa-fotografia-ferrada'
 };
@@ -33,11 +35,41 @@ export function pickEditorial(ids: string[], turn: number, seed: string, topic: 
   if (repeatedQuery) return repeatedQuery;
   const edition = Math.max(0, turn - 1);
   // Azar editorial independiente del generador del motor.
-  const rng = new SeededRandom(`${seed}:approved:${topic}:${Math.floor(edition / entries.length)}`);
+  const presentation = unpackEditorialSeed(seed);
+  const rng = new SeededRandom(`${presentation.seed}:approved:${topic}:${Math.floor(edition / entries.length)}`);
   for (let i = entries.length - 1; i > 0; i--) {
     const swap = rng.rangeInt(0, i);
     [entries[i], entries[swap]] = [entries[swap], entries[i]];
   }
+  let openingCycle = entries;
+  if (seed.startsWith('EDITORIAL_SESSION:')) {
+    // Space known near-duplicates in the cyclic opening bag as well: five new
+    // games must not put both "Sofía silenció" wordings next to each other.
+    const spaced: typeof entries = [], duplicates: typeof entries = [];
+    for (const entry of entries) {
+      if (spaced.some(row => editorialFamily(row) === editorialFamily(entry))) duplicates.push(entry);
+      else spaced.push(entry);
+    }
+    for (const entry of duplicates) {
+      const gap = spaced.findIndex((row, index) => index > 0
+        && editorialFamily(row) !== editorialFamily(entry)
+        && editorialFamily(spaced[index - 1]) !== editorialFamily(entry));
+      spaced.splice(gap < 0 ? spaced.length : gap, 0, entry);
+    }
+    const groups = [...new Set(entries.map(editorialFamily))].map(family => entries.filter(entry => editorialFamily(entry) === family));
+    const dominant = groups.reduce((largest, group) => group.length > largest.length ? group : largest);
+    const other = entries.filter(entry => editorialFamily(entry) !== editorialFamily(dominant[0]));
+    // The approved City bank contains four dog jokes and only two alternatives.
+    // Repeat an alternative when necessary to avoid dog/dog openings, instead
+    // of treating four wordings as four genuinely different situations.
+    openingCycle = other.length && dominant.length > other.length
+      ? dominant.flatMap((entry, index) => [entry, other[index % other.length]]) : spaced;
+  }
+  // Same gameplay seed, different new game: rotate a common shuffled bag,
+  // rather than hash each session independently and risk the same opening draw.
+  const first = openingCycle[presentation.rotation % openingCycle.length];
+  const rotation = entries.findIndex(entry => entry.id === first.id);
+  entries.push(...entries.splice(0, rotation));
   if (!ledger) return entries[edition % entries.length];
   // Otra redacción del mismo chiste no es una alternativa fresca. Evitar
   // familias de la estación anterior cuando exista otra opción compatible.

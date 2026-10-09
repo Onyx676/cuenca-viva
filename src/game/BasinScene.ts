@@ -5,6 +5,7 @@ import { SeasonType } from '../models/Season';
 import type { SeasonWaterBalance } from '../models/Balance';
 import upgradesCatalog from '../data/upgrades.json';
 import { getMapResultStory } from './MapResultStories';
+import { editorialSeed } from './EditorialSession';
 
 export type MapClickTarget = SectorId | 'dam' | 'aquifer' | 'mountain' | 'river';
 
@@ -28,6 +29,7 @@ interface InfiltrationDroplet {
  */
 export class BasinScene extends Phaser.Scene {
   public static initialGameState?: GameState;
+  public static editorialSession = 0;
   public static initialDecisionPreview?: SeasonWaterBalance;
   public static onSelectSectorCallback?: (target: MapClickTarget) => void;
   public static instance?: BasinScene;
@@ -1279,7 +1281,7 @@ export class BasinScene extends Phaser.Scene {
       const resolved = previousResult ?? state.seasonHistory?.find(row => row.turn === resultTurn);
       const receivedMore = !!prior && !!resolved && resolved.balance.suppliedAllocations[sector] > prior.balance.suppliedAllocations[sector];
       const reservoirRecovered = !!resolved && resolved.balance.reservoirEnd > resolved.balance.reservoirStart;
-      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, state.seed ?? 'VALLE', carpinchoEvent, receivedMore, reservoirRecovered, state.seasonHistory);
+      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, editorialSeed(state.seed ?? 'VALLE', BasinScene.editorialSession), carpinchoEvent, receivedMore, reservoirRecovered, state.seasonHistory);
       this.resultSceneVariants[sector] = story.variant;
       return { sector, title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`, text: story.text };
     });

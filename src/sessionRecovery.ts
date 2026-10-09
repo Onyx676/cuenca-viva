@@ -1,6 +1,7 @@
 import type { GameState } from './models/GameState';
 import { SimulationEngine } from './simulation/SimulationEngine';
 import { SessionLog, createSessionExport, type SessionAction } from './sessionExport';
+import { validEditorialSession } from './game/EditorialSession';
 
 export const RECOVERY_KEY = 'cuenca-viva:recovery:v1';
 export const RECOVERY_BACKUP_KEY = 'cuenca-viva:recovery:previous:v1';
@@ -8,7 +9,7 @@ const SECTORS = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'
 const MAX_ACTIONS = 10000;
 const MAX_SAVED_CHARACTERS = 4_000_000;
 type StorageAccess = () => Pick<Storage, 'getItem' | 'setItem'>;
-type Recovered = { ok: true; engine: SimulationEngine; log: SessionLog; savedAt: string };
+type Recovered = { ok: true; engine: SimulationEngine; log: SessionLog; savedAt: string; editorialSession: number };
 type Rejected = { ok: false; reason: string };
 export type RecoveryRead =
   | ({ kind: 'ready'; raw: string } & Recovered)
@@ -16,9 +17,10 @@ export type RecoveryRead =
   | { kind: 'missing' }
   | { kind: 'unavailable'; reason: string };
 
-export function createRecoveryPacket(state: GameState, log: SessionLog | null, savedAt: string) {
+export function createRecoveryPacket(state: GameState, log: SessionLog | null, savedAt: string, editorialSession?: number) {
   if (!log || state.turn < 1 || state.year < 1) return null;
   return { recoverySchemaVersion: 1,
+    ...(validEditorialSession(editorialSession) ? { editorialSession } : {}),
     session: createSessionExport(state, state.goalRulesVersion === 'contextual-v1' ? SimulationEngine.MODEL_VERSION : '2.5', log, savedAt) };
 }
 
@@ -122,7 +124,8 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
     if (!equalJSON(engine.getState(), data.snapshot)) {
       return { ok: false, reason: 'El replay no coincide con el estado guardado. Se conserva la copia original.' };
     }
-    return { ok: true, engine, log, savedAt: data.exportedAt };
+    return { ok: true, engine, log, savedAt: data.exportedAt,
+      editorialSession: validEditorialSession(packet.editorialSession) ? packet.editorialSession : 0 };
   } catch {
     return { ok: false, reason: 'No se pudo verificar el registro de la partida. Se conserva la copia original.' };
   }

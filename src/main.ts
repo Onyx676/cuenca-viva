@@ -19,6 +19,7 @@ import tutorialData from './data/tutorial.json';
 import { sound } from './audio/SoundFX';
 import { getCharacterFeedback, SECTOR_CHARACTERS } from './game/Characters';
 import { generateNewspaperEdition, getEventRecap, NewspaperEdition } from './game/Newspaper';
+import { createEditorialSessionCounter, editorialSeed } from './game/EditorialSession';
 import { createLearningReport } from './resultReport';
 
 // --- INICIALIZACIÓN DE LA SIMULACIÓN Y TUTORIAL ---
@@ -26,6 +27,8 @@ let currentScenario = 'cuenca_central';
 let currentSeed = 'AULA-2026-001';
 let tutorialModeSetting: 'optional' | 'mandatory' | 'disabled' = 'optional';
 let sessionLog: SessionLog | null = null;
+let editorialSession = 0;
+const nextEditorialSession = createEditorialSessionCounter(() => window.localStorage);
 // Startup never writes over a stored session before Continue/Restart is chosen.
 let recoveryWritesEnabled = false;
 let preserveRecoveryOriginal = false;
@@ -1329,6 +1332,9 @@ function exitTutorialToYearOne(): void {
 
   // Re-iniciar simulación con semilla de aula limpia y pura
   engine = createRecordedEngine();
+  // Allocate only when entering the actual game, not opening Aula or the tutorial.
+  editorialSession = nextEditorialSession();
+  BasinScene.editorialSession = editorialSession;
   saveRecovery();
   recordTurnInitialAllocations();
   updateUI();
@@ -1906,7 +1912,7 @@ function renderAgileSeasonFeedback(
   // Generar la edición de "El Heraldo del Valle"
   const previousResult = st.seasonHistory.at(-2);
   const verdict = getSeasonVerdict(res, previousResult);
-  lastNewspaperEdition = generateNewspaperEdition(res, previousResult, verdict, st.seasonHistory, st.seed);
+  lastNewspaperEdition = generateNewspaperEdition(res, previousResult, verdict, st.seasonHistory, editorialSeed(st.seed, editorialSession));
   if (btnOpenNewspaper) btnOpenNewspaper.style.display = '';
 
   fbSeasonTitle.textContent = `${seasonInfo.name} ${res.season === 'SPRING' ? 'completada' : 'completado'} · Año ${res.year}`;
@@ -2779,7 +2785,7 @@ function saveRecovery(): void {
   if (!recoveryWritesEnabled || tutorialManager.isActive() || !sessionLog) return;
   let result: { ok: true } | { ok: false; reason: string };
   try {
-    const packet = createRecoveryPacket(engine.getState(), sessionLog, new Date().toISOString());
+    const packet = createRecoveryPacket(engine.getState(), sessionLog, new Date().toISOString(), editorialSession);
     if (!packet) return;
     result = writeRecovery(() => window.localStorage, packet, preserveRecoveryOriginal);
   } catch {
@@ -2850,6 +2856,8 @@ btnContinueRecovery.addEventListener('click', () => {
   cancelPendingNewspaper();
   engine = saved.engine;
   sessionLog = saved.log;
+  editorialSession = saved.editorialSession;
+  BasinScene.editorialSession = editorialSession;
   currentSeed = engine.getState().seed;
   currentScenario = engine.getState().scenarioId;
   tutorialManager.exitTutorial();
