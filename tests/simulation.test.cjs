@@ -371,7 +371,7 @@ test('Heraldo: titulares fieles al mismo hecho, cortos y deterministas', () => {
       assert.doesNotMatch(JSON.stringify(edition), /%/, 'Las noticias narran cobertura sin porcentajes');
       assert.equal(edition.secondaryArticles.length, 2);
       headlines.add(edition.mainArticle.headline);
-      assert.ok(edition.mainArticle.headline.length <= 85);
+      assert.ok(edition.mainArticle.headline.length <= 120);
       assert.doesNotMatch(edition.mainArticle.headline, /\d/, 'Las cifras se explican en la bajada y el resumen');
       assert.ok(edition.mainArticle.subhead.length <= 300);
       for (const brief of edition.secondaryArticles) assert.ok(brief.subhead.length <= 300);
@@ -394,7 +394,7 @@ test('Heraldo: titulares fieles al mismo hecho, cortos y deterministas', () => {
   assert.match(JSON.stringify(generateNewspaperEdition(zero).mainArticle), /Ferrada|Mina|Rosa/);
   assert.doesNotMatch(generateNewspaperEdition(zero).mainArticle.subhead, /No llegó todo lo asignado/);
 
-  // Acuerdo económico y ajuste real coexisten; el bono de confianza no es un neto.
+  // La noticia relata la opción; costos y reservas exactas quedan en el resumen.
   const catalogue = require('../src/data/events.json');
   for (const [eventId, optionId, reserve, actual, money] of [
     ['ferrada_molienda', 'enfriamiento_mina', 'reservoir', -8, 25],
@@ -408,8 +408,10 @@ test('Heraldo: titulares fieles al mismo hecho, cortos y deterministas', () => {
     const edition = generateNewspaperEdition(result);
     const story = edition.secondaryArticles.find(article => /molienda|sequía/.test(article.headline));
     assert.ok(story, 'La elección se informa en una breve');
-    assert.ok(story.subhead.includes('$' + Math.abs(money)));
-    assert.ok(story.subhead.includes((reserve === 'reservoir' ? 'embalse ' : 'acuífero ') + actual));
+    const approved = require('../src/game/EditorialSelection.ts').eventArticle(optionId, result.turn, 'test');
+    assert.equal(story.headline, approved.headline);
+    assert.equal(story.subhead, approved.subhead);
+    assert.doesNotMatch(story.subhead, /\$|[+-]\d/);
     assert.doesNotMatch(story.subhead, /confianza.*(subió|\+2)/);
     assert.ok(story.subhead.length <= 300);
   }
@@ -423,17 +425,17 @@ test('Heraldo: caída de calidad precede reserva estable y festejo, sin cambiar 
     result.balance.waterQuality = 71;
     const edition = generateNewspaperEdition(result, previous);
     assert.equal(edition.kind, kind);
-    assert.match(edition.mainArticle.subhead, /calidad del agua bajó respecto/);
-    assert.ok(!edition.secondaryArticles.some(article => /calidad del agua/.test(article.subhead)));
+    assert.match(edition.mainArticle.headline, /calidad.*(baj|cayó)/i);
+    assert.ok(!edition.secondaryArticles.some(article => /calidad/i.test(article.headline)));
   }
   for (const kind of ['crisis', 'error']) {
     const { result } = editorialSnapshot(kind);
     const previous = structuredClone(result);
     previous.balance.waterQuality = 90;
     const edition = generateNewspaperEdition(result, previous);
-    assert.match(edition.mainArticle.subhead, kind === 'crisis' ? /Ciudad/ : /caudal ecológico/);
-    if (kind === 'crisis') assert.match(edition.mainArticle.subhead, /poca|grave|gran parte|lejos|muy por debajo|pequeña parte|mayor parte|mayormente|serio|urgente|gran necesidad|brecha|insuficiente/);
-    assert.ok(edition.secondaryArticles.some(article => /calidad del agua bajó respecto/.test(article.subhead)));
+    assert.match(JSON.stringify(edition.mainArticle), kind === 'crisis' ? /Ciudad/ : /caudal|Río|Clara/);
+    if (kind === 'crisis') assert.match(edition.mainArticle.headline, /poca|grave/i);
+    assert.ok(edition.secondaryArticles.some(article => /calidad.*(baj|cayó)/i.test(article.headline)));
   }
 });
 
@@ -445,14 +447,14 @@ test('Heraldo: recuperación y reservas conservan portada sólo ante caídas lev
     if (kind === 'recovery') previous.balance.satisfactions.population = 0.65;
     const edition = generateNewspaperEdition(result, previous);
     assert.equal(edition.kind, kind);
-    assert.match(edition.mainArticle.subhead, kind === 'recovery'
-      ? /Ciudad recibió una proporción mayor/ : /reparto usó reservas/);
-    assert.ok(edition.secondaryArticles.some(article => /calidad del agua bajó respecto/.test(article.subhead)));
+    assert.match(JSON.stringify(edition.mainArticle), kind === 'recovery'
+      ? /Ciudad.*(mejora|recupera|cerca)/i : /embalse.*(reserva|reparto)/i);
+    assert.ok(edition.secondaryArticles.some(article => /calidad.*(baj|cayó)/i.test(article.headline)));
     previous.balance.waterQuality = 83;
     const seriousDrop = generateNewspaperEdition(result, previous);
     assert.equal(seriousDrop.kind, kind);
-    assert.match(seriousDrop.mainArticle.subhead, /calidad del agua bajó respecto/);
-    assert.ok(!seriousDrop.secondaryArticles.some(article => /calidad del agua/.test(article.subhead)));
+    assert.match(seriousDrop.mainArticle.headline, /calidad.*(baj|cayó)/i);
+    assert.ok(!seriousDrop.secondaryArticles.some(article => /calidad/i.test(article.headline)));
   }
 });
 
@@ -478,11 +480,11 @@ test('Heraldo: no vuelve al tono genérico ni a expresiones técnicas prohibidas
     result.turn = turn;
     const edition = generateNewspaperEdition(result, previous);
     headlines.add(edition.mainArticle.headline);
-    assert.ok(edition.mainArticle.headline.length <= 85);
+    assert.ok(edition.mainArticle.headline.length <= 120);
     assert.deepEqual(edition, generateNewspaperEdition(result, previous));
-    assert.match(edition.mainArticle.subhead, /calidad del agua bajó respecto/);
+    assert.match(edition.mainArticle.headline, /calidad.*(baj|cayó)/i);
   }
-  assert.equal(headlines.size, 1, 'La caída usa la pareja aprobada, sin inventar variantes');
+  assert.equal(headlines.size, 3, 'La caída alterna las tres parejas aprobadas');
   // El caudal aguas abajo ya contiene los retornos productivos y urbanos.
   const { result: flow } = editorialSnapshot('good');
   Object.assign(flow.balance.returns, { population: 2, agriculture: 3, livestock: 4, mining: 5, ecosystem: 99, reserve: 0 });
@@ -490,10 +492,10 @@ test('Heraldo: no vuelve al tono genérico ni a expresiones técnicas prohibidas
   let returnsStory;
   for (let turn = 1; turn <= 20; turn++) {
     flow.turn = turn;
-    returnsStory ??= generateNewspaperEdition(flow).secondaryArticles.find(article => /Parte del agua usada volvió/.test(article.subhead));
+    returnsStory ??= generateNewspaperEdition(flow).secondaryArticles.find(article => /agua usada vuelve al río/.test(article.headline));
   }
   assert.ok(returnsStory);
-  assert.match(returnsStory.subhead, /incluida en el flujo aguas abajo/);
+  assert.match(returnsStory.subhead, /incluidos en el flujo aguas abajo/);
   assert.doesNotMatch(returnsStory.subhead, /113|134/);
 });
 
@@ -761,7 +763,7 @@ test('Feedback: meta parcial no oculta abandono; recuperación cuenta agua almac
   assert.equal(verdict.kind,'recovery');
   assert.equal(verdict.focus,'reservoir');
   const edition=generateNewspaperEdition(result);
-  assert.match(edition.mainArticle.subhead,/reserva aumentó/);
+  assert.match(JSON.stringify(edition.mainArticle),/recupera|aumentó|juntó reserva/i);
   assert.ok(edition.secondaryArticles.some(article => /Mina|Ferrada|Rosa/.test(JSON.stringify(article))));
   result.balance.reservoirEnd=20;
   result.balance.unallocatedStored=80;
@@ -779,7 +781,7 @@ test('Feedback reconoce recuperación productiva y conserva avisos graves', () =
   const snapshot=JSON.stringify({result,previous});
   const verdict=getSeasonVerdict(result,previous);
   assert.equal(verdict.focus,'agriculture');
-  assert.match(generateNewspaperEdition(result,previous).mainArticle.headline,/Cultivos quedó corto/);
+  assert.match(JSON.stringify(generateNewspaperEdition(result,previous).mainArticle),/Cultivos.*(faltante|falta|pendiente|corto|reclamo)/i);
   assert.equal(JSON.stringify({result,previous}),snapshot);
   result.balance.waterQuality=35;
   assert.equal(getSeasonVerdict(result,previous).kind,'crisis');

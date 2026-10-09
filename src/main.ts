@@ -1626,6 +1626,23 @@ function renderSeasonWaterSummary(res: SeasonResult): void {
   const brief = document.getElementById('fb-reserves-brief');
   const change = (value: number) => `${value >= 0 ? '+' : '−'}${drops(Math.abs(value))}`;
   if (brief) brief.textContent = `Reservas al cierre: embalse ${drops(b.reservoirEnd)} (${change(b.reservoirEnd - b.reservoirStart)}) · acuífero ${drops(b.aquiferEnd)} (${change(b.aquiferEnd - b.aquiferStart)}) 💧`;
+  const coverage = document.getElementById('fb-sector-coverage');
+  if (coverage) {
+    coverage.replaceChildren();
+    const label = document.createElement('span');
+    label.textContent = 'Cobertura:';
+    coverage.append(label);
+    for (const [id, name] of [
+      ['population', 'Ciudad'], ['agriculture', 'Cultivos'], ['livestock', 'Granja'],
+      ['mining', 'Mina'], ['ecosystem', 'Caudal ecológico']
+    ] as const) {
+      const item = document.createElement('span');
+      const value = document.createElement('strong');
+      value.textContent = `${Math.round(b.satisfactions[id] * 100)}%`;
+      item.append(`${name} `, value);
+      coverage.append(item);
+    }
+  }
 
   const sources = document.createElement('p');
   sources.className = 'fb-water-line';

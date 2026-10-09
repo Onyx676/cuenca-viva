@@ -698,6 +698,9 @@ body {
 .fb-event-recap strong { color: #fde68a; }
 .feedback-metrics-grid[hidden] { display: none; }
 .fb-reserves-brief { margin: 0; font-size: 1rem; line-height: 1.5; color: #e2e8f0; }
+.fb-sector-coverage { display: flex; flex-wrap: wrap; gap: 4px 12px; color: #cbd5e1; font-size: 0.875rem; line-height: 1.5; }
+.fb-sector-coverage > span { white-space: nowrap; }
+.fb-sector-coverage strong { color: #e2e8f0; font-variant-numeric: tabular-nums; }
 .fb-water-details > summary { cursor: pointer; color: #7dd3fc; font-size: 1rem; font-weight: 700; }
 .fb-water-details[open] > summary { margin-bottom: 10px; }
 .fb-water-line, .fb-water-event { margin: 0; font-size: 0.95rem; line-height: 1.5; color: #cbd5e1; }

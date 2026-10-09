@@ -1,580 +1,2378 @@
 [
   {
+    "id": "P-CIU-01",
+    "condition": "Completa",
+    "headline": "Ciudad cubre su necesidad y el barrio cambia de tema",
+    "subhead": "El grupo dejó el agua por el perro. Sofía pidió que, por una vez, no la etiquetaran.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-02",
+    "condition": "Completa",
+    "headline": "El reparto en Ciudad permite archivar el reclamo del día",
+    "subhead": "Tito mandó una felicitación y enseguida aclaró que no era costumbre.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-03",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "Ciudad queda cerca de cubrir la demanda; Sofía deja el reclamo abierto",
+    "subhead": "Tito quiso llamarlo victoria. Sofía guardó la libreta para la próxima estación, no para siempre.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-04",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "El barrio recibe casi todo lo que necesita; el grupo igual no descansa",
+    "subhead": "Tito empezó a escribir “gracias”. Después vio que había mandado el mensaje al chat equivocado.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-05",
+    "condition": "Faltante relevante",
+    "headline": "El reclamo de Ciudad suma una segunda página",
+    "subhead": "Tito prometió ordenar los temas por prioridad. Sofía ya le había alcanzado otra hoja.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-06",
+    "condition": "Faltante relevante",
+    "headline": "Ciudad sigue con necesidades pendientes y Tito, con una lista nueva",
+    "subhead": "Esta vez la trajo abrochada. Sofía reconoció el color de la carpeta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-07",
+    "condition": "Faltante grave",
+    "headline": "Ciudad enfrenta un faltante grave; el grupo del barrio no necesita convocatoria",
+    "subhead": "Tito mandó “¿nos juntamos?”. Las respuestas llegaron antes que la ubicación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-08",
+    "condition": "Faltante grave",
+    "headline": "Muy poca agua en Ciudad; la canilla vuelve a ser noticia",
+    "subhead": "Sofía pidió una descripción breve para el diario. Tito le mandó una foto y tres audios.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-09",
+    "condition": "Mejora relativa con faltante pendiente",
+    "headline": "Ciudad mejora, pero el reclamo sigue en la mesa",
+    "subhead": "Sofía tachó “resuelto” del borrador. Tito guardó la lapicera por si hacía falta otra corrección.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-01",
+    "condition": "Completa",
+    "headline": "Cultivos cierra sin faltantes; Jacinto igual consulta el pronóstico",
+    "subhead": "Berta le acercó una silla. Él se sentó con el celular en la mano.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-02",
+    "condition": "Completa",
+    "headline": "Buen reparto en Cultivos: Jacinto se queda sin una queja preparada",
+    "subhead": "Revisó la libreta para estar seguro. En la última página encontró una lista para la estación siguiente.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-03",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "Cultivos queda cerca de cubrir la necesidad; Jacinto reserva el festejo",
+    "subhead": "«Cuando esté completo, descorcho», dijo. Dejó la botella a mano.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-04",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "Jacinto reconoce una buena cobertura y corrige el “todo” del titular",
+    "subhead": "«Poné “casi todo”. Después no me hagas aclararlo en la próxima nota».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-05",
+    "condition": "Faltante relevante",
+    "headline": "Cultivos todavía tiene una parte importante sin cubrir; Jacinto llega con la libreta abierta",
+    "subhead": "Marisa anotó el reclamo en la página que él ya tenía marcada.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-06",
+    "condition": "Faltante relevante",
+    "headline": "Cultivos vuelve a quedar corto; Jacinto ya sabe qué página abrir",
+    "subhead": "Marisa llegó con el grabador. Él llegó con las cuentas.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-07",
+    "condition": "Faltante grave",
+    "headline": "Jacinto presenta el reclamo de Cultivos en versión extendida",
+    "subhead": "«La corta no explicaba cuánto falta», dijo. Marisa dejó lugar en la libreta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-08",
+    "condition": "Faltante grave",
+    "headline": "Cultivos recibe muy poca agua; el pronóstico no completa el reparto",
+    "subhead": "Jacinto lo revisó igual. «Por lo menos una de las dos cosas tiene que salir bien».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-09",
+    "condition": "Mejora relativa con faltante pendiente",
+    "headline": "Cultivos mejora, pero todavía queda un faltante; Jacinto conserva el reclamo",
+    "subhead": "«No lo tiro: le cambio la fecha», explicó.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-01",
+    "condition": "Completa",
+    "headline": "Granja cubre su necesidad y Berta se sienta con el mate",
+    "subhead": "El descanso duró hasta que le preguntaron si faltaba algo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-02",
+    "condition": "Completa",
+    "headline": "Berta consigue una mañana tranquila en la granja",
+    "subhead": "La primera pregunta fue si todo estaba bien. La segunda, por qué estaba tan callada.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-03",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "Granja queda cerca de cubrir lo necesario; Berta no firma el “listo”",
+    "subhead": "«Poné “casi” y estamos», le indicó a Marisa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-04",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "En Granja falta poco para completar la cobertura; Berta no suelta la libreta",
+    "subhead": "La lista ya tenía lugar para el «casi».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-05",
+    "condition": "Faltante relevante",
+    "headline": "Berta cambia el horario de visitas a la granja",
+    "subhead": "«Para mirar, temprano. Para decir que está todo bárbaro, no hace falta venir».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-06",
+    "condition": "Faltante relevante",
+    "headline": "La granja recibe otra visita con cámara; Berta pide primero mirar los bebederos",
+    "subhead": "Marisa bajó la cámara y abrió la libreta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-07",
+    "condition": "Faltante grave",
+    "headline": "Berta deja el pronóstico fuera de la nota sobre el faltante",
+    "subhead": "«Del tiempo hablamos después. Hoy vine por el agua».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-08",
+    "condition": "Faltante grave",
+    "headline": "Granja necesita más agua; Berta ya tiene lista la explicación corta",
+    "subhead": "«No alcanza». Marisa guardó el grabador y anotó la frase.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-09",
+    "condition": "Mejora relativa con faltante pendiente",
+    "headline": "Granja mejora, pero todavía falta agua; Berta no cambia el título a “resuelto”",
+    "subhead": "«Dejá el borrador como está. Todavía hay algo que contar».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-01",
+    "condition": "Completa",
+    "headline": "Ferrada sonríe en la foto del reparto y Rosa alcanza a registrarlo",
+    "subhead": "La foto salió antes de que él volviera a ponerse serio.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-02",
+    "condition": "Completa",
+    "headline": "El buen reparto en Mina deja a Ferrada sin discurso de reclamo",
+    "subhead": "Rosa le preguntó si tenía preparado otro. «Por las dudas», dijo él.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-03",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "La Mina queda cerca de cubrir la necesidad; Ferrada pide que no redondeen el título",
+    "subhead": "Rosa corrigió “completo” por “casi”. Ferrada aprobó la edición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-04",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "La Mina queda cerca de cubrir su necesidad; Rosa corrige “completo” por “casi”",
+    "subhead": "Ferrada aprobó la edición sin pedir otra versión.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-05",
+    "condition": "Faltante relevante",
+    "headline": "El tanque de Ferrada está lleno de consejos; el faltante de agua sigue",
+    "subhead": "«Si alguno sirve para reemplazar el agua, venga y me muestra», dijo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-06",
+    "condition": "Faltante relevante",
+    "headline": "Rosa reduce el informe de Mina a una frase",
+    "subhead": "«Falta agua». Ferrada le pidió que no la hiciera más larga.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-07",
+    "condition": "Faltante grave",
+    "headline": "Rosa corrige “situación complicada” por “falta mucha agua”",
+    "subhead": "Ferrada leyó la frase y dejó el marcador en la mesa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-08",
+    "condition": "Faltante grave",
+    "headline": "Mina enfrenta un faltante grave y Ferrada se queda sin eufemismos",
+    "subhead": "Rosa puso el borrador en limpio. Esta vez no hubo correcciones.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-09",
+    "condition": "Mejora relativa con faltante pendiente",
+    "headline": "La Mina mejora su cobertura; Rosa agrega el “todavía falta”",
+    "subhead": "Ferrada leyó la frase completa antes de firmar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-01",
+    "condition": "Completa",
+    "headline": "Río Vivo cubre su referencia ecológica; Clara deja el mapa sobre la mesa",
+    "subhead": "Marisa guardó el titular y miró el recorrido del río.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-02",
+    "condition": "Completa",
+    "headline": "Clara pide una foto del río sin carteles en primer plano",
+    "subhead": "El caudal cubrió la referencia ecológica. «Que también se vea lo que estamos contando».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-03",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "Río Vivo se acerca a su referencia; Clara corrige el titular “resuelto”",
+    "subhead": "Marisa cambió una palabra. Clara dejó el mapa abierto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-04",
+    "condition": "Parcial alta, incluso sin comparación",
+    "headline": "El caudal ecológico queda cerca de la referencia, pero todavía no llega",
+    "subhead": "Clara aceptó «cerca» en el titular y tachó «completo».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-05",
+    "condition": "Brecha relevante",
+    "headline": "El mapa de Clara marca el tramo que todavía necesita caudal",
+    "subhead": "Marisa guardó el teléfono y abrió la libreta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-06",
+    "condition": "Brecha relevante",
+    "headline": "Río Vivo sigue por debajo de su referencia ecológica",
+    "subhead": "Clara llevó el mapa actualizado. El título ya no necesitó explicación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-07",
+    "condition": "Brecha grave",
+    "headline": "La referencia ecológica queda lejos del caudal registrado",
+    "subhead": "Clara señaló el tramo en el mapa y pidió que la nota mostrara el recorrido completo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-08",
+    "condition": "Brecha grave",
+    "headline": "Brecha grave en Río Vivo: Clara lleva el mapa a la portada",
+    "subhead": "Esta vez pidió espacio para el tramo que falta, no para la foto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-09",
+    "condition": "Mejora relativa con brecha pendiente",
+    "headline": "Río Vivo mejora, pero Clara deja “recuperado” para otra estación",
+    "subhead": "El titular conserva el avance y el faltante en la misma noticia.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-10",
+    "condition": "Completa",
+    "headline": "Ciudad cubrió toda la necesidad; Tito tardó en encontrar un reclamo",
+    "subhead": "Mandó un pulgar arriba al grupo. Después agregó la foto del perro.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-11",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Ciudad le faltó poco; Sofía dejó “casi” en la portada",
+    "subhead": "Tito quiso cambiarlo por “listo”. Sofía ya tenía el marcador.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-12",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "El reparto dejó a Ciudad cerca de cubrir todo; el grupo siguió en línea",
+    "subhead": "Tito dejó de escribir del agua por cinco minutos. El perro pidió renovar la charla.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-13",
+    "condition": "Faltante relevante",
+    "headline": "Ciudad todavía tiene una parte importante de su necesidad pendiente",
+    "subhead": "Sofía puso el cartel de reclamos al lado de la canilla, para ahorrarle el recorrido a Tito.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-14",
+    "condition": "Faltante grave",
+    "headline": "Muy poca agua para Ciudad; Tito abrió el grupo antes que Sofía",
+    "subhead": "El reclamo ya tenía lugar, hora y moderador.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-15",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Ciudad recupera cobertura, no el derecho a cerrar el reclamo",
+    "subhead": "Sofía dejó las dos cosas en la misma nota.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-16",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto mejora para Ciudad; Tito cambia “urgente” por “menos urgente”",
+    "subhead": "Sofía corrigió el título: el faltante sigue.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-10",
+    "condition": "Completa",
+    "headline": "Cultivos cubrió toda su necesidad; Jacinto encontró un renglón sin corregir",
+    "subhead": "Lo leyó dos veces antes de cerrar la libreta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-11",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Cultivos le faltó poco; Jacinto dejó la palabra “casi” en la cosecha",
+    "subhead": "«Cuando esté completo, le saco el círculo», dijo, señalando la libreta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-12",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Cultivos quedó cerca de cubrir todo; Jacinto igual revisó el reparto",
+    "subhead": "Berta le preguntó si alguna vez daba por terminado un cálculo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-13",
+    "condition": "Faltante relevante",
+    "headline": "Cultivos todavía tiene una parte importante de su necesidad pendiente",
+    "subhead": "Jacinto guardó el pronóstico y dejó abierta la libreta que sí podía reclamar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-14",
+    "condition": "Faltante grave",
+    "headline": "Muy poca agua para Cultivos; Jacinto llegó con el reclamo foliado",
+    "subhead": "Marisa preguntó cuántas páginas eran. «Depende de cuánto espacio tengas».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-15",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Cultivos recupera cobertura; Jacinto conserva la cuenta del faltante",
+    "subhead": "Anotó el avance en la misma página, abajo de todo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-16",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto mejora para Cultivos, pero la libreta no se archiva",
+    "subhead": "Jacinto cambió la fecha y dejó el reclamo abierto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-10",
+    "condition": "Completa",
+    "headline": "Granja cubrió toda su necesidad; Berta se tomó el mate antes de contestar",
+    "subhead": "Marisa tuvo que esperar a que terminara.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-11",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Granja le faltó poco; Berta aceptó el “casi” sin soltar la lista",
+    "subhead": "La lista también tenía lugar para una pausa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-12",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Granja quedó cerca de cubrir todo; Berta guardó una sola pregunta",
+    "subhead": "«¿Y lo que falta?», preguntó cuando Marisa terminó el titular.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-13",
+    "condition": "Faltante relevante",
+    "headline": "A Granja le queda una parte importante de su necesidad sin cubrir",
+    "subhead": "Berta explicó el problema sin levantarse del bebedero.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-14",
+    "condition": "Faltante grave",
+    "headline": "Muy poca agua para Granja; Berta no necesita que le lean el informe",
+    "subhead": "«Lo vi antes de que llegaras», le dijo a Marisa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-15",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Granja recupera cobertura; Berta deja el reclamo a la vista",
+    "subhead": "«Mejorar no lo hace desaparecer», aclaró.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-16",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto mejora para Granja, pero Berta no guarda la lista",
+    "subhead": "Tachó una línea y dejó el resto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-10",
+    "condition": "Completa",
+    "headline": "Mina cubrió toda su necesidad; Rosa encontró a Ferrada sin un informe abierto",
+    "subhead": "Le preguntó si se sentía bien. Él buscó una carpeta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-11",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Mina le faltó poco; Rosa dejó “casi” en la portada",
+    "subhead": "Ferrada firmó después de comprobar que no decía «completo».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-12",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "La Mina quedó cerca de cubrir todo; Ferrada pidió una foto del titular",
+    "subhead": "Rosa guardó la cámara hasta leer la bajada.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-13",
+    "condition": "Faltante relevante",
+    "headline": "Mina todavía tiene una parte importante de su necesidad pendiente",
+    "subhead": "Ferrada recibió una lista de consejos. Esta vez fue Rosa quien la trajo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-14",
+    "condition": "Faltante grave",
+    "headline": "Muy poca agua para Mina; Rosa devuelve el informe sin eufemismos",
+    "subhead": "Ferrada leyó «falta mucha agua» y no pidió cambios.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-15",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Mina recupera cobertura; Rosa deja el faltante en el mismo renglón",
+    "subhead": "Ferrada leyó la frase completa antes de aprobarla.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-16",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto mejora para Mina, pero Rosa no retira el reclamo",
+    "subhead": "El tanque de consejos puede esperar; el faltante, no.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-10",
+    "condition": "Referencia ecológica completa",
+    "headline": "El caudal ecológico cubrió la referencia; Clara tachó “a ver si alcanza” del borrador",
+    "subhead": "Marisa guardó esa frase para otra estación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-11",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Río Vivo le faltó poco para la referencia ecológica",
+    "subhead": "Clara aceptó «casi»; la palabra «resuelto» volvió al cajón de Marisa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-12",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "El caudal quedó cerca de la referencia; Clara no firma el “listo”",
+    "subhead": "Marisa cambió una palabra y esta vez alcanzó.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-13",
+    "condition": "Brecha relevante",
+    "headline": "Al caudal ecológico le falta una parte importante de la referencia",
+    "subhead": "Clara pidió que el titular dijera eso antes de buscar una foto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-14",
+    "condition": "Brecha grave",
+    "headline": "Muy lejos de la referencia: el caudal ecológico no entra en un titular optimista",
+    "subhead": "Clara dejó el adjetivo para otro día.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-15",
+    "condition": "Mejora relativa, con brecha",
+    "headline": "Río Vivo recupera caudal; la referencia sigue pendiente",
+    "subhead": "Clara aceptó el avance y dejó «resuelto» fuera de la edición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-16",
+    "condition": "Mejora relativa, con brecha",
+    "headline": "El caudal mejora respecto de la estación anterior, pero aún queda corto",
+    "subhead": "Clara pidió que el titular llevara las dos partes.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-17",
+    "condition": "Completa",
+    "headline": "Ciudad cerró sin faltantes; Sofía archivó el reclamo con fecha de devolución",
+    "subhead": "Tito pidió prórroga: el grupo todavía debatía el perro.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-18",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Ciudad le faltó poco; el barrio fijó “casi” en el grupo",
+    "subhead": "Sofía corrigió la descripción para que nadie la confundiera con «listo».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-19",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Ciudad quedó cerca de cubrir todo; Tito dejó el audio para después",
+    "subhead": "Sofía le recordó que el «casi» también tenía que entrar en el mensaje.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-20",
+    "condition": "Faltante relevante",
+    "headline": "Ciudad sigue con una parte importante sin cubrir; Sofía ordenó los reclamos por turno",
+    "subhead": "Tito preguntó si su audio también tenía que esperar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-21",
+    "condition": "Faltante grave",
+    "headline": "Ciudad recibe muy poca agua y el barrio pide lugar en la portada",
+    "subhead": "Sofía aceptó el título. Tito ya había mandado la foto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-22",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Ciudad mejora respecto de la estación anterior; Sofía conserva la palabra “falta”",
+    "subhead": "Tito propuso borrarla del título. Sofía no le prestó la lapicera.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CIU-23",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "La cobertura de Ciudad se recupera, pero el reclamo no se archiva",
+    "subhead": "Sofía dejó la carpeta abierta y el chat silenciado.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-17",
+    "condition": "Completa",
+    "headline": "Cultivos cubrió toda su necesidad; Jacinto cerró la libreta sin sacar el pronóstico",
+    "subhead": "Berta alcanzó a servir el mate antes de la próxima consulta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-18",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Cultivos le faltó poco; Jacinto dejó el «casi» en el título",
+    "subhead": "La botella para el festejo quedó cerrada.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-19",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Cultivos quedó cerca de cubrir todo; Jacinto reservó un renglón para lo pendiente",
+    "subhead": "Marisa no necesitó preguntarle dónde iba.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-20",
+    "condition": "Faltante relevante",
+    "headline": "Cultivos todavía tiene una parte importante de la necesidad pendiente",
+    "subhead": "Jacinto marcó la página del reclamo antes de que Marisa abriera el grabador.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-21",
+    "condition": "Faltante grave",
+    "headline": "Cultivos recibió muy poca agua; Jacinto presentó la cuenta sin redondear",
+    "subhead": "«La versión optimista la dejé en casa», dijo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-22",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Cultivos mejora respecto de la estación anterior, pero Jacinto guarda el reclamo",
+    "subhead": "Cambió la fecha; no cambió lo que todavía falta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-CUL-23",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto recupera cobertura en Cultivos, no la libreta de Jacinto",
+    "subhead": "Esa sigue abierta en la página del faltante.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-17",
+    "condition": "Completa",
+    "headline": "Granja cubrió toda su necesidad; Berta terminó el mate sentada",
+    "subhead": "La novedad llegó hasta el diario.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-18",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Granja le faltó poco; Berta dejó el “casi” en la nota",
+    "subhead": "Marisa no tuvo que agregar una aclaración al final.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-19",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Granja quedó cerca de cubrir todo; Berta aceptó el titular con una condición",
+    "subhead": "Que no dijera «resuelto».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-20",
+    "condition": "Faltante relevante",
+    "headline": "Granja conserva una parte importante de su necesidad sin cubrir",
+    "subhead": "Berta revisó que la nota no se fuera por las ramas.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-21",
+    "condition": "Faltante grave",
+    "headline": "Granja recibió muy poca agua; Berta fue directa en la portada",
+    "subhead": "El pronóstico quedó afuera de la conversación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-22",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Granja mejora respecto de la estación anterior, pero Berta deja el reclamo abierto",
+    "subhead": "«Las dos cosas entran en una nota», le recordó a Marisa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GRA-23",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "El reparto mejora en Granja; la lista de Berta sigue teniendo renglones",
+    "subhead": "Tachó uno y guardó el resto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-17",
+    "condition": "Completa",
+    "headline": "Mina cubrió toda su necesidad; Ferrada guardó el informe de faltantes",
+    "subhead": "Rosa comprobó que no fuera el de festejos.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-18",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "A Mina le faltó poco; Rosa dejó “casi completo” en la bajada",
+    "subhead": "Ferrada firmó después de leer las dos palabras.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-19",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Mina quedó cerca de cubrir toda su necesidad; Ferrada pidió una foto del reparto",
+    "subhead": "Rosa le mostró primero la bajada, donde decía «cerca».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-20",
+    "condition": "Faltante relevante",
+    "headline": "Mina todavía tiene una parte importante de su necesidad pendiente",
+    "subhead": "Ferrada recibió una lista de consejos; Rosa comprobó que esta vez fueran sobre agua.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-21",
+    "condition": "Faltante grave",
+    "headline": "Mina recibió muy poca agua; el informe de Ferrada pierde los eufemismos",
+    "subhead": "Rosa le devolvió el borrador sin marcar una sola corrección.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-22",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "Mina mejora respecto de la estación anterior, pero el faltante queda en tapa",
+    "subhead": "Rosa no dejó que Ferrada lo mandara a las páginas interiores.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-MIN-23",
+    "condition": "Mejora relativa, con faltante",
+    "headline": "La cobertura de Mina se recupera; Ferrada no retira el pedido",
+    "subhead": "Rosa guardó el informe con el tanque de consejos.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-17",
+    "condition": "Referencia ecológica completa",
+    "headline": "El caudal ecológico cubrió toda la referencia; Clara dejó el titular sin “casi”",
+    "subhead": "Marisa encontró otra palabra para corregir en el epígrafe.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-18",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Al caudal ecológico le faltó poco para la referencia",
+    "subhead": "Clara dejó «casi» en portada y «completo» fuera del diario.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-19",
+    "condition": "Parcial alta, sin comparación",
+    "headline": "Río Vivo quedó cerca de la referencia ecológica",
+    "subhead": "Clara revisó que la bajada dijera «cerca» y no «llegó».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-20",
+    "condition": "Brecha relevante",
+    "headline": "Al caudal ecológico le falta una parte importante de la referencia",
+    "subhead": "Clara pidió que la foto no ocupara el lugar del dato.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-21",
+    "condition": "Brecha grave",
+    "headline": "El caudal ecológico quedó muy por debajo de la referencia",
+    "subhead": "Clara rechazó el titular «el río, como siempre» antes del cierre.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-22",
+    "condition": "Mejora relativa, con brecha",
+    "headline": "Río Vivo mejora respecto de la estación anterior; Clara conserva el faltante en portada",
+    "subhead": "Marisa pudo usar «mejor», no «resuelto».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-RIO-23",
+    "condition": "Mejora relativa, con brecha",
+    "headline": "El caudal ecológico recupera terreno, pero todavía no llega a la referencia",
+    "subhead": "Clara aprobó la noticia sin soltar el mapa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-01",
+    "condition": "Buen resultado general",
+    "headline": "El reparto sale bien; Jacinto revisa las cuentas antes de admitirlo",
+    "subhead": "«No desconfío. Me gusta saber por qué estoy contento».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-02",
+    "condition": "Buen resultado general",
+    "headline": "El valle consigue una buena estación y Berta guarda una medialuna",
+    "subhead": "El equipo compartió el mérito. La última medialuna necesitó mediación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-03",
+    "condition": "Resultado normal",
+    "headline": "El valle cierra la estación con decisiones para la próxima",
+    "subhead": "Marisa pidió una prioridad. Los cinco sectores levantaron la mano.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-04",
+    "condition": "Resultado normal",
+    "headline": "La agenda del valle sigue abierta; el café ya se terminó",
+    "subhead": "El consejo dejó decisiones para la próxima estación. Berta miró la pava.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-05",
+    "condition": "Trade-off, beneficiario con cobertura completa",
+    "headline": "El embalse bancó el reparto y la próxima estación hereda menos reserva",
+    "subhead": "El sector priorizado cubrió toda su necesidad. El agua salió de lo guardado para después; Berta propuso no gastar toda la portada en el festejo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-06",
+    "condition": "Trade-off, beneficiario con faltante",
+    "headline": "El embalse bancó el reparto; al sector priorizado igual le faltó agua",
+    "subhead": "Se usó reserva y la necesidad del sector beneficiado no quedó cubierta del todo. Sofía pidió que el titular no lo vendiera como final feliz.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-07",
+    "condition": "Crisis de Ciudad",
+    "headline": "Ciudad enfrenta un faltante grave; Tito ya armó el grupo",
+    "subhead": "Sofía leyó el primer mensaje y dejó el teléfono boca arriba.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-08",
+    "condition": "Calidad en alerta",
+    "headline": "Calidad del agua, en zona de alerta; el eslogan queda en pausa",
+    "subhead": "Clara pidió que la nota se apoyara en el análisis. La campaña puede esperar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-09",
+    "condition": "Calidad baja respecto de la estación previa",
+    "headline": "La calidad del agua cayó; la foto no pasó el análisis",
+    "subhead": "La medición bajó respecto de la anterior. Marisa guardó la foto para otra nota.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-10",
+    "condition": "Calidad mejora",
+    "headline": "La calidad del agua se recupera y Clara acepta una buena noticia",
+    "subhead": "«Poné qué cambió», pidió. La nota salió sin prometer de más.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-11",
+    "condition": "Calidad estable con historial",
+    "headline": "La calidad se mantuvo; la redacción se quedó sin “mejoró” y “empeoró”",
+    "subhead": "Clara aprobó “estable”. Marisa guardó los otros dos titulares para otra edición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-12",
+    "condition": "Primera medición de calidad, sin historial",
+    "headline": "La calidad del agua debuta en la portada, sin edición anterior para comparar",
+    "subhead": "Es la primera medición disponible. Clara pidió que no la llamaran «mejora» hasta tener con qué compararla.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-13",
+    "condition": "Salud del río en alerta",
+    "headline": "La salud del río ocupa la portada; la foto linda queda para el reverso",
+    "subhead": "Clara pidió que el dato fuera al frente. Marisa cambió la maqueta.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-14",
+    "condition": "Salud del río mejora",
+    "headline": "La salud del río mejora; Clara guarda el mapa para la próxima estación",
+    "subhead": "«Hoy lo celebro. Mañana lo volvemos a mirar».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-15",
+    "condition": "Salud del río estable con historial",
+    "headline": "La salud del río se mantiene; Clara conserva el mapa a mano",
+    "subhead": "Marisa preguntó si había otra novedad. «Que siga igual también cuenta», dijo Clara.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-16",
+    "condition": "Primera medición de salud, sin historial",
+    "headline": "La salud del río debuta en el balance; Clara ya tiene una carpeta para la próxima",
+    "subhead": "Es la primera referencia. Marisa dejó el espacio de comparación en blanco.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-29",
+    "condition": "Salud del río baja pero aún fuera de alerta",
+    "headline": "La salud del río retrocede; Clara actualiza el mapa",
+    "subhead": "La medición bajó frente a la anterior sin entrar en la banda de alerta. Marisa dejó el paisaje de portada para otra nota.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-17",
+    "condition": "Reserva sube",
+    "headline": "El embalse recupera agua y aparecen planes para gastarla",
+    "subhead": "Berta propuso dejarla guardada un rato antes de decidir.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-18",
+    "condition": "Reserva baja, fuera del titular de trade-off",
+    "headline": "El embalse prestó agua al reparto; la reserva no se repone con aplausos",
+    "subhead": "La reserva terminó más baja. Berta guardó el brindis para cuando vuelva a subir.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-19",
+    "condition": "Reserva estable",
+    "headline": "El embalse termina con la misma reserva con la que empezó",
+    "subhead": "Tito propuso llamarlo “ahorro”. Sofía pidió esperar a ver la próxima estación.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-20",
+    "condition": "Deshielo",
+    "headline": "El deshielo llegó antes que el pronóstico de Jacinto",
+    "subhead": "La reserva de nieve aportó agua al río esta estación. Jacinto revisó el pronóstico igual.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-21",
+    "condition": "Lluvia e infiltración",
+    "headline": "Parte de la lluvia se infiltra; el balance también la cuenta",
+    "subhead": "Jacinto miró el pronóstico y guardó el tanque vacío.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-22",
+    "condition": "Lluvia sin infiltración registrada",
+    "headline": "Llovió; “lluvia aprovechada” quedó afuera de la edición",
+    "subhead": "El balance no registró infiltración al suelo. Marisa cambió el título antes de imprimir.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-23",
+    "condition": "Bombeo del acuífero",
+    "headline": "El reparto echó mano al acuífero; Berta revisa qué reserva se usó",
+    "subhead": "El balance registró bombeo. Berta abrió la página de reservas, no la de promesas.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-24",
+    "condition": "Sin bombeo ni extracción extraordinaria por evento",
+    "headline": "Esta estación no recurrió al agua subterránea",
+    "subhead": "El balance no registró bombeo ni extracción extraordinaria del acuífero. Ferrada pidió no anotarlo como aporte al reparto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-25",
+    "condition": "Retornos al río",
+    "headline": "El agua usada vuelve al río; Clara agrega una posdata al reparto",
+    "subhead": "Los retornos ya están incluidos en el flujo aguas abajo. Clara escribió la posdata al margen del mapa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-26",
+    "condition": "Entrega completa con pedido menor a la necesidad",
+    "headline": "El envío llegó entero; la necesidad era más grande que el pedido",
+    "subhead": "Se entregó todo lo asignado. El sobre decía «completo»; la cuenta, no.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-27",
+    "condition": "Oportunidad elegida",
+    "headline": "Una propuesta del valle pasa del anuncio a una decisión",
+    "subhead": "La opción elegida queda asentada en la noticia. Berta fue directo a la pregunta del lunes.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-28",
+    "condition": "Evento registrado sin decisión elegida",
+    "headline": "El suceso ocupa la portada; el clima reclama derecho a réplica",
+    "subhead": "El balance registra el evento junto con el clima y el reparto. La redacción no puede darle un apellido al resultado.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-30",
+    "condition": "Primera medición de calidad",
+    "headline": "La calidad del agua tiene su primera referencia en el Heraldo",
+    "subhead": "Clara pidió guardar el titular de “mejora” hasta que exista otra medición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-31",
+    "condition": "Calidad estable",
+    "headline": "Sin cambios en la calidad; Marisa archiva dos titulares",
+    "subhead": "Clara aprobó “se mantiene”. «El otro decía que subía y el otro que bajaba», explicó Marisa.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-32",
+    "condition": "Calidad en alerta",
+    "headline": "El análisis de calidad le gana la portada al folleto",
+    "subhead": "Clara dejó el eslogan para después. Esta edición va con el dato disponible.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-33",
+    "condition": "Caída de calidad",
+    "headline": "La calidad baja y la foto del río queda para otra página",
+    "subhead": "Marisa cambió la imagen principal por la medición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-34",
+    "condition": "Calidad en recuperación",
+    "headline": "La calidad recupera terreno; Clara revisa que el titular no se apure",
+    "subhead": "Marisa quitó «resuelta» y dejó la mejora.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-35",
+    "condition": "Primera medición de salud del río",
+    "headline": "La salud del río debuta en el balance; Clara ya guardó el mapa",
+    "subhead": "Marisa anotó que todavía no hay una estación anterior para comparar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-36",
+    "condition": "Salud del río estable",
+    "headline": "La salud del río se mantiene; el mapa no necesita una flecha hacia arriba",
+    "subhead": "Clara lo dejó abierto para la próxima revisión.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-37",
+    "condition": "Salud del río en alerta",
+    "headline": "La alerta del río ocupa la portada sin paisaje de relleno",
+    "subhead": "Clara pidió que la foto no tapara el dato.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-38",
+    "condition": "Caída de salud del río",
+    "headline": "El río pierde terreno en el balance; Clara saca el mapa",
+    "subhead": "La medición bajó respecto de la anterior. La redacción cambió el epígrafe.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-39",
+    "condition": "Salud del río en recuperación",
+    "headline": "El río mejora y Clara deja el mapa abierto",
+    "subhead": "La noticia celebra el avance sin dar por terminado el trabajo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-40",
+    "condition": "Primera medición de calidad",
+    "headline": "Clara estrena sección de calidad y deja el “mejoró” en borradores",
+    "subhead": "Todavía no hay una medición anterior para comparar.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-41",
+    "condition": "Calidad estable",
+    "headline": "La calidad se mantiene; por una vez, el titular no necesita flechas",
+    "subhead": "Marisa archivó las versiones que anunciaban una suba o una caída.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-42",
+    "condition": "Calidad en alerta",
+    "headline": "La calidad del agua está en alerta; el folleto puede esperar",
+    "subhead": "Clara pidió que primero se publicara el resultado del análisis.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-43",
+    "condition": "Caída de calidad",
+    "headline": "La medición de calidad bajó y Clara pidió corregir la portada",
+    "subhead": "El paisaje seguía siendo lindo; la noticia era otra.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-44",
+    "condition": "Calidad en recuperación",
+    "headline": "La calidad mejora; Clara acepta el titular con letra chica",
+    "subhead": "Marisa dejó la recuperación en la nota y evitó anunciar un problema resuelto.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-45",
+    "condition": "Primera medición de salud del río",
+    "headline": "El río estrena ficha propia; Clara reserva espacio para comparar",
+    "subhead": "La primera referencia ya está registrada.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-46",
+    "condition": "Salud del río estable",
+    "headline": "La salud del río se mantiene y Clara archiva la flecha",
+    "subhead": "«No subió ni bajó», resumió Marisa, sin inventarle una novedad.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-47",
+    "condition": "Salud del río en alerta",
+    "headline": "La salud del río está en alerta; Clara deja el paisaje para el suplemento",
+    "subhead": "La portada cuenta el estado del río.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-48",
+    "condition": "Caída de salud del río",
+    "headline": "La salud del río retrocede; esta vez el mapa no trae buenas noticias",
+    "subhead": "La medición bajó respecto de la estación anterior.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-49",
+    "condition": "Salud del río en recuperación",
+    "headline": "El río mejora y Clara permite un verbo optimista",
+    "subhead": "Marisa dejó «mejora» en el título y guardó «resuelto».",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-50",
+    "condition": "Resultado normal",
+    "headline": "El valle cierra una estación sin ganador de la discusión",
+    "subhead": "Marisa anotó las prioridades; Berta preguntó quién había apagado la pava.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-51",
+    "condition": "Trade-off, beneficiario con cobertura completa",
+    "headline": "El embalse puso agua para el reparto y perdió reserva para después",
+    "subhead": "El sector priorizado cubrió toda su necesidad. Berta celebró el resultado y pidió que no gastaran también la reserva en brindis.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-52",
+    "condition": "Trade-off, beneficiario con faltante",
+    "headline": "El embalse cedió reserva; al sector priorizado todavía le faltó agua",
+    "subhead": "El reparto no cubrió toda su necesidad. Sofía dejó «misión cumplida» fuera de la edición.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-53",
+    "condition": "Reserva baja, sin trade-off de portada",
+    "headline": "El embalse terminó con menos reserva; Berta guardó el brindis",
+    "subhead": "El saldo bajó esta estación. «Lo descorchamos cuando vuelva», dijo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-54",
+    "condition": "Reserva estable",
+    "headline": "El embalse conservó la reserva; Tito quiso declararla noticia histórica",
+    "subhead": "Sofía le recordó que el titular también tenía que contar algo.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-55",
+    "condition": "Reserva en recuperación",
+    "headline": "El embalse juntó reserva y Berta pidió no repartirla en festejos",
+    "subhead": "El saldo aumentó esta estación; el uso futuro todavía se decide.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-GEN-56",
+    "condition": "Oportunidad elegida",
+    "headline": "La propuesta dejó el papel y entró en el acta",
+    "subhead": "La decisión elegida quedó registrada. Berta preguntó quién llevaba la copia.",
+    "text": "",
+    "optionId": ""
+  },
+  {
+    "id": "P-EVT-01-A",
+    "condition": "Calor en Granja · `agua_fresca_berta`",
+    "headline": "Berta pide que la ola de calor no se lleve también la sombra",
+    "subhead": "Se eligió renovar los piletones con agua fresca. Berta ya reservó la sombra para la próxima entrevista.",
+    "text": "",
+    "optionId": "agua_fresca_berta"
+  },
+  {
+    "id": "P-EVT-01-B",
+    "condition": "Calor en Granja · `bebederos_sombra`",
+    "headline": "Berta pide que la ola de calor no se lleve también la sombra",
+    "subhead": "Se eligieron sombra y bebederos térmicos. Berta aprobó la sombra antes que la foto.",
+    "text": "",
+    "optionId": "bebederos_sombra"
+  },
+  {
+    "id": "P-EVT-02-A",
+    "condition": "Molienda en Mina · `enfriamiento_mina`",
+    "headline": "La molienda suma un turno y Rosa pide leer la letra chica",
+    "subhead": "Se autorizó agua adicional para la producción. Rosa pidió que el comunicado no se olvidara de la palabra «adicional».",
+    "text": "",
+    "optionId": "enfriamiento_mina"
+  },
+  {
+    "id": "P-EVT-02-B",
+    "condition": "Molienda en Mina · `recirculacion_mina`",
+    "headline": "La molienda suma un turno y Rosa pide leer la letra chica",
+    "subhead": "Se eligió usar la recirculación instalada. Rosa preguntó si el informe también iba a circular.",
+    "text": "",
+    "optionId": "recirculacion_mina"
+  },
+  {
+    "id": "P-EVT-02-C",
+    "condition": "Molienda en Mina · `freno_mina`",
+    "headline": "La molienda suma un turno y Rosa pide leer la letra chica",
+    "subhead": "Se mantuvo la producción normal sin agua extra. Rosa guardó el borrador que anunciaba un cambio.",
+    "text": "",
+    "optionId": "freno_mina"
+  },
+  {
+    "id": "P-EVT-03-A",
+    "condition": "Aniversario de Ciudad · `fuentes_activas`",
+    "headline": "El aniversario de Ciudad se festeja con una discusión sobre las fuentes",
+    "subhead": "Se eligió celebrar con las fuentes activas. Tito se ofreció para supervisar; Sofía pidió supervisor para Tito.",
+    "text": "",
+    "optionId": "fuentes_activas"
+  },
+  {
+    "id": "P-EVT-03-B",
+    "condition": "Aniversario de Ciudad · `campana_educativa`",
+    "headline": "El aniversario de Ciudad se festeja con una discusión sobre las fuentes",
+    "subhead": "Se eligió una exposición sobre cuidado del agua. Tito pidió espacio para la muestra y no para otro discurso.",
+    "text": "",
+    "optionId": "campana_educativa"
+  },
+  {
+    "id": "P-EVT-03-C",
+    "condition": "Aniversario de Ciudad · `ahorro_estricto`",
+    "headline": "El aniversario de Ciudad se festeja con una discusión sobre las fuentes",
+    "subhead": "Se suspendieron los juegos de agua. Tito guardó el silbato para una ocasión más seca.",
+    "text": "",
+    "optionId": "ahorro_estricto"
+  },
+  {
+    "id": "P-EVT-04-A",
+    "condition": "Festival de Cultivos · `apoyo_jacinto`",
+    "headline": "Jacinto llega al festival con el riego bajo el brazo",
+    "subhead": "Se autorizó agua extra para la siembra. Jacinto revisó que el calendario no tuviera letra chica.",
+    "text": "",
+    "optionId": "apoyo_jacinto"
+  },
+  {
+    "id": "P-EVT-04-B",
+    "condition": "Festival de Cultivos · `riego_eficiente_jacinto`",
+    "headline": "Jacinto llega al festival con el riego bajo el brazo",
+    "subhead": "Se eligió exigir riego por goteo. Jacinto pidió que la nota no goteara letras chicas.",
+    "text": "",
+    "optionId": "riego_eficiente_jacinto"
+  },
+  {
+    "id": "P-EVT-04-C",
+    "condition": "Festival de Cultivos · `priorizar_reserva`",
+    "headline": "Jacinto llega al festival con el riego bajo el brazo",
+    "subhead": "Se mantuvo el cupo para cuidar la reserva. Jacinto guardó el calendario para la próxima siembra.",
+    "text": "",
+    "optionId": "priorizar_reserva"
+  },
+  {
+    "id": "P-EVT-05-A",
+    "condition": "Carpincho en el humedal · `pulso_ecologico`",
+    "headline": "Un carpincho visita el humedal y Clara intenta recuperar la agenda",
+    "subhead": "Se eligió liberar un pulso de agua al humedal. Clara corrigió «visita guiada» por «recorrido del agua».",
+    "text": "",
+    "optionId": "pulso_ecologico"
+  },
+  {
+    "id": "P-EVT-05-B",
+    "condition": "Carpincho en el humedal · `canal_biofiltro`",
+    "headline": "Un carpincho visita el humedal y Clara intenta recuperar la agenda",
+    "subhead": "Se eligió conectar meandros y totoras. Clara pidió que el plano también mostrara el recorrido.",
+    "text": "",
+    "optionId": "canal_biofiltro"
+  },
+  {
+    "id": "P-EVT-05-C",
+    "condition": "Carpincho en el humedal · `dejar_ciclo`",
+    "headline": "Un carpincho visita el humedal y Clara intenta recuperar la agenda",
+    "subhead": "Se eligió dejar continuar el ciclo natural. Clara guardó el plano que había preparado para explicar la otra opción.",
+    "text": "",
+    "optionId": "dejar_ciclo"
+  },
+  {
+    "id": "P-EVT-06-A",
+    "condition": "Fuga de red en Ciudad · `reparar_canerias`",
+    "headline": "La fuga de Ciudad obliga a elegir entre parche, sensor y obra",
+    "subhead": "Se eligió reparar la fuga con la cuadrilla. Sofía guardó el plano para que esta vez miraran la cañería.",
+    "text": "",
+    "optionId": "reparar_canerias"
+  },
+  {
+    "id": "P-EVT-06-B",
+    "condition": "Fuga de red en Ciudad · `sensores_red`",
+    "headline": "La fuga de Ciudad obliga a elegir entre parche, sensor y obra",
+    "subhead": "Se eligió sectorizar la red con sensores. Tito preguntó si el mapa venía con flecha; Sofía le mandó la leyenda.",
+    "text": "",
+    "optionId": "sensores_red"
+  },
+  {
+    "id": "P-EVT-06-C",
+    "condition": "Fuga de red en Ciudad · `postergar_fuga`",
+    "headline": "La fuga de Ciudad obliga a elegir entre parche, sensor y obra",
+    "subhead": "Se postergó el arreglo. Tito escribió «lo retomamos» y Sofía le pidió que le pusiera fecha.",
+    "text": "",
+    "optionId": "postergar_fuga"
+  },
+  {
+    "id": "P-EVT-06-D",
+    "condition": "Fuga de red en Ciudad · `renovar_red`",
+    "headline": "La fuga de Ciudad obliga a elegir entre parche, sensor y obra",
+    "subhead": "Se eligió renovar la red de forma permanente. Sofía pidió guardar la foto inaugural para cuando haya algo que inaugurar.",
+    "text": "",
+    "optionId": "renovar_red"
+  },
+  {
+    "id": "P-EVT-07-A",
+    "condition": "Flamencos y turismo · `reserva_protegida`",
+    "headline": "Flamencos y canoas entran en la discusión del humedal",
+    "subhead": "Se eligió proteger el área como parque natural. Clara pidió que el folleto esperara al plan.",
+    "text": "",
+    "optionId": "reserva_protegida"
+  },
+  {
+    "id": "P-EVT-07-B",
+    "condition": "Flamencos y turismo · `paseos_embarcacion`",
+    "headline": "Flamencos y canoas entran en la discusión del humedal",
+    "subhead": "Se eligieron paseos guiados en canoa. Clara revisó el recorrido antes que el título.",
+    "text": "",
+    "optionId": "paseos_embarcacion"
+  },
+  {
+    "id": "P-EVT-08-A",
+    "condition": "Falla de saneamiento · `reparacion_urgente`",
+    "headline": "La falla de saneamiento deja los eslóganes fuera de servicio",
+    "subhead": "Se eligió reparar los filtros de inmediato. Clara dejó el eslogan para después de revisar el tratamiento.",
+    "text": "",
+    "optionId": "reparacion_urgente"
+  },
+  {
+    "id": "P-EVT-08-B",
+    "condition": "Falla de saneamiento · `dilucion_rio`",
+    "headline": "La falla de saneamiento deja los eslóganes fuera de servicio",
+    "subhead": "Se eligió liberar agua para diluir la suciedad. Clara pidió que la nota dijera «diluir», no «eliminar».",
+    "text": "",
+    "optionId": "dilucion_rio"
+  },
+  {
+    "id": "P-EVT-09-A",
+    "condition": "Sequía severa · `restriccion_riego`",
+    "headline": "La sequía lleva el reparto a una decisión de emergencia",
+    "subhead": "Se eligió riego nocturno y restricciones. Jacinto preguntó si el pronóstico también iba a respetar el horario.",
+    "text": "",
+    "optionId": "restriccion_riego"
+  },
+  {
+    "id": "P-EVT-09-B",
+    "condition": "Sequía severa · `agotar_embalse`",
+    "headline": "La sequía lleva el reparto a una decisión de emergencia",
+    "subhead": "Se eligió usar la reserva superficial de emergencia. Sofía pidió que «de emergencia» no se borrara del titular.",
+    "text": "",
+    "optionId": "agotar_embalse"
+  },
+  {
+    "id": "P-EVT-09-C",
+    "condition": "Sequía severa · `bombear_acuifero`",
+    "headline": "La sequía lleva el reparto a una decisión de emergencia",
+    "subhead": "Se eligió bombeo subterráneo de emergencia. Berta pidió que la reserva también apareciera en la nota.",
+    "text": "",
+    "optionId": "bombear_acuifero"
+  },
+  {
+    "id": "P-EVT-10-A",
+    "condition": "Lluvia extraordinaria · `liberar_preventivo`",
+    "headline": "La lluvia extraordinaria abre la edición y desordena el pronóstico",
+    "subhead": "Se eligió liberar agua antes de la crecida. Tito apareció con el paraguas que Sofía le había prestado.",
+    "text": "",
+    "optionId": "liberar_preventivo"
+  },
+  {
+    "id": "P-EVT-10-B",
+    "condition": "Lluvia extraordinaria · `retener_todo`",
+    "headline": "La lluvia extraordinaria abre la edición y desordena el pronóstico",
+    "subhead": "Se eligió intentar retener el agua de la crecida. Clara pidió que «intentar» no desapareciera de la nota.",
+    "text": "",
+    "optionId": "retener_todo"
+  },
+  {
+    "id": "P-EVT-10-C",
+    "condition": "Lluvia extraordinaria · `drenaje_sostenible`",
+    "headline": "La lluvia extraordinaria abre la edición y desordena el pronóstico",
+    "subhead": "Se eligió usar el drenaje para infiltrar agua. Jacinto revisó el pronóstico por si quería agregar algo.",
+    "text": "",
+    "optionId": "drenaje_sostenible"
+  },
+  {
+    "id": "V-CIU-01",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sofía silenció el grupo. El perro volvió a ser el tema principal.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-02",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Con la necesidad de Ciudad cubierta, Tito felicitó a Sofía. Después aclaró que era por el perro.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-03",
+    "condition": "Parcial alta con mejora",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad mejoró y quedó cerca de cubrir todo; Sofía aceptó el festejo, pero guardó el reclamo.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-04",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Faltó agua en Ciudad. Sofía pidió un reclamo concreto; Tito señaló la canilla.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-05",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Faltó mucha agua en Ciudad. El grupo del barrio se organizó y Tito preguntó quién tenía el teléfono de Sofía.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-06",
+    "condition": "Mejora relativa con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad mejoró, pero todavía falta agua. Tito propuso un festejo corto; Sofía preguntó si el reclamo también.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-01",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos cubrió toda su necesidad. Jacinto guardó el pronóstico y lo sacó para comprobarlo.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-02",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sin faltantes en Cultivos, Jacinto se sentó a descansar con la libreta en la falda.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-03",
+    "condition": "Parcial alta con mejora",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos mejoró y quedó cerca de cubrir todo. Jacinto anotó «mejoró» y dejó renglones para lo que falta.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-04",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Cultivos le faltó una parte importante. Jacinto mostró el surco de la planilla; Marisa miró el de al lado.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-05",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos recibió muy por debajo de lo necesario. Jacinto cerró la cuenta; esta vez ya sabía el resultado.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-06",
+    "condition": "Mejora relativa con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos mejoró, pero sigue faltando agua. Jacinto anotó el avance en la libreta de reclamos, no en la de festejos.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-01",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja cubrió toda su necesidad. Berta se sentó con el mate y avisó que estaba descansando.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-02",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sin faltantes en Granja, Marisa pidió una foto. Berta esperó a que el mate dejara de humear.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-03",
+    "condition": "Parcial alta con mejora",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja mejoró y quedó cerca de cubrir todo. Berta aceptó el elogio y señaló lo que faltaba.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-04",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Granja le faltó una parte importante del agua. Marisa llegó tarde; Berta ya había explicado por qué convenía llegar temprano.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-05",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "A Granja le faltó mucha agua. Berta resumió el reclamo en dos palabras: «Falta agua».",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-06",
+    "condition": "Mejora relativa con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja mejoró, aunque sigue faltando agua. Berta anotó ambas cosas en el mismo renglón.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-01",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina cubrió toda su necesidad. Ferrada tarareó junto a la planta; Rosa reconoció la canción antes que él.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-02",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sin faltantes en Mina, Rosa le sacó una foto a Ferrada. Los demás estaban trabajando.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-03",
+    "condition": "Parcial alta con mejora",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina mejoró y quedó cerca de cubrir todo. Ferrada dijo «llegó más»; Rosa esperó el «pero».",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-04",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Mina le faltó una parte importante del agua. Rosa tachó «todo bien» del informe y dejó el resto.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-05",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "A Mina le faltó mucha agua. Ferrada empezó con las explicaciones; Rosa le alcanzó el tanque lleno de consejos.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-06",
+    "condition": "Mejora relativa con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina mejoró, pero todavía quedó corta. Rosa felicitó a Ferrada «por la mejora», aclaró.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-01",
+    "condition": "Referencia ecológica completa",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal ecológico cubrió toda la referencia. Clara dejó el mapa a la vista; esta vez no hubo que dibujar lo que faltaba.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-02",
+    "condition": "Referencia ecológica completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Río Vivo llegó a la referencia ecológica. Marisa preparó la foto; Clara pidió que el río saliera entero.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-03",
+    "condition": "Parcial alta con mejora",
+    "headline": "",
+    "subhead": "",
+    "text": "Río Vivo mejoró, aunque no llegó a cubrir toda la referencia. Clara cambió «resuelto» por «mejor».",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-04",
+    "condition": "Brecha relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Al río le faltó una parte importante del caudal ecológico. Clara rechazó el título «casi normal» antes de que Marisa lo terminara.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-05",
+    "condition": "Brecha grave",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal ecológico quedó muy lejos de la referencia. Clara puso el mapa en portada: el paisaje no iba a tapar el faltante.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-06",
+    "condition": "Mejora relativa con brecha",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal ecológico subió respecto de la estación anterior, pero sigue bajo la referencia. Clara dejó «mejor» y tachó «listo».",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-07",
+    "condition": "Ciudad, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad cubrió casi todo. Sofía aceptó el «casi»; el grupo pidió que lo pusiera por escrito.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-08",
+    "condition": "Ciudad, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Ciudad le faltó poco. Tito quiso cerrar el reclamo; Sofía le mostró el renglón pendiente.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-09",
+    "condition": "Ciudad, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Ciudad le faltó poco para cubrir todo. Tito guardó el audio de agradecimiento para más adelante.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-07",
+    "condition": "Cultivos, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Cultivos le faltó poco. Jacinto aceptó el «casi» y dejó la libreta abierta.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-08",
+    "condition": "Cultivos, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos quedó cerca de cubrir todo. Jacinto revisó la asignación antes de sonreírle al pronóstico.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-09",
+    "condition": "Cultivos, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Cultivos le faltó una parte menor. Berta felicitó a Jacinto; él le mostró cuánto faltaba.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-07",
+    "condition": "Granja, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Granja le faltó poco. Berta aceptó el «casi»; el mate esperaba el «todo».",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-08",
+    "condition": "Granja, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja quedó cerca de cubrir todo. Marisa escribió «mejor»; Berta le alcanzó espacio para lo que faltaba.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-09",
+    "condition": "Granja, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Granja le faltó una parte menor. Berta celebró sin levantarse; todavía faltaba una parte.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-07",
+    "condition": "Mina, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina cubrió casi todo. Ferrada aprobó el titular; Rosa agregó «todavía falta» en letra grande.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-08",
+    "condition": "Mina, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "A Mina le faltó poco. Rosa guardó el tanque de consejos, por esta vez.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-09",
+    "condition": "Mina, 80%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina quedó cerca de cubrir todo. Ferrada dijo «casi» y Rosa lo tradujo al informe.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-07",
+    "condition": "Río Vivo, 75%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal cubrió casi toda la referencia ecológica. Clara aceptó «casi» y tachó «resuelto».",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-08",
+    "condition": "Río Vivo, 75%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "Al caudal todavía le faltó una parte de la referencia. Marisa tachó «completo»; Clara dejó el mapa abierto.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-09",
+    "condition": "Río Vivo, 75%–<100%",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal quedó cerca, pero no cubrió la referencia ecológica. Clara corrigió el cartel antes de que secara la tinta.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-10",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad recuperó cobertura, pero no llegó al total. Sofía tachó «resuelto» y dejó «mejor».",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-11",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "El reparto mejoró para Ciudad. Tito mandó «vamos mejor»; Sofía dejó el reclamo abierto.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-10",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos recuperó cobertura, no la totalidad. Jacinto anotó el avance arriba del faltante.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-11",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "El reparto mejoró para Cultivos. Jacinto dejó la libreta abierta, por si alguien confundía «mejor» con «completo».",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-10",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja recibió una proporción mayor que antes, pero todavía quedó corta. Berta dejó el mate y siguió con la lista.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-11",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "El reparto mejoró para Granja. Berta aceptó el titular y guardó la lista para la próxima.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-10",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina recuperó cobertura, aunque aún quedó por debajo de lo necesario. Rosa dejó «todavía falta» en el margen.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-11",
+    "condition": "Mejora relativa, falta agua",
+    "headline": "",
+    "subhead": "",
+    "text": "El reparto mejoró para Mina. Ferrada aprobó el titular; Rosa revisó que no dijera «resuelto».",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-10",
+    "condition": "Mejora relativa, brecha ecológica",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal ecológico subió frente a la estación anterior, pero quedó bajo la referencia. Clara dejó «mejor» en el cartel.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-11",
+    "condition": "Mejora relativa, brecha ecológica",
+    "headline": "",
+    "subhead": "",
+    "text": "Río Vivo recuperó parte de la cobertura ecológica; Clara tachó «completo» antes de que Marisa imprimiera.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-12",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad quedó sin faltantes. Sofía silenció el grupo; el perro siguió con la agenda.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-13",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "En Ciudad todavía falta una parte importante del agua. Tito ya había reservado el renglón para el reclamo.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-14",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad quedó lejos de cubrir toda la necesidad. Sofía no necesitó preguntarle a Tito qué había pasado.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-15",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "La mayor parte de la necesidad de Ciudad quedó sin cubrir. El reclamo de Tito llegó con índice.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CIU-16",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Ciudad recibió muy poca agua. Sofía dejó el teléfono con sonido; el grupo ya estaba activo.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-12",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sin faltantes de agua en Cultivos, Jacinto cerró la libreta. El pronóstico quedó abierto.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-13",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Cultivos todavía le falta una parte importante del agua. Jacinto llegó con las cuentas hechas.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-14",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos quedó lejos de cubrir todo. Marisa sacó el grabador; Jacinto ya tenía la página marcada.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-15",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Cultivos recibió muy por debajo de lo que necesitaba. Jacinto no tuvo que buscar la libreta de reclamos.",
+    "optionId": ""
+  },
+  {
+    "id": "V-CUL-16",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "La mayor parte de la necesidad de Cultivos quedó pendiente. Jacinto revisó una vez más, por si la cuenta cambiaba.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-12",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja terminó sin faltantes. Berta se sentó a tomar el mate antes de que apareciera otra visita.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-13",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Granja le falta una parte importante del agua. Berta no necesitó sacar la lista para acordarse.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-14",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja quedó lejos de cubrir todo lo que necesitaba. Berta le acercó a Marisa el bebedero vacío.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-15",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Granja recibió muy poca agua. Berta fue directo al punto y dejó el mate para después.",
+    "optionId": ""
+  },
+  {
+    "id": "V-GRA-16",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "La mayor parte de la necesidad de Granja quedó sin cubrir. Berta no necesitó que le preguntaran por qué estaba reclamando.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-12",
+    "condition": "Completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina cubrió toda su necesidad. Rosa encontró a Ferrada sin el informe de faltantes.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-13",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "A Mina todavía le falta una parte importante del agua. Rosa tachó «todo bien» antes de que Ferrada lo leyera.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-14",
+    "condition": "Faltante relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina quedó lejos de cubrir todo. Ferrada abrió el informe; Rosa dejó el tanque de consejos al lado.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-15",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Mina recibió muy poca agua. Rosa le alcanzó a Ferrada la versión del informe sin eufemismos.",
+    "optionId": ""
+  },
+  {
+    "id": "V-MIN-16",
+    "condition": "Faltante grave",
+    "headline": "",
+    "subhead": "",
+    "text": "La mayor parte de la necesidad de Mina quedó pendiente. Ferrada no pidió una segunda opinión a Rosa.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-12",
+    "condition": "Referencia ecológica completa",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal cubrió toda la referencia ecológica. Clara no tuvo que corregir «casi» en el cartel.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-13",
+    "condition": "Brecha relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Al caudal ecológico le falta una parte importante de la referencia. Clara eligió un título sin adjetivos tranquilizadores.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-14",
+    "condition": "Brecha relevante",
+    "headline": "",
+    "subhead": "",
+    "text": "Río Vivo quedó lejos de cubrir la referencia de caudal. Marisa guardó «normal» para otra noticia.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-15",
+    "condition": "Brecha grave",
+    "headline": "",
+    "subhead": "",
+    "text": "El caudal ecológico quedó muy por debajo de la referencia. Clara pidió que el cartel no achicara el faltante.",
+    "optionId": ""
+  },
+  {
+    "id": "V-RIO-16",
+    "condition": "Brecha grave",
+    "headline": "",
+    "subhead": "",
+    "text": "La mayor parte de la referencia ecológica quedó sin cubrir. Clara dejó «todo bien» fuera del vocabulario del día.",
+    "optionId": ""
+  },
+  {
     "id": "A-MAP-01",
-    "condition": "Ciudad, situación cotidiana",
-    "text": "Sofía: «Alcanzó el agua. En el grupo del barrio están discutiendo por un perro. Volvimos a la normalidad»."
+    "condition": "Mantener, sólo Ciudad completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Sofía: «Alcanzó el agua. En el grupo del barrio están discutiendo por un perro. Volvimos a la normalidad».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-02",
-    "condition": "Ciudad, faltante",
-    "text": "Sofía: «Me dijeron “ponete en nuestro lugar”. Bueno, pasame tu agua»."
+    "condition": "Mantener, Ciudad con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Sofía: «Me dijeron “ponete en nuestro lugar”. Bueno, pasame tu agua».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-03",
-    "condition": "Cultivos",
-    "text": "Jacinto: «Hoy no me puedo quejar. Mi familia pidió que lo ponga por escrito»."
+    "condition": "Reemplazar con la corrección pedida",
+    "headline": "",
+    "subhead": "",
+    "text": "Jacinto: «Hoy no me puedo quejar. Mi familia me pidió que lo ponga por escrito».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-04",
-    "condition": "Cultivos",
-    "text": "Jacinto: «Me recomendaron hablarles a las plantas. Les dije que reclamen conmigo»."
+    "condition": "Mantener, Cultivos",
+    "headline": "",
+    "subhead": "",
+    "text": "Jacinto: «Me recomendaron hablarles a las plantas. Les dije que reclamen conmigo».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-05",
-    "condition": "Granja",
-    "text": "Berta: «Las vacas tienen agua y yo tengo un rato libre. Me siguen mirando: no conocen esta versión mía»."
+    "condition": "Mantener sólo con cobertura completa de Granja",
+    "headline": "",
+    "subhead": "",
+    "text": "Berta: «Las vacas tienen agua y yo tengo un rato libre. Me siguen mirando: no conocen esta versión mía».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-06",
-    "condition": "Granja, faltante",
-    "text": "Berta: «Vine a reclamar yo porque la vaca no entra en el auto»."
+    "condition": "Acortar, Granja con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Berta: «Vine a reclamar yo: la vaca no entra en el auto».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-07",
-    "condition": "Mina",
-    "text": "Ferrada: «Preparé un discurso para festejar. Me aplaudieron cuando dije que era corto»."
+    "condition": "Mantener sólo con cobertura completa de Mina",
+    "headline": "",
+    "subhead": "",
+    "text": "Ferrada: «Preparé un discurso para festejar. Me aplaudieron cuando dije que era corto».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-08",
-    "condition": "Río Vivo",
-    "text": "Clara: «Yo explicando lo importante que es el río y un carpincho rascándose. Un poco de apoyo te pido»."
+    "condition": "Mantener sólo si el evento del carpincho figura en el historial y Río Vivo está completo",
+    "headline": "",
+    "subhead": "",
+    "text": "Clara: «Yo explicando lo importante que es el río y un carpincho rascándose. Un poco de apoyo te pido».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-19",
-    "condition": "Ciudad",
-    "text": "«Tito felicitó a Sofía en el grupo y después le escribió por privado». Tito: «No te acostumbres. Si te felicito mucho, después me mandan a reclamar a mí»."
+    "condition": "Acortar, Ciudad completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Tito felicitó a Sofía en el grupo. En privado: «No te acostumbres; después me mandan a reclamar a mí».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-20",
-    "condition": "Ciudad",
-    "text": "«Sofía invitó a Tito a explicar cómo repartiría el agua». Tito: «Yo te marco los problemas. Si también te los resuelvo, ¿vos qué hacés?»."
+    "condition": "Acortar, Ciudad completa o con faltante no grave",
+    "headline": "",
+    "subhead": "",
+    "text": "Sofía pidió una solución. Tito: «Yo marco los problemas. Si también los resuelvo, ¿vos qué hacés?».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-21",
-    "condition": "Mina",
-    "text": "«Ferrada le pidió a Rosa que sacara una foto del festejo». Rosa: «Salí vos también». Ferrada: «Después la ves y preguntás por qué estaban todos sin trabajar»."
+    "condition": "Reemplazar la escena larga, Mina completa",
+    "headline": "",
+    "subhead": "",
+    "text": "Rosa le sacó una foto a Ferrada en el festejo. Los demás estaban trabajando.",
+    "optionId": ""
   },
   {
     "id": "A-MAP-22",
-    "condition": "Mina",
-    "text": "«Ferrada ensayó el reclamo con Rosa antes de salir». Rosa: «Muy bien. Ahora probá sin pedir perdón por necesitar agua»."
+    "condition": "Acortar, Mina con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Rosa a Ferrada: «Necesitar agua no se pide perdón».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-23",
-    "condition": "Cultivos",
-    "text": "«Jacinto dijo que el reparto había salido bien. Marisa sacó el grabador». Marisa: «Repetímelo». Jacinto: «Lo escuchaste». Marisa: «Sí, pero mañana me lo negás»."
+    "condition": "Reemplazar la conversación larga, Cultivos completo",
+    "headline": "",
+    "subhead": "",
+    "text": "Marisa grabó a Jacinto admitiendo que salió bien. Guardó el audio por si mañana lo negaba.",
+    "optionId": ""
   },
   {
     "id": "A-MAP-24",
-    "condition": "Granja",
-    "text": "«Marisa le preguntó a Berta si podía publicar su reclamo tal cual». Berta: «Sí. Lo que dije cuando me iba también»."
+    "condition": "Acortar, Granja con faltante",
+    "headline": "",
+    "subhead": "",
+    "text": "Berta autorizó la nota: «Publicá también lo que dije al irme».",
+    "optionId": ""
   },
   {
     "id": "A-MAP-25",
-    "condition": "Río Vivo",
-    "text": "«Marisa le pidió a Clara una frase más optimista». Clara: «Estoy segura de que pueden repartir mejor». Marisa: «¿Ves?». Clara: «No terminé»."
+    "condition": "Acortar, Río Vivo con brecha",
+    "headline": "",
+    "subhead": "",
+    "text": "Clara empezó a decir «pueden repartir mejor». Marisa cerró el cuaderno demasiado pronto.",
+    "optionId": ""
   },
   {
     "id": "A-MAP-26",
-    "condition": "Reserva/Tito",
-    "text": "«Tito propuso guardar el agua “para cuando haga falta de verdad”». Sofía le recordó que la estación pasada había pedido más. Tito: «Bueno, porque me hacía falta a mí»."
-  },
-  {
-    "id": "A-H-16",
-    "condition": "Mina, faltante",
-    "headline": "Ferrada pidió agua y recibió consejos: “De esos ya tengo el tanque lleno”",
-    "subhead": "«Si alguno sirve para reemplazar el agua, venga y me muestra»."
+    "condition": "Acortar; sólo si la reserva realmente subió",
+    "headline": "",
+    "subhead": "",
+    "text": "Tito propuso ahorrar para cuando hiciera falta. Sofía le pidió que decidieran cuándo sería ese momento.",
+    "optionId": ""
   },
   {
     "id": "A-H-17",
     "condition": "Embalse, recuperación de reserva",
     "headline": "El embalse recuperó agua y ya aparecieron cinco ideas para gastarla",
-    "subhead": "La reserva aumentó esta estación. «Qué lindo sería mirarla un rato», propuso Berta."
+    "subhead": "La reserva aumentó esta estación. «Qué lindo sería mirarla un rato», propuso Berta.",
+    "text": "",
+    "optionId": ""
   },
   {
     "id": "A-H-18",
     "condition": "Buen resultado general",
     "headline": "El reparto salió bien. Jacinto revisó las cuentas antes de admitirlo",
-    "subhead": "La estación cerró con buen abastecimiento y calidad. «No desconfío. Me gusta saber por qué estoy contento»."
-  },
-  {
-    "id": "H-CIU-01",
-    "condition": "Cobertura completa",
-    "headline": "El barrio tuvo agua y encontró otro tema urgente",
-    "subhead": "El grupo pasó del reclamo a discutir por un perro. Sofía preguntó si esta vez podían discutir sin etiquetarla."
-  },
-  {
-    "id": "H-CIU-02",
-    "condition": "Cobertura completa",
-    "headline": "Ciudad recupera el agua y Tito recupera la palabra",
-    "subhead": "«No pregunté cómo venía el reparto», aclaró. Tito ya le estaba explicando."
-  },
-  {
-    "id": "H-CIU-03",
-    "condition": "Buena con faltante",
-    "headline": "Ciudad mejora su cobertura, aunque Sofía mantiene abierto el reclamo",
-    "subhead": "Ciudad recibió una proporción mayor de lo que necesitaba que la estación anterior, pero el faltante sigue. «Mejoró», dijo Tito. «No dije que estaba resuelto», contestó ella."
-  },
-  {
-    "id": "H-CIU-04",
-    "condition": "Faltante relevante",
-    "headline": "El reclamo de Ciudad suma una segunda página",
-    "subhead": "La necesidad de Ciudad quedó parcialmente sin cubrir. «Puedo ordenarlos por importancia», dijo Tito. Sofía le alcanzó otra hoja."
-  },
-  {
-    "id": "H-CIU-05",
-    "condition": "Faltante grave",
-    "headline": "Faltante grave en Ciudad: Tito presenta la lista corta",
-    "subhead": "Ciudad terminó con un faltante grave de agua. «La lista corta era esta», dijo Tito, sacando otra del bolsillo."
-  },
-  {
-    "id": "H-CUL-01",
-    "condition": "Cobertura completa",
-    "headline": "Sin faltantes en Cultivos; el pronóstico sigue bajo observación",
-    "subhead": "«¿Y ahora qué hago?», preguntó. Berta le alcanzó una silla. A los dos minutos, él ya estaba buscando el pronóstico."
-  },
-  {
-    "id": "H-CUL-02",
-    "condition": "Cobertura completa",
-    "headline": "Buen abastecimiento en Cultivos no aparta a Jacinto del riego",
-    "subhead": "La conversación duró hasta que el almacenero preguntó por el tiempo. «Bueno, ahora sí», dijo Jacinto."
-  },
-  {
-    "id": "H-CUL-03",
-    "condition": "Buena con faltante",
-    "headline": "Cultivos mejora, pero Jacinto conserva el reclamo",
-    "subhead": "Cultivos cubrió más de su necesidad que la estación anterior, aunque todavía quedó corto. «El reclamo ya estaba escrito», explicó. «No lo iba a desperdiciar»."
-  },
-  {
-    "id": "H-CUL-04",
-    "condition": "Faltante relevante",
-    "headline": "Cultivos quedó corto; la planilla dice otra cosa",
-    "subhead": "«Este se llama “el que según la planilla estaba cubierto”», dijo. Marisa dejó de escribir para mirar la planilla."
-  },
-  {
-    "id": "H-CUL-05",
-    "condition": "Faltante grave",
-    "headline": "La libreta de reclamos de Jacinto ya tiene página marcada",
-    "subhead": "Cultivos recibió muy por debajo de lo necesario. «Esta ya la conozco de memoria», dijo, abriendo en la página correcta."
-  },
-  {
-    "id": "H-GRA-01",
-    "condition": "Cobertura completa",
-    "headline": "Granja cubre su necesidad de agua; Berta estrena un descanso",
-    "subhead": "Le preguntaron si faltaba algo. «Sí: que me dejen tomarlo caliente»."
-  },
-  {
-    "id": "H-GRA-02",
-    "condition": "Cobertura completa",
-    "headline": "Una mañana sin urgencias sorprende a Berta en la granja",
-    "subhead": "«Cuando hay lío, preguntan. Cuando no, también», dijo. Después cebó otro mate."
-  },
-  {
-    "id": "H-GRA-03",
-    "condition": "Buena con faltante",
-    "headline": "Granja mejora su cobertura y Berta deja constancia de lo pendiente",
-    "subhead": "Granja recibió una mayor parte de lo que necesitaba que en la estación anterior, aunque el faltante continúa. «Podés poner las dos cosas en la misma nota», le dijo a Marisa."
-  },
-  {
-    "id": "H-GRA-04",
-    "condition": "Faltante relevante",
-    "headline": "Las visitas a la granja deberán ajustarse al horario de Berta",
-    "subhead": "«Si venís a mirar, vení temprano. Si venís a escribir que todo anda bárbaro, quedate en casa»."
-  },
-  {
-    "id": "H-GRA-05",
-    "condition": "Faltante grave",
-    "headline": "Granja, con un faltante grave: el pronóstico no es el tema de hoy",
-    "subhead": "Granja recibió muy poca agua frente a lo que necesitaba. «Del tiempo ya hablamos todos. Del agua, hablemos ahora»."
-  },
-  {
-    "id": "H-MIN-01",
-    "condition": "Cobertura completa",
-    "headline": "Festejo en Mina: Ferrada improvisa la música",
-    "subhead": "Cuando él se dio cuenta, preguntó si lo había escuchado. «Desde la planta», dijo Rosa. «Se escucha bastante»."
-  },
-  {
-    "id": "H-MIN-02",
-    "condition": "Cobertura completa",
-    "headline": "Ferrada sonríe en la foto del reparto",
-    "subhead": "La Mina recibió el agua necesaria. Rosa le sacó una foto antes de que se le pasara."
-  },
-  {
-    "id": "H-MIN-03",
-    "condition": "Buena con faltante",
-    "headline": "La Mina mejora su cobertura, aunque todavía queda un faltante",
-    "subhead": "La Mina cubrió más de su necesidad que la estación anterior, pero todavía quedó un faltante. «Llegó más agua», dijo Ferrada. «Y todavía no alcanza», completó Rosa."
-  },
-  {
-    "id": "H-MIN-04",
-    "condition": "Faltante relevante",
-    "headline": "Ferrada pide un informe breve sobre el faltante de agua",
-    "subhead": "«Falta agua». «Perfecto», dijo él. «Sacá el resto del informe». Rosa cerró la carpeta."
-  },
-  {
-    "id": "H-MIN-05",
-    "condition": "Faltante grave",
-    "headline": "Rosa edita el informe de Ferrada: “situación complicada” no alcanza",
-    "subhead": "«Dice “situación complicada”», señaló. «¿Querés que escriba “falta mucha agua”?». Ferrada asintió."
-  },
-  {
-    "id": "H-RIO-01",
-    "condition": "Cobertura ecológica completa",
-    "headline": "Río Vivo cubrió su referencia ecológica; Clara deja hablar al paisaje",
-    "subhead": "«¿Eso era todo?», preguntó Marisa. «Por hoy, sí», dijo Clara. «Ahora escuchá»."
-  },
-  {
-    "id": "H-RIO-02",
-    "condition": "Cobertura ecológica completa",
-    "headline": "Clara pide una foto del río sin carteles en primer plano",
-    "subhead": "El caudal ecológico cubrió la referencia de esta estación. «Si hay que explicar el río, que se vea también», dijo."
-  },
-  {
-    "id": "H-RIO-03",
-    "condition": "Buena con faltante",
-    "headline": "Río Vivo mejora su caudal; Clara pide no darlo por resuelto",
-    "subhead": "El caudal ecológico mejoró respecto de la estación anterior, aunque todavía no cubrió lo necesario. «Ese título te lo dejo para cuando pase», dijo Clara."
-  },
-  {
-    "id": "H-RIO-04",
-    "condition": "Faltante relevante",
-    "headline": "El mapa de Clara marca el tramo donde falta caudal ecológico",
-    "subhead": "El caudal ecológico quedó por debajo de lo necesario. «Llevate los dos», dijo Clara. «Después vas a preguntar por el agua que falta»."
-  },
-  {
-    "id": "H-RIO-05",
-    "condition": "Faltante grave",
-    "headline": "Río Vivo queda muy por debajo de su referencia ecológica",
-    "subhead": "El caudal ecológico quedó muy por debajo de la referencia. Clara dobló el mapa y salió con ella."
-  },
-  {
-    "id": "H-GEN-01",
-    "condition": "Buen resultado general",
-    "headline": "El reparto salió bien y Jacinto revisó las cuentas antes de admitirlo",
-    "subhead": "La cobertura de los sectores y la calidad acompañaron esta estación. «No desconfío. Me gusta saber por qué estoy contento»."
-  },
-  {
-    "id": "H-GEN-02",
-    "condition": "Buen resultado general",
-    "headline": "Buen reparto en el valle; Jacinto exige ver el balance antes del brindis",
-    "subhead": "La estación cerró con buena cobertura general y calidad en buen nivel. Berta dejó la copa en la mesa. «La mirás mientras brindamos»."
-  },
-  {
-    "id": "H-GEN-03",
-    "condition": "Resultado normal",
-    "headline": "El valle cierra la estación con decisiones pendientes",
-    "subhead": "Marisa pidió una prioridad. Sofía, Jacinto, Berta, Ferrada y Clara empezaron a contestar a la vez."
-  },
-  {
-    "id": "H-GEN-04",
-    "condition": "Resultado normal",
-    "headline": "El consejo deja asuntos abiertos para la próxima estación",
-    "subhead": "Había decisiones para revisar en la próxima estación. Berta miró la hora: «¿La cerramos antes de que se enfríe el mate?»."
-  },
-  {
-    "id": "H-GEN-05",
-    "condition": "Uso de reservas, beneficiario cubierto",
-    "headline": "El embalse aporta al reparto y cierra con menos reserva",
-    "subhead": "El reparto cubrió la necesidad priorizada y usó reserva almacenada. Sofía aclaró que el embalse no lleva cuenta corriente."
-  },
-  {
-    "id": "H-GEN-06",
-    "condition": "Uso de reservas, beneficiario con cobertura parcial",
-    "headline": "El embalse baja y el sector priorizado todavía queda corto",
-    "subhead": "El reparto usó reservas, que terminaron más bajas; el sector beneficiado todavía tuvo necesidades pendientes."
-  },
-  {
-    "id": "H-GEN-07",
-    "condition": "Crisis centrada en Ciudad",
-    "headline": "Ciudad enfrenta un faltante grave; el reclamo ya llegó a Sofía",
-    "subhead": "Ciudad cerró con un faltante grave. Tito escribió «¿estás?». Sofía respondió: «Ahora sí»."
-  },
-  {
-    "id": "H-GEN-08",
-    "condition": "Alerta centrada en calidad",
-    "headline": "La calidad del agua entra en nivel de alerta",
-    "subhead": "La calidad del agua quedó en nivel de alerta. «Podemos discutir el texto después de mirar el análisis»."
-  },
-  {
-    "id": "H-GEN-09",
-    "condition": "Caída de calidad",
-    "headline": "La calidad del agua baja; la foto del río no alcanza como análisis",
-    "subhead": "La calidad del agua bajó respecto de la estación anterior. La foto volvió a la carpeta."
-  },
-  {
-    "id": "H-GEN-10",
-    "condition": "Calidad recuperada",
-    "headline": "La calidad del agua mejora y Clara aprueba el titular",
-    "subhead": "La calidad mejoró respecto de la estación anterior. «Así sí. Que se entienda qué mejoró»."
-  },
-  {
-    "id": "H-GEN-11",
-    "condition": "Alerta de salud del río",
-    "headline": "La salud del río entra en nivel de alerta",
-    "subhead": "La salud del río cerró en nivel de alerta. «La foto puede salir linda igual», dijo Marisa. «Ese es el problema», contestó Clara."
-  },
-  {
-    "id": "H-GEN-12",
-    "condition": "Recuperación de salud del río",
-    "headline": "Mejora la salud del río; Clara guarda el mapa para la próxima estación",
-    "subhead": "La salud del río mejoró respecto de la anterior. «Hoy lo celebro. Mañana lo volvemos a mirar»."
-  },
-  {
-    "id": "H-GEN-13",
-    "condition": "Oportunidad elegida",
-    "headline": "Una propuesta del valle pasa del anuncio a una decisión",
-    "subhead": "Esta estación se eligió una opción ante el suceso registrado. Berta revisó el acuerdo: «Ahora sí: ¿quién se ocupa el lunes?»."
-  },
-  {
-    "id": "H-GEN-14",
-    "condition": "Entrega completa, pedido menor que la necesidad",
-    "headline": "Entrega completa, cobertura incompleta",
-    "subhead": "El sector recibió todo lo que se le asignó, aunque esa asignación no cubría su necesidad. «Completo no siempre quiere decir suficiente», explicó Sofía."
-  },
-  {
-    "id": "H-GEN-15",
-    "condition": "Deshielo registrado",
-    "headline": "El deshielo suma agua al río desde la reserva de nieve",
-    "subhead": "El balance registró aporte de deshielo desde la reserva de nieve. «Por una vez, alguien llegó antes que nosotros», dijo Clara."
-  },
-  {
-    "id": "H-GEN-16",
-    "condition": "Lluvia con infiltración",
-    "headline": "Parte de la lluvia se infiltró en el suelo",
-    "subhead": "El balance registró infiltración. Jacinto miró el pronóstico: «Esta sí que no la puedo guardar en un tanque»."
-  },
-  {
-    "id": "H-GEN-17",
-    "condition": "Lluvia sin infiltración registrada",
-    "headline": "Llovió; el suelo no registró infiltración esta estación",
-    "subhead": "Marisa preguntó si podía poner «lluvia aprovechada». Clara le señaló el balance. Marisa cambió el título."
-  },
-  {
-    "id": "H-GEN-18",
-    "condition": "Bombeo del acuífero",
-    "headline": "El reparto recurrió al agua subterránea",
-    "subhead": "El balance registró bombeo del acuífero para abastecer el reparto. «Pregunto para saber qué queda, no para retar a nadie»."
-  },
-  {
-    "id": "H-GEN-19",
-    "condition": "Sin bombeo",
-    "headline": "El acuífero no registró extracciones esta estación",
-    "subhead": "El balance no registró extracción subterránea. «Si no se usó, no lo sumemos al reparto», dijo."
-  },
-  {
-    "id": "H-GEN-20",
-    "condition": "Retornos al río",
-    "headline": "Los retornos también cuentan aguas abajo",
-    "subhead": "Parte del agua usada volvió al río y está incluida en el flujo aguas abajo. «El recorrido sigue», dijo Clara."
-  },
-  {
-    "id": "H-EVT-01",
-    "condition": "Berta / calor",
-    "headline": "Berta busca sombra para hablar del calor",
-    "subhead": "«Si la nota va a decir que hace calor, por lo menos hagámosla donde se note»."
-  },
-  {
-    "id": "H-EVT-02",
-    "condition": "Ferrada / molienda",
-    "headline": "La molienda espera una decisión; Rosa espera que Ferrada termine el comunicado",
-    "subhead": "Ferrada repasó la decisión elegida para la molienda. «No», dijo Rosa. «Por eso te está esperando»."
-  },
-  {
-    "id": "H-EVT-03",
-    "condition": "Sofía / aniversario",
-    "headline": "El aniversario de Ciudad enfrenta el dilema de las fuentes",
-    "subhead": "La bajada informa si se eligieron fuentes, campaña o ahorro estricto, según el registro del evento."
-  },
-  {
-    "id": "H-EVT-04",
-    "condition": "Jacinto / festival",
-    "headline": "El festival de Jacinto obliga a elegir entre festejo y prioridades de agua",
-    "subhead": "La bajada cuenta si se eligió agua extra, goteo o priorizar la reserva; Jacinto revisó que Marisa anotara cuál."
-  },
-  {
-    "id": "H-EVT-05",
-    "condition": "Clara / carpincho",
-    "headline": "El carpincho recibe más atención que el orden del día",
-    "subhead": "La bajada informa si se eligió pulso ecológico, biofiltro o dejar continuar el ciclo natural."
-  },
-  {
-    "id": "H-EVT-06",
-    "condition": "Fuga de red en Ciudad",
-    "headline": "Una fuga en la red obliga al consejo a decidir cómo actuar",
-    "subhead": "La bajada cuenta si se reparó, se sectorizó, se postergó o se renovó la red, según la opción registrada."
-  },
-  {
-    "id": "H-EVT-07",
-    "condition": "Flamencos y turismo",
-    "headline": "El turismo llega al humedal; Clara pide mirar algo más que la foto",
-    "subhead": "La bajada explica la opción registrada para el área, sin afirmar presencia de especies fuera de este evento."
-  },
-  {
-    "id": "H-EVT-08",
-    "condition": "Falla de saneamiento",
-    "headline": "Falla de saneamiento: el tratamiento queda bajo observación",
-    "subhead": "La bajada dice si se repararon los filtros o se eligió la opción registrada de dilución."
-  },
-  {
-    "id": "H-EVT-09",
-    "condition": "Sequía severa",
-    "headline": "La sequía obliga a priorizar agua y reservas",
-    "subhead": "La bajada informa si se eligió restricción de riego, uso de reserva o bombeo de acuífero."
-  },
-  {
-    "id": "H-EVT-10",
-    "condition": "Lluvia extraordinaria",
-    "headline": "La lluvia extraordinaria deja tres caminos sobre la mesa",
-    "subhead": "La bajada informa si se eligió liberar agua, retenerla o usar drenaje para infiltrar."
-  },
-  {
-    "id": "V-CIU-01",
-    "condition": "Completa",
-    "text": "Sofía silenció el grupo. «Si es por el perro, ya sé»."
-  },
-  {
-    "id": "V-CIU-02",
-    "condition": "Completa",
-    "text": "Tito felicitó a Sofía. Después aclaró que era por el perro, no por el reparto."
-  },
-  {
-    "id": "V-CIU-03",
-    "condition": "Buena con faltante",
-    "text": "Tito dijo «mejoró» y Sofía le pidió que no lo mandara como «resuelto»."
-  },
-  {
-    "id": "V-CIU-04",
-    "condition": "Faltante relevante",
-    "text": "Sofía le pidió un reclamo concreto. Tito señaló la canilla."
-  },
-  {
-    "id": "V-CIU-05",
-    "condition": "Faltante grave",
-    "text": "El barrio abrió el grupo para reclamar. Tito preguntó si alguien tenía el número de Sofía."
-  },
-  {
-    "id": "V-CIU-06",
-    "condition": "Mejora relativa",
-    "text": "Tito quiso festejar. Sofía le recordó que todavía quedaba un faltante. «Festejo corto», propuso él."
-  },
-  {
-    "id": "V-CUL-01",
-    "condition": "Completa",
-    "text": "Jacinto guardó el pronóstico. Lo volvió a sacar para ver si seguía ahí."
-  },
-  {
-    "id": "V-CUL-02",
-    "condition": "Completa",
-    "text": "Berta le preguntó a Jacinto si iba a descansar. «Sí, apenas termine de revisar esto»."
-  },
-  {
-    "id": "V-CUL-03",
-    "condition": "Buena con faltante",
-    "text": "Jacinto escribió «mejoró» en la libreta y dejó espacio para lo que falta."
-  },
-  {
-    "id": "V-CUL-04",
-    "condition": "Faltante relevante",
-    "text": "Jacinto le explicó el surco a Marisa. «No hace falta que le pongas nombre», dijo ella."
-  },
-  {
-    "id": "V-CUL-05",
-    "condition": "Faltante grave",
-    "text": "Jacinto cerró la cuenta. La volvió a abrir para comprobar que seguía dando lo mismo."
-  },
-  {
-    "id": "V-CUL-06",
-    "condition": "Mejora relativa",
-    "text": "«Llegó más», dijo Jacinto. «¿Y alcanza?». Él volvió a mirar la libreta."
-  },
-  {
-    "id": "V-GRA-01",
-    "condition": "Completa",
-    "text": "Berta se sentó con el mate. «Estoy descansando», avisó antes de que le preguntaran."
-  },
-  {
-    "id": "V-GRA-02",
-    "condition": "Completa",
-    "text": "Marisa preguntó si podía sacar una foto. Berta le pidió que esperara a que se enfriara el mate."
-  },
-  {
-    "id": "V-GRA-03",
-    "condition": "Buena con faltante",
-    "text": "Berta aceptó el elogio y agregó lo que todavía faltaba."
-  },
-  {
-    "id": "V-GRA-04",
-    "condition": "Faltante relevante",
-    "text": "Marisa llegó tarde a la granja. Berta ya había terminado de explicarle por qué."
-  },
-  {
-    "id": "V-GRA-05",
-    "condition": "Faltante grave",
-    "text": "Berta resumió el problema. Marisa guardó el grabador y la escuchó."
-  },
-  {
-    "id": "V-GRA-06",
-    "condition": "Mejora relativa",
-    "text": "«Mejoró», dijo Berta. «Ahora anotá también lo otro»."
-  },
-  {
-    "id": "V-MIN-01",
-    "condition": "Completa",
-    "text": "Rosa oyó tararear a Ferrada. Esperó a ver si él mismo se reconocía."
-  },
-  {
-    "id": "V-MIN-02",
-    "condition": "Completa",
-    "text": "Ferrada pidió una foto seria. Rosa esperó a que terminara de sonreír."
-  },
-  {
-    "id": "V-MIN-03",
-    "condition": "Buena con faltante",
-    "text": "Ferrada dijo «llegó más». Rosa esperó. «¿Sigo?», preguntó él."
-  },
-  {
-    "id": "V-MIN-04",
-    "condition": "Faltante relevante",
-    "text": "Rosa le pidió a Ferrada que sacara del informe la parte que decía «todo bien»."
-  },
-  {
-    "id": "V-MIN-05",
-    "condition": "Faltante grave",
-    "text": "Ferrada empezó a explicar. Rosa le alcanzó el tanque lleno de consejos."
-  },
-  {
-    "id": "V-MIN-06",
-    "condition": "Mejora relativa",
-    "text": "Rosa felicitó a Ferrada por la mejora. «No te entusiasmes», dijo. «Dije mejora»."
-  },
-  {
-    "id": "V-RIO-01",
-    "condition": "Referencia ecológica completa",
-    "text": "Clara terminó de hablar y dejó un rato sin llenar el silencio."
-  },
-  {
-    "id": "V-RIO-02",
-    "condition": "Referencia ecológica completa",
-    "text": "Marisa preguntó si ya podía sacar la foto. Clara le dijo que primero mirara el río."
-  },
-  {
-    "id": "V-RIO-03",
-    "condition": "Buena con faltante",
-    "text": "Clara aceptó el avance y corrigió el cartel que decía «resuelto»."
-  },
-  {
-    "id": "V-RIO-04",
-    "condition": "Brecha relevante",
-    "text": "Clara desplegó el mapa. Marisa guardó el teléfono y se acercó."
-  },
-  {
-    "id": "V-RIO-05",
-    "condition": "Brecha grave",
-    "text": "Clara señaló cuánto faltaba para la referencia. Esta vez nadie preguntó por el titular."
-  },
-  {
-    "id": "V-RIO-06",
-    "condition": "Mejora relativa",
-    "text": "«Va mejor», dijo Clara. «¿Ya está?». «No». «Lo anoto así»."
+    "subhead": "La estación cerró con buen abastecimiento y calidad. «No desconfío. Me gusta saber por qué estoy contento».",
+    "text": "",
+    "optionId": ""
   }
 ]
