@@ -1,13 +1,36 @@
 import bank from './ApprovedEditorial.json';
 import { SeededRandom } from '../simulation/RandomSystem';
 import type { SectorId } from '../models/Sector';
+import type { SeasonResult } from '../models/Balance';
 export const EDITORIAL_SECTORS = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const;
 export type EditorialSector = typeof EDITORIAL_SECTORS[number];
 const codes = { population: 'CIU', agriculture: 'CUL', livestock: 'GRA', mining: 'MIN', ecosystem: 'RIO' };
 
-export function pickEditorial(ids: string[], turn: number, seed: string, topic: string) {
-  const entries = bank.filter(entry => ids.includes(entry.id));
+export interface EditorialLedger {
+  used: Map<string, number>;
+  families: Map<string, number>;
+  choices: Map<string, typeof bank[number]>;
+}
+export function createEditorialLedger(): EditorialLedger {
+  return { used: new Map(), families: new Map(), choices: new Map() };
+}
+const rejected = new Set(['V-RIO-12']);
+// Familias del banco aprobado que cuentan esencialmente el mismo chiste.
+// Los nuevos textos pueden declarar family explícitamente.
+const relatedFamilies: Record<string, string> = {
+  'V-CIU-01': 'sofia-silencia-grupo', 'V-CIU-12': 'sofia-silencia-grupo',
+  'V-MIN-02': 'rosa-fotografia-ferrada', 'A-MAP-21': 'rosa-fotografia-ferrada',
+  'P-MIN-01': 'rosa-fotografia-ferrada', 'P-MIN-12': 'rosa-fotografia-ferrada', 'P-MIN-19': 'rosa-fotografia-ferrada'
+};
+function editorialFamily(entry: typeof bank[number]): string {
+  return (entry as typeof entry & { family?: string }).family ?? relatedFamilies[entry.id] ?? entry.id;
+}
+export function pickEditorial(ids: string[], turn: number, seed: string, topic: string, ledger?: EditorialLedger) {
+  const entries = bank.filter(entry => ids.includes(entry.id) && !rejected.has(entry.id));
   if (!entries.length) return undefined;
+  const key = `${turn}:${topic}`;
+  const repeatedQuery = ledger?.choices.get(key);
+  if (repeatedQuery) return repeatedQuery;
   const edition = Math.max(0, turn - 1);
   // Azar editorial independiente del generador del motor.
   const rng = new SeededRandom(`${seed}:approved:${topic}:${Math.floor(edition / entries.length)}`);
@@ -15,17 +38,30 @@ export function pickEditorial(ids: string[], turn: number, seed: string, topic: 
     const swap = rng.rangeInt(0, i);
     [entries[i], entries[swap]] = [entries[swap], entries[i]];
   }
-  return entries[edition % entries.length];
+  if (!ledger) return entries[edition % entries.length];
+  // Otra redacción del mismo chiste no es una alternativa fresca. Evitar
+  // familias de la estación anterior cuando exista otra opción compatible.
+  const notRecent = entries.filter(entry => (ledger.families.get(editorialFamily(entry)) ?? -1) < turn - 1);
+  const compatible = notRecent.length ? notRecent : entries;
+  const unused = compatible.filter(entry => !ledger.used.has(entry.id));
+  const available = unused.length ? unused : compatible.filter(entry =>
+    ledger.used.get(entry.id) === Math.min(...compatible.map(row => ledger.used.get(row.id) ?? -1)));
+  const oldestFamily = Math.min(...available.map(entry => ledger.families.get(editorialFamily(entry)) ?? -1));
+  const choice = available.find(entry => (ledger.families.get(editorialFamily(entry)) ?? -1) === oldestFamily)!;
+  ledger.used.set(choice.id, turn);
+  ledger.families.set(editorialFamily(choice), turn);
+  ledger.choices.set(key, choice);
+  return choice;
 }
 export function coverageBand(sector: EditorialSector, rate: number) {
   return rate >= 1 ? 'complete' : rate >= (sector === 'ecosystem' ? .75 : .8) ? 'partial'
     : rate < (sector === 'ecosystem' ? .55 : .5) ? 'grave' : 'low';
 }
-export function eventArticle(optionId: string | undefined, turn: number, seed: string) {
+export function eventArticle(optionId: string | undefined, turn: number, seed: string, ledger?: EditorialLedger) {
   if (!optionId) return undefined;
-  return pickEditorial(bank.filter(entry => entry.optionId === optionId).map(entry => entry.id), turn, seed, `event:${optionId}`);
+  return pickEditorial(bank.filter(entry => entry.optionId === optionId).map(entry => entry.id), turn, seed, `event:${optionId}`, ledger);
 }
-export function sectorArticle(sector: EditorialSector, rate: number, previous: number | undefined, turn: number, seed: string, receivedMore = false) {
+export function sectorArticle(sector: EditorialSector, rate: number, previous: number | undefined, turn: number, seed: string, receivedMore = false, ledger?: EditorialLedger) {
   const band = coverageBand(sector, rate);
   const improved = previous !== undefined && rate > previous;
   // Las piezas nuevas comparan cobertura, no volumen: no necesitan receivedMore.
@@ -34,10 +70,24 @@ export function sectorArticle(sector: EditorialSector, rate: number, previous: n
     : band === 'grave' ? ['07', '08', '14', '21'] : ['05', '06', '13', '20'];
   if (rate < 1 && improved) suffixes.push('09', '15', '16', '22', '23');
   const ids = suffixes.map(suffix => `P-${codes[sector]}-${suffix}`);
-  return pickEditorial(ids, turn, seed, `heraldo:${sector}:${band}`);
+  return pickEditorial(ids, turn, seed, `heraldo:${sector}:${band}`, ledger);
 }
 export function mapStory(sector: SectorId, rate: number, previous: number | undefined, turn: number, seed: string,
-  carpinchoEvent = false, receivedMore = false, reservoirRecovered = false): { text: string; variant: number } {
+  carpinchoEvent = false, receivedMore = false, reservoirRecovered = false, history: readonly SeasonResult[] = []): { text: string; variant: number } {
+  const ledger = createEditorialLedger();
+  const priorRows = history.filter(row => row.turn < turn).sort((a, b) => a.turn - b.turn);
+  for (const row of priorRows) {
+    const prior = history.find(item => item.turn === row.turn - 1);
+    const carpincho = history.some(item => item.turn <= row.turn && item.events.some(record => record.event.id === 'clara_carpincho'));
+    chooseMapStory(sector, row.balance.satisfactions[sector], prior?.balance.satisfactions[sector], row.turn, seed,
+      carpincho, !!prior && row.balance.suppliedAllocations[sector] > prior.balance.suppliedAllocations[sector],
+      row.balance.reservoirEnd > row.balance.reservoirStart, ledger);
+  }
+  return chooseMapStory(sector, rate, previous, turn, seed, carpinchoEvent, receivedMore, reservoirRecovered,
+    history.length ? ledger : undefined);
+}
+function chooseMapStory(sector: SectorId, rate: number, previous: number | undefined, turn: number, seed: string,
+  carpinchoEvent: boolean, receivedMore: boolean, reservoirRecovered: boolean, ledger?: EditorialLedger): { text: string; variant: number } {
   if (!EDITORIAL_SECTORS.includes(sector as EditorialSector)) return { text: '', variant: 0 };
   const id = sector as EditorialSector, band = coverageBand(id, rate);
   const improved = previous !== undefined && rate > previous;
@@ -56,7 +106,7 @@ export function mapStory(sector: SectorId, rate: number, previous: number | unde
   if (band !== 'partial') ids.push(...extra[id].map(suffix => `A-MAP-${suffix}`));
   // Escena ficticia contextualizada por la reserva real.
   if (id === 'population' && reservoirRecovered) ids.push('A-MAP-26');
-  const choice = pickEditorial(ids, turn, seed, `valle:${id}:${band}`);
+  const choice = pickEditorial(ids, turn, seed, `valle:${id}:${band}`, ledger);
   return choice ? { text: choice.text ?? '', variant: Number(choice.id.slice(-2)) % 3 }
     : { text: 'Quedó una parte de la necesidad por cubrir.', variant: 0 };
 }

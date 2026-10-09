@@ -303,6 +303,67 @@ const btnViewValley = document.getElementById('btn-view-valley') as HTMLButtonEl
 // al recuperar una partida resuelta, cuyo estado histórico mezcla otras decisiones.
 let resolvedImpact: { result: SeasonResult; trust: number; health: number } | null = null;
 
+// Los créditos ya existen en el motor. Sólo diferimos su presentación hasta
+// el resumen y el cierre anual; cambiar de motor descarta esta memoria de UI.
+const budgetPresentations = new WeakMap<SimulationEngine, { season: number; annual: number }>();
+let budgetAnimation: number | undefined;
+const fbBudgetReceipt = document.createElement('p');
+fbBudgetReceipt.className = 'fb-water-line';
+fbBudgetReceipt.hidden = true;
+document.getElementById('fb-sector-impact')!.after(fbBudgetReceipt);
+
+function visibleBudget(): number {
+  const pending = budgetPresentations.get(engine);
+  return engine.getState().money - (pending?.season ?? 0) - (pending?.annual ?? 0);
+}
+
+function renderBudget(value: number): void {
+  statMoney.textContent = `$${value}`;
+  btnUpgradesMoney.textContent = `$${value}`;
+}
+
+function revealBudget(kind: 'season' | 'annual'): void {
+  const pending = budgetPresentations.get(engine);
+  if (!pending || pending[kind] === 0) return;
+  const from = visibleBudget();
+  const delta = pending[kind];
+  pending[kind] = 0; // Consumir la presentación, nunca volver a acreditar.
+  const to = visibleBudget();
+  if (budgetAnimation !== undefined) cancelAnimationFrame(budgetAnimation);
+  budgetAnimation = undefined;
+  const receipt = kind === 'season' ? fbBudgetReceipt
+    : yearendBreakdown.querySelector<HTMLElement>('[data-budget-total]');
+  if (receipt) {
+    receipt.hidden = false;
+    receipt.setAttribute('aria-label', `Presupuesto: $${to}. ${delta > 0 ? 'Ganaste' : 'Cambio de'} $${delta}.`);
+  }
+  const draw = (value: number) => {
+    renderBudget(value);
+    if (receipt) receipt.textContent = kind === 'season'
+      ? `Presupuesto: $${value} · Premio del desafío: +$${delta}`
+      : `${delta >= 0 ? '+' : ''}$${delta} (Total actual: $${value})`;
+  };
+  if (delta > 0) sound.coin();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    draw(to);
+    return;
+  }
+  const owner = engine;
+  const turn = engine.getState().turn;
+  const start = performance.now();
+  const tick = (now: number) => {
+    if (engine !== owner || engine.getState().turn !== turn || visibleBudget() !== to) {
+      budgetAnimation = undefined;
+      renderBudget(visibleBudget());
+      return;
+    }
+    const progress = Math.min(1, (now - start) / 850);
+    draw(Math.round(from + (to - from) * (1 - (1 - progress) ** 3)));
+    budgetAnimation = progress < 1 ? requestAnimationFrame(tick) : undefined;
+  };
+  budgetAnimation = requestAnimationFrame(tick);
+}
+
 // Modal: El Heraldo del Valle (Periódico)
 const modalNewspaper = document.getElementById('modal-newspaper') as HTMLElement | null;
 const newsDate = document.getElementById('news-date');
@@ -1426,8 +1487,7 @@ function updateUI(): void {
   renderForecast();
 
   // Estadísticas globales
-  statMoney.textContent = `$${state.money}`;
-  btnUpgradesMoney.textContent = `$${state.money}`;
+  if (budgetAnimation === undefined) renderBudget(visibleBudget());
   statTrust.textContent = `${state.publicTrust}%`;
   statHealth.textContent = `${state.basinHealth}%`;
   statQuality.textContent = `${state.waterQuality}/100`;
@@ -1586,6 +1646,10 @@ btnResolveSeason.addEventListener('click', () => {
   sessionLog?.captureAllocations(st);
   const impactBaseline = { trust: st.publicTrust, health: st.basinHealth };
   const seasonResult = engine.resolveSeason();
+  budgetPresentations.set(engine, {
+    season: seasonResult.goalAchieved ? currentGoal?.reward.moneyBonus ?? 0 : 0,
+    annual: st.isYearEndPhase ? st.yearHistory.at(-1)?.budgetEarned ?? 0 : 0,
+  });
   resolvedImpact = { result: seasonResult,
     trust: st.publicTrust - impactBaseline.trust, health: st.basinHealth - impactBaseline.health };
   sessionLog?.record({ type: 'resolve', turn: st.turn });
@@ -1786,7 +1850,6 @@ function renderAgileSeasonFeedback(
   fbSeasonTitle.textContent = `${seasonInfo.name} ${res.season === 'SPRING' ? 'completada' : 'completado'} · Año ${res.year}`;
 
   if (goal && goalSuccess) {
-    sound.coin();
     fbGoalBadge.style.display = 'inline-block';
     fbGoalBadge.style.background = 'rgba(52, 211, 153, 0.2)';
     fbGoalBadge.style.borderColor = '#10b981';
@@ -1803,6 +1866,8 @@ function renderAgileSeasonFeedback(
   }
 
   renderSeasonWaterSummary(res);
+  fbBudgetReceipt.hidden = true;
+  cardSeasonFeedback.querySelector('[data-investment-notice]')?.remove();
   const impact = document.getElementById('fb-sector-impact')!;
   impact.replaceChildren();
   impact.hidden = resolvedImpact?.result !== res;
@@ -2017,16 +2082,20 @@ function positionValleyResultCards(): void {
     positions.forEach(({ card, y }) => { card.style.top = `${Math.max(top, y - shift)}px`; });
   }
 }
-btnReturnSummary.addEventListener('click', () => {
-  if (!canUseControl(btnReturnSummary) || !engine.getState().isSeasonResolved || btnReturnSummary.hidden) return;
+function openSeasonSummary(): void {
   btnReturnSummary.hidden = true;
   valleyResultsPanel.hidden = true;
   valleyInspectionControls.hidden = true;
   btnResolveSeason.hidden = false;
   cardSeasonFeedback.inert = false;
   cardSeasonFeedback.classList.add('open');
+  revealBudget('season');
   // El observer debe liberar la tarjeta antes de enfocar su botón.
   requestAnimationFrame(() => { if (canUseControl(btnFbContinue)) btnFbContinue.focus(); });
+}
+btnReturnSummary.addEventListener('click', () => {
+  if (!canUseControl(btnReturnSummary) || !engine.getState().isSeasonResolved || btnReturnSummary.hidden) return;
+  openSeasonSummary();
 });
 
 function closeNewspaperToSummary(): void {
@@ -2076,7 +2145,6 @@ function continueResolvedSeason(): void {
 
 // --- MODAL: CIERRE DE AÑO (CONSOLIDACIÓN TRAS EL OTOÑO) ---
 function showYearEndModal(): void {
-  sound.coin();
   const st = engine.getState();
   const latestYearResult = st.yearHistory[st.yearHistory.length - 1];
 
@@ -2109,7 +2177,7 @@ function showYearEndModal(): void {
     <div class="year-breakdown-item"><span style="color: #f87171;">Mantenimiento de red:</span><strong style="color: #f87171;">-$${maint}</strong></div>
     ${minimumBudgetContribution > 0 ? `<div class="year-breakdown-item"><span>Aporte para presupuesto mínimo:</span><strong>+$${minimumBudgetContribution}</strong></div>` : ''}
     <div class="year-breakdown-item" style="grid-column: span 2; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; font-weight: 800; color: #fbbf24;">
-      <span>Presupuesto neto ganado:</span><span>+$${latestYearResult.budgetEarned} (Total actual: $${st.money})</span>
+      <span>Presupuesto neto ganado:</span><span data-budget-total>+$${latestYearResult.budgetEarned} (Total actual: $${st.money})</span>
     </div>
   `;
 
@@ -2120,6 +2188,7 @@ function showYearEndModal(): void {
   }
 
   modalYearEnd.classList.add('open');
+  revealBudget('annual');
 }
 
 btnYearendUpgrades.addEventListener('click', () => {
@@ -2233,20 +2302,25 @@ function showFinalReport(): void {
   }
   document.getElementById('fin-economy')!.textContent = `Presupuesto anual neto acumulado: $${earned}. Restante: $${st.money}.`;
   const reservesFell = first && (st.aquiferVolume < first.balance.aquiferStart || st.reservoirVolume < first.balance.reservoirStart);
+  const aquiferNeedsRecovery = st.aquiferStressLevel === 'STRESSED' || st.aquiferStressLevel === 'CRITICAL';
+  const pumped = history.reduce((sum, result) => sum + result.balance.aquiferWithdrawal, 0);
   if (finHonorIcon) finHonorIcon.textContent = '🧭';
-  if (finHonorTitle) finHonorTitle.textContent = reservesFell ? 'Cobertura y reservas en tensión' : 'Reservas para el próximo ciclo';
+  if (finHonorTitle) finHonorTitle.textContent = aquiferNeedsRecovery
+    ? 'Terminaste la partida; el acuífero necesita recuperarse'
+    : reservesFell ? 'Abastecimiento y reservas al cierre' : 'Reservas para el próximo ciclo';
   if (finHonorDesc) finHonorDesc.textContent = history.length
-    ? `El río alcanzó el caudal recomendado en ${ecoTurns}/${history.length} estaciones. ${reservesFell ? 'Al menos una reserva cerró por debajo de su inicio: sostener el abastecimiento y guardar agua son decisiones que conviene comparar.' : 'Embalse y acuífero cerraron sin disminuir respecto del inicio. La cobertura y la calidad completan esta historia.'}`
+    ? aquiferNeedsRecovery
+      ? `Completaste ${history.length} estaciones. El acuífero cerró ${st.aquiferStressLevel === 'CRITICAL' ? 'en estado crítico' : 'en estrés'}. ${pumped > 0 ? 'El bombeo sostuvo parte del abastecimiento usando agua de esa reserva. ' : ''}Una cobertura alta, la confianza y la salud ecológica no garantizan que quede agua guardada para el próximo ciclo.`
+      : `El río alcanzó el caudal recomendado en ${ecoTurns}/${history.length} estaciones. ${reservesFell ? 'Al menos una reserva cerró por debajo de su inicio: sostener el abastecimiento y guardar agua son decisiones que conviene comparar.' : 'Embalse y acuífero cerraron sin disminuir respecto del inicio. La cobertura y la calidad completan esta historia.'}`
     : 'No hay historial suficiente para describir la trayectoria de esta partida.';
   modalFinalReport.querySelector('details')?.removeAttribute('open');
 
-  sound.fanfare();
-
-  confetti({
-    particleCount: 140,
-    spread: 85,
-    origin: { y: 0.6 }
-  });
+  if (!aquiferNeedsRecovery) {
+    sound.fanfare();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      confetti({ particleCount: 140, spread: 85, origin: { y: 0.6 } });
+    }
+  }
 
   modalFinalReport.classList.add('open');
 }
@@ -2294,6 +2368,19 @@ function playPendingUpgradeConstruction(): void {
 
 btnOpenUpgrades.addEventListener('click', () => {
   if (!canUseControl(btnOpenUpgrades)) return;
+  const pending = budgetPresentations.get(engine);
+  if (pending && (pending.season !== 0 || pending.annual !== 0)) {
+    openSeasonSummary();
+    const investmentNotice = document.createElement('p');
+    investmentNotice.className = 'fb-water-line';
+    investmentNotice.dataset.investmentNotice = '';
+    cardSeasonFeedback.querySelector('[data-investment-notice]')?.remove();
+    investmentNotice.textContent = pending.annual !== 0
+      ? 'Antes de invertir, abrí el cierre anual para ver los nuevos fondos.'
+      : 'Premio recibido. Podés volver al valle para invertir en obras.';
+    fbBudgetReceipt.after(investmentNotice);
+    return;
+  }
   renderUpgradesList();
   modalUpgrades.classList.add('open');
 });

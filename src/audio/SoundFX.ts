@@ -114,7 +114,7 @@ class SoundManager {
 
     try {
       const t = ctx.currentTime;
-      // Dos notas rápidas tipo Mario/arcade (B5 -> E6)
+      // Cascada breve de monedas arcade; una sola señal por cobro mostrado.
       const playTone = (freq: number, startOffset: number, dur: number) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -128,8 +128,10 @@ class SoundManager {
         osc.stop(t + startOffset + dur + 0.01);
       };
 
-      playTone(987.77, 0, 0.08); // B5
-      playTone(1318.51, 0.07, 0.25); // E6
+      playTone(783.99, 0, 0.07);
+      playTone(987.77, 0.065, 0.07);
+      playTone(1174.66, 0.13, 0.07);
+      playTone(1567.98, 0.195, 0.22);
     } catch {}
   }
 

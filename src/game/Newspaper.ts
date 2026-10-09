@@ -3,7 +3,7 @@ import { SEASONS_INFO } from '../models/Season';
 import { getSeasonVerdict, type SeasonVerdict, type SeasonVerdictKind } from '../seasonVerdict';
 import { SeededRandom } from '../simulation/RandomSystem';
 import { NEWSPAPER_HEADLINES } from './NewspaperHeadlines';
-import { EDITORIAL_SECTORS, pickEditorial, sectorArticle, eventArticle, type EditorialSector } from './EditorialSelection';
+import { EDITORIAL_SECTORS, pickEditorial, sectorArticle, eventArticle, createEditorialLedger, type EditorialLedger, type EditorialSector } from './EditorialSelection';
 
 export interface NewspaperArticle {
   headline: string;
@@ -126,6 +126,18 @@ export function generateNewspaperEdition(
   verdict: SeasonVerdict = getSeasonVerdict(result, previous),
   history: readonly SeasonResult[] = [],
   editorialSeed = 'HERALDO'
+): NewspaperEdition {
+  const ledger = createEditorialLedger();
+  const earlier = history.filter(row => row.turn < result.turn).sort((a, b) => a.turn - b.turn);
+  for (const row of earlier) {
+    const prior = history.find(item => item.turn === row.turn - 1);
+    renderNewspaperEdition(row, prior, getSeasonVerdict(row, prior), history.filter(item => item.turn <= row.turn), editorialSeed, ledger);
+  }
+  return renderNewspaperEdition(result, previous, verdict, history, editorialSeed, ledger);
+}
+function renderNewspaperEdition(
+  result: SeasonResult, previous: SeasonResult | undefined, verdict: SeasonVerdict,
+  history: readonly SeasonResult[], editorialSeed: string, ledger: EditorialLedger
 ): NewspaperEdition {
   const b = result.balance;
   const s = b.satisfactions;
@@ -401,10 +413,10 @@ export function generateNewspaperEdition(
     'No faltó parte del envío: faltó incluir más agua en el pedido.'
   ], 'short-request-explanation', true)}`;
 
-  const approved = (ids: string[], context: string) => pickEditorial(ids, result.turn, editorialSeed, context);
+  const approved = (ids: string[], context: string) => pickEditorial(ids, result.turn, editorialSeed, context, ledger);
   const general = (numbers: number[], context: string) => approved(numbers.map(n => `P-GEN-${String(n).padStart(2, '0')}`), context);
   const approvedSector = (id: EditorialSector) => sectorArticle(id, s[id], previous?.balance.satisfactions[id], result.turn, editorialSeed,
-    !!previous && b.suppliedAllocations[id] > previous.balance.suppliedAllocations[id]);
+    !!previous && b.suppliedAllocations[id] > previous.balance.suppliedAllocations[id], ledger);
   const approvedTopic = (id: string) => {
     if (EDITORIAL_SECTORS.includes(id as EditorialSector)) return approvedSector(id as EditorialSector);
     if (id === 'waterQuality') return general(b.waterQuality < 60 ? [8, 32, 42]
@@ -419,7 +431,7 @@ export function generateNewspaperEdition(
     if (id === 'aquifer') return b.aquiferWithdrawal > 0 ? general([23], id)
       : result.events.some(record => (record.waterAdjustment?.aquiferChange ?? 0) < 0) ? undefined : general([24], id);
     if (id === 'returns' && usesReturned > 0) return general([25], id);
-    if (id === 'event') return eventArticle(chosen?.chosenOptionId, result.turn, editorialSeed)
+    if (id === 'event') return eventArticle(chosen?.chosenOptionId, result.turn, editorialSeed, ledger)
       ?? (result.events.length ? general([28], id) : undefined);
     return undefined;
   };

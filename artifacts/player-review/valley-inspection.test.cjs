@@ -7,7 +7,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '../..');
 const source = ts.createSourceFile('main.ts', fs.readFileSync(root + '/src/main.ts', 'utf8'), ts.ScriptTarget.Latest, true);
 const statements = source.statements.filter(s => ts.isExpressionStatement(s) && /^(btnViewValley|btnReturnSummary|btnToggleValleyResults)\.addEventListener/.test(s.getText(source))).map(s => s.getText(source));
-const guards = source.statements.filter(s => ts.isFunctionDeclaration(s) && ['activeInteractionSurface', 'backgroundInteractionBlocked', 'canUseControl', 'showValleyInspection', 'closeNewspaperToSummary'].includes(s.name?.text)).map(s => s.getText(source));
+const guards = source.statements.filter(s => ts.isFunctionDeclaration(s) && ['activeInteractionSurface', 'backgroundInteractionBlocked', 'canUseControl', 'showValleyInspection', 'openSeasonSummary', 'closeNewspaperToSummary'].includes(s.name?.text)).map(s => s.getText(source));
 assert.equal(statements.length, 3);
 function fixture() {
   const names = new Set(['open']); const handlers = {};
@@ -23,7 +23,7 @@ function fixture() {
     btnToggleValleyResults: { closest: () => null, addEventListener: (_, fn) => handlers.toggle = fn },
     document: { querySelectorAll: () => [], createElement: () => ({ dataset: {}, append() {} }) },
     positionValleyResultCards() {},
-    tutorialManager: { isActive: () => false }, cancelPendingNewspaper() {},
+    tutorialManager: { isActive: () => false }, cancelPendingNewspaper() {}, revealBudget() {},
     modalNewspaper: { classList: { contains: () => true, remove() {} } },
     lastNewspaperEdition: { editionNumber: 3 },
     requestAnimationFrame: fn => fn(),

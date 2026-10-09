@@ -1,5 +1,15 @@
 # Pendientes de Cuenca Viva
 
+## Dificultad, reservas y evaluación del éxito
+
+Prioridad: evitar que abastecer todo agotando reservas se presente como gestión integral excelente. La partida recibida el 9 de octubre cubrió cinco frentes en 18/20 estaciones, pero dejó embalse 4 y acuífero 35 (mínimo 13), con confianza y salud 100%. El benchmark del motor reproduce recetas fijas de compras y pedidos completos con resultados similares en Valle Central; no justifica debilitar todas las obras ni endurecer globalmente los otros escenarios.
+
+Evidencia y políticas reproducibles: [diagnóstico](artifacts/player-review/balance-2026-10-09/DIAGNOSTICO.md), [métricas](artifacts/player-review/balance-2026-10-09/summary.json), [benchmark](artifacts/player-review/balance-2026-10-09/benchmark.cjs). 72 configuraciones, dos repeticiones deterministas y 2.880 resoluciones con conservación comprobada. El HTML no permite reconstruir exactamente la cronología de compras del jugador.
+
+Orden propuesto: mostrar cobertura y preservación de reservas por separado; diseñar misiones mixtas de abastecimiento y reservas; revisar cómo salud compuesta permite que caudal/calidad compensen acuífero crítico; luego evaluar si Central debe seguir introductorio o sostener desafío intermedio durante 20 turnos. El candidato de misión anual fue evaluado sólo sobre historiales actuales, no sobre financiación modificada: todavía no está validado como regla universal ni demostrado alcanzable en toda la campaña.
+
+Criterios de aceptación: las obras ayudan, pero pedir todo no domina en abastecimiento, reservas y recompensas; racionar en exceso tampoco representa victoria global; las semillas requieren decisiones distintas; conservar accesibilidad inicial, masa y determinismo. No se cambiaron agua, costes, demandas o recompensas al registrar este pendiente.
+
 ## Identidad visual de los escenarios
 
 Representar Valle Central, Oasis Cordillerano Árido y Lagos del Sur con mapas distintos y rasgos territoriales reconocibles. Actualmente los escenarios cambian condiciones hidrológicas, demandas y reservas iniciales, pero comparten el mapa; el selector debe permitir entender esa diferencia.

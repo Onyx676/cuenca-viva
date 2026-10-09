@@ -6,7 +6,7 @@ require.extensions['.ts'] = (m, file) => m._compile(ts.transpileModule(fs.readFi
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText, file);
 const bank = require('../src/game/ApprovedEditorial.json');
-const { EDITORIAL_SECTORS, sectorArticle, mapStory, eventArticle } = require('../src/game/EditorialSelection.ts');
+const { EDITORIAL_SECTORS, sectorArticle, mapStory, eventArticle, pickEditorial, createEditorialLedger } = require('../src/game/EditorialSelection.ts');
 
 test('Editorial: integra la revisión aprobada y excluye las piezas reemplazadas', () => {
   assert.equal(bank.length, 297);
@@ -67,4 +67,54 @@ test('Editorial: Tito y la reserva sólo aparecen en Ciudad cuando crece el emba
     assert.notEqual(mapStory('mining', 1, undefined, turn, 'AULA', false, false, true).text, approved);
   }
   assert.ok(eligible.has(approved));
+});
+
+test('Editorial: bolsas variables agotan IDs válidos y reabrir no consume otra pieza', () => {
+  const run = () => {
+    const ledger = createEditorialLedger();
+    return Array.from({ length: 20 }, (_, index) => {
+      const ids = index % 2 ? ['P-CIU-01', 'P-CIU-02', 'P-CIU-10', 'P-CIU-17'] : ['P-CIU-01', 'P-CIU-02', 'P-CIU-10'];
+      const before = [...ledger.used.keys()];
+      const chosen = pickEditorial(ids, index + 1, 'AULA', 'city', ledger);
+      if (ids.some(id => !before.includes(id))) assert.ok(!before.includes(chosen.id));
+      assert.deepEqual(pickEditorial(ids, index + 1, 'AULA', 'city', ledger), chosen);
+      return chosen.id;
+    });
+  };
+  assert.deepEqual(run(), run());
+  for (const ids of [['V-CIU-01', 'V-CIU-12', 'V-CIU-02'], ['V-MIN-02', 'A-MAP-21', 'V-MIN-01']]) {
+    const ledger = createEditorialLedger();
+    const first = pickEditorial([ids[0]], 1, 'AULA', 'map', ledger);
+    const second = pickEditorial(ids, 2, 'AULA', 'map', ledger);
+    assert.equal(first.id, ids[0]);
+    assert.equal(second.id, ids[2], 'Otra familia antes que una versión parecida del mismo chiste');
+  }
+  assert.equal(pickEditorial(['V-RIO-12'], 1, 'AULA', 'river'), undefined);
+});
+
+test('Editorial: reconstruye mapa y Heraldo de 20 turnos sin depender de consultas previas', () => {
+  const { SimulationEngine } = require('../src/simulation/SimulationEngine.ts');
+  const { generateNewspaperEdition } = require('../src/game/Newspaper.ts');
+  const engine = new SimulationEngine();
+  const initial = JSON.stringify(engine.getState());
+  // Historial editorial sintético: sólo necesitamos un resultado real como forma base.
+  const base = engine.resolveSeason();
+  const history = Array.from({ length: 20 }, (_, index) => ({ ...base, turn: index + 1,
+    balance: { ...base.balance, satisfactions: { ...base.balance.satisfactions, population: 1, mining: 1, ecosystem: 1 } } }));
+  const map = sector => history.map(row => mapStory(sector, 1, 1, row.turn, 'AULA', false, false, false, history).text);
+  const city = map('population'), mine = map('mining');
+  for (const lines of [city, mine]) for (let i = 1; i < lines.length; i++) assert.notEqual(lines[i], lines[i - 1]);
+  for (let i = 1; i < 20; i++) {
+    assert.ok(!(/silenció/.test(city[i]) && /silenció/.test(city[i - 1])));
+    assert.ok(!(/foto.*Ferrada/.test(mine[i]) && /foto.*Ferrada/.test(mine[i - 1])));
+  }
+  assert.deepEqual(map('population'), city);
+  assert.doesNotMatch(map('ecosystem').join(' '), /no tuvo que corregir/);
+  const editions = history.map((row, index) => generateNewspaperEdition(row, history[index - 1], undefined, history, 'AULA'));
+  for (const index of [19, 0, 7, 3]) assert.deepEqual(generateNewspaperEdition(history[index], history[index - 1], undefined, history, 'AULA'), editions[index]);
+  assert.notEqual(initial, JSON.stringify(engine.getState())); // Sólo resolveSeason avanzó el motor.
+  const resolved = JSON.stringify(engine.getState());
+  map('mining');
+  generateNewspaperEdition(history[19], history[18], undefined, history, 'AULA');
+  assert.equal(JSON.stringify(engine.getState()), resolved);
 });

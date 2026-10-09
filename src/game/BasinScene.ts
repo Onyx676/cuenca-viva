@@ -794,8 +794,14 @@ export class BasinScene extends Phaser.Scene {
     for (const [x,y,size] of [[0.27,0.13,0.20],[0.43,0.09,0.23],[0.73,0.12,0.18]]) {
       g.fillStyle(0x626f69); g.fillPoints([[x-size,y+0.12],[x,y-0.06],[x+size,y+0.10],[x,y+0.24]].map(([a,b])=>new Phaser.Math.Vector2(width*a,height*b)),true);
       g.fillStyle(0x88958c);g.fillTriangle(width*(x-size),height*(y+0.12),width*x,height*(y-0.06),width*x,height*(y+0.24));
-      const snow=Math.min(0.06,(this.gameState?.snowReserve ?? 0)/1400);
-      g.fillStyle(0xe1eae5);g.fillTriangle(width*(x-0.06),height*(y+snow),width*x,height*(y-0.06),width*(x+0.06),height*(y+snow));
+      // Escala visual, no superficie ni volumen real: sin reserva no queda manto.
+      const snowDepth = 0.10 * Math.min(1, Math.max(0, (this.gameState?.snowReserve ?? 0) / 120));
+      if (snowDepth > 0) {
+        const halfWidth = size * snowDepth / 0.18;
+        g.fillStyle(0xe1eae5);
+        g.fillTriangle(width*(x-halfWidth), height*(y-0.06+snowDepth),
+          width*x, height*(y-0.06), width*(x+halfWidth), height*(y-0.06+snowDepth));
+      }
     }
   }
 
@@ -812,6 +818,11 @@ export class BasinScene extends Phaser.Scene {
   private renderDioramaTrees(width: number, height: number, color: number): void {
     const gfx = this.terrainGraphics;
     const upgReforest = (this.gameState?.upgrades['restauracion_cauces']?.currentLevel || 0);
+    const season = this.gameState?.season;
+    // Maduración decorativa acotada; no representa recarga ni rendimiento de una obra.
+    const growth = 0.85 + 0.35 * Math.min(19, Math.max(0, (this.gameState?.turn ?? 1) - 1)) / 19;
+    const foliage = season === 'AUTUMN' ? 0xb77936 : season === 'WINTER' ? 0x567463 : color;
+    const highlight = season === 'AUTUMN' ? 0xfbbf24 : season === 'WINTER' ? 0xa3b8a4 : 0x4ade80;
 
     const trees = [
       { x: width * 0.08, y: height * 0.46, s: 1.3 },
@@ -834,6 +845,7 @@ export class BasinScene extends Phaser.Scene {
     }
 
     for (const t of trees) {
+      t.s *= growth;
       // Sombra
       gfx.fillStyle(0x0f172a, 0.2);
       gfx.fillEllipse(t.x, t.y + 7 * t.s, 14 * t.s, 5 * t.s);
@@ -841,9 +853,9 @@ export class BasinScene extends Phaser.Scene {
       gfx.fillStyle(0x78350f, 1);
       gfx.fillRect(t.x - 2 * t.s, t.y, 4 * t.s, 7 * t.s);
       // Copa redondeada (diorama)
-      gfx.fillStyle(color, 1);
+      gfx.fillStyle(foliage, 1);
       gfx.fillCircle(t.x, t.y - 4 * t.s, 9 * t.s);
-      gfx.fillStyle(0x4ade80, 0.35);
+      gfx.fillStyle(highlight, 0.35);
       gfx.fillCircle(t.x - 2 * t.s, t.y - 6 * t.s, 5 * t.s);
     }
   }
@@ -1267,7 +1279,7 @@ export class BasinScene extends Phaser.Scene {
       const resolved = previousResult ?? state.seasonHistory?.find(row => row.turn === resultTurn);
       const receivedMore = !!prior && !!resolved && resolved.balance.suppliedAllocations[sector] > prior.balance.suppliedAllocations[sector];
       const reservoirRecovered = !!resolved && resolved.balance.reservoirEnd > resolved.balance.reservoirStart;
-      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, state.seed ?? 'VALLE', carpinchoEvent, receivedMore, reservoirRecovered);
+      const story = getMapResultStory(sector, coverage[sector], prior?.balance.satisfactions[sector], resultTurn, state.seed ?? 'VALLE', carpinchoEvent, receivedMore, reservoirRecovered, state.seasonHistory);
       this.resultSceneVariants[sector] = story.variant;
       return { sector, title: `${names[sector]} · ${Math.round(coverage[sector] * 100)}%`, text: story.text };
     });
@@ -1434,7 +1446,7 @@ export class BasinScene extends Phaser.Scene {
 
     // Actualizar y dibujar partículas dinámicas
     this.updateWaterFlow(width, effectiveH);
-    this.updateAtmosphere(width, effectiveH);
+    this.updateAtmosphere(width, effectiveH, safeDelta);
     this.drawWaterReplay();
     this.drawResultActivity();
     this.updateResultReaction(safeDelta);
@@ -1515,10 +1527,13 @@ export class BasinScene extends Phaser.Scene {
   }
 
   // --- ANIMACIÓN DE NUBES, LLUVIA, NIEVE Y AVES ---
-  private updateAtmosphere(width: number, height: number): void {
+  private updateAtmosphere(width: number, height: number, delta: number): void {
     if (!this.gameState) return;
     const gfx = this.weatherFXGraphics;
     gfx.clear();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const frameStep = reduced ? 0 : delta / (1000 / 60);
+    const visualTime = reduced ? 0 : this.animTimer;
 
     const isWinter = this.gameState.season === 'WINTER';
     const isOverrideStorm = this.eventWeatherOverride === 'STORM';
@@ -1533,7 +1548,7 @@ export class BasinScene extends Phaser.Scene {
 
     // 1. Nubes
     for (const c of this.clouds) {
-      c.x += c.speed;
+      c.x += c.speed * frameStep;
       if (c.x - 70 > width) c.x = -80;
 
       gfx.fillStyle(isRaining ? 0x64748b : 0xffffff, c.alpha);
@@ -1549,7 +1564,7 @@ export class BasinScene extends Phaser.Scene {
       gfx.lineStyle(1.8, 0x38bdf8, 0.75);
       gfx.beginPath();
       for (const r of this.rainDrops) {
-        r.y += r.speed;
+        r.y += r.speed * frameStep;
         if (r.y > height * 0.76) {
           r.y = Phaser.Math.Between(20, 80);
           r.x = Phaser.Math.Between(0, width);
@@ -1564,8 +1579,8 @@ export class BasinScene extends Phaser.Scene {
     if (isWinter) {
       gfx.fillStyle(0xffffff, 0.9);
       for (const s of this.snowFlakes) {
-        s.y += s.speed;
-        s.sway += 0.03;
+        s.y += s.speed * frameStep;
+        s.sway += 0.03 * frameStep;
         const sx = s.x + Math.sin(s.sway) * 2;
         if (s.y > height * 0.76) {
           s.y = Phaser.Math.Between(10, 60);
@@ -1579,7 +1594,7 @@ export class BasinScene extends Phaser.Scene {
     if (isOverrideDrought || (this.gameState.season === 'SUMMER' && !isRaining)) {
       gfx.fillStyle(0xffffff, 0.35);
       for (const v of this.vaporWisps) {
-        v.y -= v.speed;
+        v.y -= v.speed * frameStep;
         if (v.y < height * 0.22) {
           v.y = height * 0.33 + Math.random() * 15;
         }
@@ -1594,10 +1609,10 @@ export class BasinScene extends Phaser.Scene {
       gfx.lineStyle(1.8, 0x1e293b, 0.85);
       gfx.beginPath();
       for (const b of this.birds) {
-        b.x += b.speed;
+        b.x += b.speed * frameStep;
         if (b.x > width * 0.88) b.x = width * 0.12;
-        const wing = Math.sin(this.animTimer * 9 + b.phase) * 3.5;
-        const by = b.baseY + Math.sin(this.animTimer * 1.8 + b.phase) * 5;
+        const wing = Math.sin(visualTime * 9 + b.phase) * 3.5;
+        const by = b.baseY + Math.sin(visualTime * 1.8 + b.phase) * 5;
 
         gfx.moveTo(b.x - 6, by - wing);
         gfx.lineTo(b.x, by);
@@ -1605,9 +1620,9 @@ export class BasinScene extends Phaser.Scene {
       }
       gfx.stroke();
 
-      // Pipo el Carpincho en la orilla del humedal (cerca de width * 0.44, height * 0.69)
-      const pipoX = width * 0.35;
-      const pipoY = height * 0.87;
+      // Paseo corto por la orilla: deja libres sectores, compuertas y controles.
+      const pipoX = width * (0.35 + 0.009 * Math.sin(visualTime * 0.45));
+      const pipoY = height * 0.87 + Math.sin(visualTime * 3) * 1.2;
       // Cuerpo del carpincho
       gfx.fillStyle(0x78350f, 1);
       gfx.fillRoundedRect(pipoX, pipoY, 18, 12, 5);
@@ -1620,11 +1635,24 @@ export class BasinScene extends Phaser.Scene {
       gfx.fillStyle(0x78350f, 1);
       gfx.fillCircle(pipoX + 13, pipoY - 4, 2);
 
+      // Dos patos recorren únicamente el espejo del humedal, sin objetos nuevos por frame.
+      const animalScale = Math.max(0.65, Math.min(1.2, width / 1280));
+      for (let i = 0; i < 2; i++) {
+        const duckX = width * (0.286 + i * 0.015 + 0.004 * Math.sin(visualTime * 0.7 + i));
+        const duckY = height * (0.898 + i * 0.009) + Math.sin(visualTime * 1.2 + i) * animalScale;
+        gfx.lineStyle(1, 0xb9edef, 0.55);
+        gfx.lineBetween(duckX - 10 * animalScale, duckY + 4 * animalScale, duckX + 8 * animalScale, duckY + 4 * animalScale);
+        gfx.fillStyle(0xe7d4a4).fillEllipse(duckX, duckY, 12 * animalScale, 7 * animalScale);
+        gfx.fillStyle(0x2c7354).fillCircle(duckX + 5 * animalScale, duckY - 4 * animalScale, 3 * animalScale);
+        gfx.fillStyle(0xf59e0b).fillTriangle(duckX + 7 * animalScale, duckY - 5 * animalScale,
+          duckX + 11 * animalScale, duckY - 3 * animalScale, duckX + 7 * animalScale, duckY - 2 * animalScale);
+      }
+
       // Pececitos saltando del río si el caudal es óptimo (> 75%)
       if (ecoSat > 0.75) {
-        const jumpPhase = (this.animTimer * 2.5) % (Math.PI * 2);
+        const jumpPhase = (visualTime * 2.5) % (Math.PI * 2);
         if (jumpPhase < Math.PI) {
-          const fishX = width * 0.29 + Math.sin(this.animTimer * 1.5) * 15;
+          const fishX = width * 0.29 + Math.sin(visualTime * 1.5) * 15;
           const fishY = height * 0.88 - Math.sin(jumpPhase) * 14;
           // Cuerpo del pez
           gfx.fillStyle(0xf59e0b, 0.95);

@@ -879,7 +879,7 @@ test('Presupuesto anual Granja: media de cuatro estaciones, 0/parcial/plena, pis
     const before=st.money;engine.closeYear();const year=st.yearHistory.at(-1),mean=farm.reduce((a,b)=>a+b,0)/4,income=Math.round(mean*10);
     const raw=(floor?-25:110)+income,expected=Math.max(20,raw);
     assert.equal(year.avgLivestockSatisfaction,mean);assert.equal(year.budgetEarned,expected);assert.equal(st.money-before,expected);
-    const context={engine,sound:{coin(){}},modalYearEnd:{classList:{add(){}}}};
+    const context={engine,revealBudget(){},sound:{coin(){}},modalYearEnd:{classList:{add(){}}}};
     for(const name of ['yearendTitle','yearendPop','yearendAgri','yearendLivestock','yearendMin','yearendEco','yearendBreakdown','btnYearendContinue'])context[name]={textContent:'',innerHTML:''};
     vm.runInNewContext(showYearEnd+'\nshowYearEndModal();',context);
     assert.equal(context.yearendLivestock.textContent,`${mean*100}%`);
