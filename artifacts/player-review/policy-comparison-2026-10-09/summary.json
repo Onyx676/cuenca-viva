@@ -1,0 +1,811 @@
+{
+  "metadata": {
+    "modelVersion": "2.6",
+    "seeds": [
+      "AULA-2026-001",
+      "AULA-2026-260",
+      "POLICY-2026-003",
+      "POLICY-2026-004"
+    ],
+    "purchaseOrder": [
+      "reparacion_red",
+      "mantenimiento_canales",
+      "riego_eficiente",
+      "recirculacion_minera",
+      "planta_saneamiento"
+    ],
+    "events": "First permitted option in original array order, before purchases; all passive events retained.",
+    "validations": {
+      "cases": 24,
+      "repetitions": 2,
+      "turnsPerRun": 20,
+      "seasonalChecks": 960,
+      "wholeRunDeterminism": true,
+      "conservation": true,
+      "previewReadOnly": true,
+      "resolutionIdempotence": true
+    },
+    "sources": {
+      "src/simulation/SimulationEngine.ts": "7febac29d71a9c6b1a3c951b44c39d1a1dddedb724ee283fec46d0735b1623ba",
+      "src/simulation/MissionSystem.ts": "a6083213cb30431a6ceae52a39cb8c12187fa74e0927059519f37a34435456a4",
+      "src/models/SeasonalGoal.ts": "9c9a8129f7d371a9c5bc0e50ecee25049f28ca51afdccec101bfef2a41eab8a8",
+      "src/simulation/WaterSystem.ts": "de27859f2b6ee61fbb6fb0dfab4be2acdacdc4d2c99548c6aa4d87130524515e",
+      "src/simulation/DemandSystem.ts": "a02b57866062296918645af89107558895874c7e218fa8d0ebd2b61818900a8d",
+      "src/simulation/ClimateSystem.ts": "c45811b479a9c8d0596f8ca411310599dda3fe3b8a1e2f91fdcdc2002c3e885c",
+      "src/simulation/RandomSystem.ts": "a81bcb83618d2623bfe51eca14b3133090db12f412ec16fed530b971ed1bbb05",
+      "src/simulation/EventSystem.ts": "74df2539b773d1d3fdb1fc259f3aefbb1090af31fce22313f2ff5011f3cc5231",
+      "src/data/scenarios.json": "611bcf459324d1ee3e516fe2c522f250aaf283dfeca48246f756c0166e1a507e",
+      "src/data/upgrades.json": "437a37d1d891229a89adf5709bdc2f41432c5fd93a974c7669c01750233a6ff8",
+      "src/data/seasonalGoals.json": "d7fb73f40b78d0c02861625cbabb53885a92221c7f93c4feb3cd297b7014a92f",
+      "src/data/events.json": "972d09c1f8039c21e1171a0995c45444d628431a113985f64c9c28809c7c70fa"
+    }
+  },
+  "comparability": [
+    {
+      "seed": "AULA-2026-001",
+      "comparisons": [
+        {
+          "policy": "zero",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "half_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": true,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": true,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "minimum",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": true,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_works",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        }
+      ]
+    },
+    {
+      "seed": "AULA-2026-260",
+      "comparisons": [
+        {
+          "policy": "zero",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "half_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": true,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "minimum",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_works",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        }
+      ]
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "comparisons": [
+        {
+          "policy": "zero",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "half_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "minimum",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": true,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_works",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        }
+      ]
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "comparisons": [
+        {
+          "policy": "zero",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "half_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_all_requests",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "minimum",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        },
+        {
+          "policy": "full_works",
+          "sameClimateAndHydrology": true,
+          "sameInteractiveChoices": false,
+          "differentForcingTurns": []
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "seed": "AULA-2026-001",
+      "policy": "full",
+      "coverage": {
+        "population": 67.3,
+        "agriculture": 65.9,
+        "livestock": 60.4,
+        "mining": 61.9,
+        "ecosystem": 92.7
+      },
+      "fullAll": 6,
+      "goals": 3,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 218,
+      "spills": 0,
+      "quality": 65,
+      "trust": 10,
+      "health": 34,
+      "money": 582,
+      "annualNet": 335,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "b0461b78c00ea9a1da331f85ff1aeaec8669a2fb8910de84ddb1819fee7f1160"
+    },
+    {
+      "seed": "AULA-2026-001",
+      "policy": "zero",
+      "coverage": {
+        "population": 0,
+        "agriculture": 0,
+        "livestock": 0,
+        "mining": 0,
+        "ecosystem": 93.3
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 100,
+      "reservoirMin": 65,
+      "aquiferEnd": 100,
+      "aquiferMin": 85,
+      "pumping": 0,
+      "spills": 270,
+      "quality": 94,
+      "trust": 10,
+      "health": 100,
+      "money": 228,
+      "annualNet": 100,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "f7a8198e060597980c28e92fcb3829afe583104fcc9ec25f1f1ddfdca14ca701"
+    },
+    {
+      "seed": "AULA-2026-001",
+      "policy": "half_all_requests",
+      "coverage": {
+        "population": 49.6,
+        "agriculture": 50.8,
+        "livestock": 50.6,
+        "mining": 51.2,
+        "ecosystem": 99.6
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 201,
+      "spills": 0,
+      "quality": 73,
+      "trust": 10,
+      "health": 83,
+      "money": 347,
+      "annualNet": 239,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "5eba58be35b1e77b95e44b8abaeb8a09628b2258835e817cebd6aa4bcc7bd44e"
+    },
+    {
+      "seed": "AULA-2026-001",
+      "policy": "full_all_requests",
+      "coverage": {
+        "population": 54,
+        "agriculture": 54.3,
+        "livestock": 51.7,
+        "mining": 48.1,
+        "ecosystem": 92.7
+      },
+      "fullAll": 3,
+      "goals": 2,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 223,
+      "spills": 0,
+      "quality": 74,
+      "trust": 10,
+      "health": 37,
+      "money": 465,
+      "annualNet": 265,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "4bdf5888e4778d3ebf8bd1be5af0edc3ca4e78cc0525a3b226b53755d713e68e"
+    },
+    {
+      "seed": "AULA-2026-001",
+      "policy": "minimum",
+      "coverage": {
+        "population": 69.8,
+        "agriculture": 60.9,
+        "livestock": 63.3,
+        "mining": 61.2,
+        "ecosystem": 96.7
+      },
+      "fullAll": 0,
+      "goals": 10,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 209,
+      "spills": 0,
+      "quality": 65,
+      "trust": 10,
+      "health": 59,
+      "money": 657,
+      "annualNet": 345,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "3aca51d4551a1150420a3e916c4adf631dc77f292d1262d9eccd320b13d95419"
+    },
+    {
+      "seed": "AULA-2026-001",
+      "policy": "full_works",
+      "coverage": {
+        "population": 100,
+        "agriculture": 100,
+        "livestock": 100,
+        "mining": 100,
+        "ecosystem": 98.3
+      },
+      "fullAll": 18,
+      "goals": 9,
+      "reservoirEnd": 4,
+      "reservoirMin": 1,
+      "aquiferEnd": 26,
+      "aquiferMin": 15,
+      "pumping": 188,
+      "spills": 0,
+      "quality": 89,
+      "trust": 100,
+      "health": 100,
+      "money": 552,
+      "annualNet": 600,
+      "purchaseCost": 625,
+      "finalSnapshotHash": "827227dc8cfc492e80862ff339e8623b1e18a97ce33a7af6d01548d72594af2f"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "full",
+      "coverage": {
+        "population": 64.5,
+        "agriculture": 61.8,
+        "livestock": 58.2,
+        "mining": 59.2,
+        "ecosystem": 90.9
+      },
+      "fullAll": 6,
+      "goals": 3,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 204,
+      "spills": 0,
+      "quality": 66,
+      "trust": 10,
+      "health": 38,
+      "money": 506,
+      "annualNet": 302,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "5a51489210653bc5ef125d4c5af2a42cbccde3173f60efb46c4304e182d70407"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "zero",
+      "coverage": {
+        "population": 0,
+        "agriculture": 0,
+        "livestock": 0,
+        "mining": 0,
+        "ecosystem": 88.3
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 100,
+      "reservoirMin": 65,
+      "aquiferEnd": 100,
+      "aquiferMin": 85,
+      "pumping": 0,
+      "spills": 214,
+      "quality": 94,
+      "trust": 10,
+      "health": 100,
+      "money": 260,
+      "annualNet": 100,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "2501db1d77e6039fa10232fe214d497b995240e789b41781dde84c964405ac55"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "half_all_requests",
+      "coverage": {
+        "population": 46.7,
+        "agriculture": 46.8,
+        "livestock": 46.7,
+        "mining": 46.5,
+        "ecosystem": 97.2
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 192,
+      "spills": 0,
+      "quality": 74,
+      "trust": 10,
+      "health": 77,
+      "money": 328,
+      "annualNet": 218,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "2688b35cf6b5ee46cb12ef8fcc9d855f0681d9baa9114505e0cef5542be59481"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "full_all_requests",
+      "coverage": {
+        "population": 51.2,
+        "agriculture": 51.6,
+        "livestock": 47.6,
+        "mining": 45.8,
+        "ecosystem": 91.6
+      },
+      "fullAll": 3,
+      "goals": 2,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 208,
+      "spills": 0,
+      "quality": 75,
+      "trust": 10,
+      "health": 38,
+      "money": 412,
+      "annualNet": 250,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "ae7b5dec57a9f215a898e2eaa90bd7d29a3b203955e5cd7ea98537283b6facd5"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "minimum",
+      "coverage": {
+        "population": 65.8,
+        "agriculture": 57.9,
+        "livestock": 57.1,
+        "mining": 56.2,
+        "ecosystem": 94.2
+      },
+      "fullAll": 0,
+      "goals": 9,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 196,
+      "spills": 0,
+      "quality": 67,
+      "trust": 10,
+      "health": 57,
+      "money": 587,
+      "annualNet": 324,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "cfeac870adf691d3b50a5296a7d8f634094abc0d4b63ebc8b018a617bab89271"
+    },
+    {
+      "seed": "AULA-2026-260",
+      "policy": "full_works",
+      "coverage": {
+        "population": 99.2,
+        "agriculture": 99.3,
+        "livestock": 99.1,
+        "mining": 97.5,
+        "ecosystem": 97.5
+      },
+      "fullAll": 16,
+      "goals": 9,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 3,
+      "aquiferMin": 0,
+      "pumping": 201,
+      "spills": 0,
+      "quality": 89,
+      "trust": 90,
+      "health": 97,
+      "money": 460,
+      "annualNet": 594,
+      "purchaseCost": 625,
+      "finalSnapshotHash": "91357ec8d2c92ca812534e5482eeede8dd989947ac384df03608bb9afd068c87"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "full",
+      "coverage": {
+        "population": 64.8,
+        "agriculture": 63.3,
+        "livestock": 61.3,
+        "mining": 60.4,
+        "ecosystem": 91.6
+      },
+      "fullAll": 7,
+      "goals": 2,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 212,
+      "spills": 0,
+      "quality": 69,
+      "trust": 10,
+      "health": 25,
+      "money": 646,
+      "annualNet": 311,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "d9499017b60f2b7cbda1aeb1b74f05b64d20c1aedb351c10b8d7e75af1469cda"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "zero",
+      "coverage": {
+        "population": 0,
+        "agriculture": 0,
+        "livestock": 0,
+        "mining": 0,
+        "ecosystem": 90.4
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 100,
+      "reservoirMin": 65,
+      "aquiferEnd": 100,
+      "aquiferMin": 85,
+      "pumping": 0,
+      "spills": 240,
+      "quality": 94,
+      "trust": 10,
+      "health": 100,
+      "money": 238,
+      "annualNet": 100,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "ca3101e35f45db7bc7e7d64cd99cf7ef5e635ba1f912bf37ebbed4ed94d38b59"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "half_all_requests",
+      "coverage": {
+        "population": 47.7,
+        "agriculture": 48.4,
+        "livestock": 47.1,
+        "mining": 49.2,
+        "ecosystem": 97.7
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 198,
+      "spills": 0,
+      "quality": 76,
+      "trust": 10,
+      "health": 84,
+      "money": 322,
+      "annualNet": 229,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "19d0bee6c9ae4ebc596669f75173f871b060c313294a0cc73a91f50b7ec2bd88"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "full_all_requests",
+      "coverage": {
+        "population": 52.8,
+        "agriculture": 52.9,
+        "livestock": 49.7,
+        "mining": 46.2,
+        "ecosystem": 91.9
+      },
+      "fullAll": 3,
+      "goals": 2,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 214,
+      "spills": 0,
+      "quality": 76,
+      "trust": 10,
+      "health": 23,
+      "money": 528,
+      "annualNet": 253,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "09142766c3100e85b5e7ffeef9395881eab706508e31dfbeaa4c4791c83fcbb8"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "minimum",
+      "coverage": {
+        "population": 67.2,
+        "agriculture": 59.3,
+        "livestock": 59.6,
+        "mining": 55.8,
+        "ecosystem": 93.6
+      },
+      "fullAll": 0,
+      "goals": 9,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 201,
+      "spills": 0,
+      "quality": 70,
+      "trust": 10,
+      "health": 42,
+      "money": 781,
+      "annualNet": 315,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "8c3d1d812800b073b4026951a1d0c29aec06df33439527d3f4780395a7f27a38"
+    },
+    {
+      "seed": "POLICY-2026-003",
+      "policy": "full_works",
+      "coverage": {
+        "population": 100,
+        "agriculture": 100,
+        "livestock": 100,
+        "mining": 100,
+        "ecosystem": 97.5
+      },
+      "fullAll": 17,
+      "goals": 9,
+      "reservoirEnd": 3,
+      "reservoirMin": 1,
+      "aquiferEnd": 26,
+      "aquiferMin": 26,
+      "pumping": 180,
+      "spills": 0,
+      "quality": 89,
+      "trust": 100,
+      "health": 100,
+      "money": 647,
+      "annualNet": 600,
+      "purchaseCost": 625,
+      "finalSnapshotHash": "2861dac045d9bbf53c86ddeaf9aed54c02b4033799aaf50cc52de36e61fff62f"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "full",
+      "coverage": {
+        "population": 57.5,
+        "agriculture": 55,
+        "livestock": 50.8,
+        "mining": 51.9,
+        "ecosystem": 85.8
+      },
+      "fullAll": 5,
+      "goals": 4,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 188,
+      "spills": 0,
+      "quality": 64,
+      "trust": 10,
+      "health": 22,
+      "money": 422,
+      "annualNet": 239,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "f2ade6e12f93c691c142826bfda8cc665a1d684ba2a33977726462ed63e46219"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "zero",
+      "coverage": {
+        "population": 0,
+        "agriculture": 0,
+        "livestock": 0,
+        "mining": 0,
+        "ecosystem": 91.3
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 100,
+      "reservoirMin": 65,
+      "aquiferEnd": 100,
+      "aquiferMin": 85,
+      "pumping": 0,
+      "spills": 159,
+      "quality": 94,
+      "trust": 10,
+      "health": 100,
+      "money": 260,
+      "annualNet": 100,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "29d1ad3ebf94be094cdb6771e31345bf3cab93de2190d3e90cffa67345836d31"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "half_all_requests",
+      "coverage": {
+        "population": 41.8,
+        "agriculture": 42.5,
+        "livestock": 41.1,
+        "mining": 41.2,
+        "ecosystem": 93.4
+      },
+      "fullAll": 0,
+      "goals": 0,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 177,
+      "spills": 0,
+      "quality": 75,
+      "trust": 10,
+      "health": 61,
+      "money": 280,
+      "annualNet": 190,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "525bbcc56887b29fc82a3609710ff4bbc5ac0b2b060f07e26fc42f5f77222d87"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "full_all_requests",
+      "coverage": {
+        "population": 45.1,
+        "agriculture": 43.7,
+        "livestock": 42.6,
+        "mining": 40,
+        "ecosystem": 87.2
+      },
+      "fullAll": 3,
+      "goals": 1,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 188,
+      "spills": 0,
+      "quality": 75,
+      "trust": 10,
+      "health": 34,
+      "money": 331,
+      "annualNet": 204,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "c4a9c42a52848c3e3d5468ab1f8bc76fb20331ceaa0105e90ef4a574688765be"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "minimum",
+      "coverage": {
+        "population": 57.4,
+        "agriculture": 50,
+        "livestock": 45.4,
+        "mining": 47.7,
+        "ecosystem": 89.8
+      },
+      "fullAll": 0,
+      "goals": 6,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 183,
+      "spills": 0,
+      "quality": 70,
+      "trust": 10,
+      "health": 58,
+      "money": 442,
+      "annualNet": 249,
+      "purchaseCost": 0,
+      "finalSnapshotHash": "dff9a486560e05b6e30769ccc7b5ab0000294945cd0d60817757f69a461b3c84"
+    },
+    {
+      "seed": "POLICY-2026-004",
+      "policy": "full_works",
+      "coverage": {
+        "population": 88.7,
+        "agriculture": 87.9,
+        "livestock": 83.7,
+        "mining": 74.3,
+        "ecosystem": 94.1
+      },
+      "fullAll": 12,
+      "goals": 6,
+      "reservoirEnd": 2,
+      "reservoirMin": 1,
+      "aquiferEnd": 0,
+      "aquiferMin": 0,
+      "pumping": 187,
+      "spills": 0,
+      "quality": 88,
+      "trust": 10,
+      "health": 85,
+      "money": 132,
+      "annualNet": 461,
+      "purchaseCost": 625,
+      "finalSnapshotHash": "f50a5249ced988f52c85753f301e39ac276852202902bfce2b24e9bdca432a9d"
+    }
+  ]
+}
