@@ -17,5 +17,6 @@ for (const row of JSON.parse(fs.readFileSync('src/game/ApprovedEditorial.json', 
 }
 if (entries.length !== 297 || new Set(entries.map(row => row.id)).size !== entries.length)
   throw new Error(`Revisar conteo o IDs: ${entries.length}`);
-fs.writeFileSync('src/game/ApprovedEditorial.json', JSON.stringify(entries, null, 2) + '\n');
-console.log(`${entries.length} piezas integradas`);
+const integrated = require('./prepare-diversity.cjs').appendDiversity(entries);
+fs.writeFileSync('src/game/ApprovedEditorial.json', JSON.stringify(integrated, null, 2) + '\n');
+console.log(`${integrated.length} piezas integradas (297 anteriores + 960 de diversidad)`);

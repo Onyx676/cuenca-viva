@@ -6,11 +6,13 @@ require.extensions['.ts'] = (m, file) => m._compile(ts.transpileModule(fs.readFi
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true }
 }).outputText, file);
 const bank = require('../src/game/ApprovedEditorial.json');
-const { EDITORIAL_SECTORS, sectorArticle, mapStory, eventArticle, pickEditorial, createEditorialLedger } = require('../src/game/EditorialSelection.ts');
+const { EDITORIAL_SECTORS, sectorArticle, mapStory, eventArticle, pickEditorial, createEditorialLedger,
+  editorialCoveragePool, editorialGeneralPool, coverageBand } = require('../src/game/EditorialSelection.ts');
 
 test('Editorial: integra la revisión aprobada y excluye las piezas reemplazadas', () => {
-  assert.equal(bank.length, 297);
-  assert.equal(new Set(bank.map(row => row.id)).size, 297);
+  assert.equal(bank.length, 1257);
+  assert.equal(new Set(bank.map(row => row.id)).size, 1257);
+  assert.equal(bank.filter(row => !row.reviewId).length, 297);
   assert.ok(!bank.some(row => row.id === 'R-H-15'));
   assert.match(bank.find(row => row.id === 'A-MAP-03').text, /mi familia me pidió que lo ponga/i);
   assert.ok(!bank.some(row => row.id.startsWith('H-')));
@@ -18,18 +20,76 @@ test('Editorial: integra la revisión aprobada y excluye las piezas reemplazadas
 test('Editorial: cobertura completa, faltante y mejora no se confunden; parejas intactas', () => {
   for (const sector of EDITORIAL_SECTORS) for (let turn = 1; turn <= 20; turn++) {
     const full = sectorArticle(sector, 1, undefined, turn, 'AULA');
-    assert.match(full.id, /-(01|02|10|17)$/);
+    assert.equal(full.band, 'complete');
+    assert.equal(full.product, 'heraldo');
     assert.deepEqual(full, bank.find(row => row.id === full.id));
-    assert.match(sectorArticle(sector, .9, .9, turn, 'AULA').id, /-(03|04|11|12|18|19)$/);
-    assert.match(sectorArticle(sector, .91, undefined, turn, 'AULA').id, /-(03|04|11|12|18|19)$/);
+    assert.equal(sectorArticle(sector, .9, .9, turn, 'AULA').band, 'partial');
+    assert.equal(sectorArticle(sector, .91, undefined, turn, 'AULA').band, 'partial');
     const partial = sectorArticle(sector, .9, .5, turn, 'AULA', true);
-    assert.match(partial.id, /-(03|04|11|12|18|19|09|15|16|22|23)$/);
+    assert.ok(partial.band === 'partial' || /-(09|15|16|22|23)$/.test(partial.id));
     const low = sectorArticle(sector, .6, undefined, turn, 'AULA');
-    assert.match(low.id, /-(05|06|13|20)$/);
+    assert.equal(low.band, 'low');
     const grave = sectorArticle(sector, .2, undefined, turn, 'AULA');
-    assert.match(grave.id, /-(07|08|14|21)$/);
+    assert.equal(grave.band, 'grave');
     assert.deepEqual(mapStory(sector, .9, .5, turn, 'AULA'), mapStory(sector, .9, .5, turn, 'AULA'));
     assert.doesNotMatch(mapStory(sector, .9, .9, turn, 'AULA').text, /mejoró|Va mejor|Alcanzó el agua/);
+  }
+});
+
+test('Editorial: integra las 960 piezas exactas, veinte por pool, con parejas y familias', () => {
+  const { parseDiversity } = require('../artifacts/editorial/prepare-diversity.cjs');
+  const proposed = parseDiversity(fs.readFileSync('artifacts/editorial/PropuestaDiversidadEditorial.md', 'utf8'));
+  const additions = bank.filter(row => row.reviewId);
+  assert.deepEqual(additions, proposed, 'Sin frases reescritas ni parejas separadas durante la integración');
+  assert.equal(additions.length, 960);
+  assert.equal(new Set(additions.map(row => row.reviewId)).size, 960);
+  assert.equal(additions.filter(row => row.product === 'heraldo').length, 560);
+  assert.equal(additions.filter(row => row.product === 'valle').length, 400);
+  assert.equal(additions.filter(row => row.guard).length, 12);
+  for (const product of ['heraldo', 'valle']) for (const sector of EDITORIAL_SECTORS) {
+    for (const [band, rate, previous] of [['complete', 1, 1], ['partial', .9, .6], ['low', .6, .6], ['grave', .2, .2]]) {
+      const ids = editorialCoveragePool(product, sector, band, rate, previous);
+      assert.equal(ids.length, 20, `${product}:${sector}:${band}`);
+      for (const id of ids) assert.ok(additions.some(row => row.id === id));
+    }
+  }
+  for (const topic of ['QUAL-FIRST', 'QUAL-ALERT', 'QUAL-ST', 'QUAL-DN', 'QUAL-UP', 'RES-UP', 'RES-DN', 'RES-ST']) {
+    assert.equal(editorialGeneralPool(topic, 65).length, 20, topic);
+  }
+  assert.ok(new Set(additions.map(row => row.family)).size < 960, 'Familias semánticas compartidas, no un alias único por pieza');
+});
+
+test('Editorial: guardas semánticas no afirman avance, mayoría pendiente ni ingreso en alerta sin evidencia', () => {
+  assert.equal(coverageBand('ecosystem', .54), 'grave');
+  for (const product of ['heraldo', 'valle']) {
+    const withoutAdvance = editorialCoveragePool(product, 'ecosystem', 'partial', .9);
+    const falling = editorialCoveragePool(product, 'ecosystem', 'partial', .9, .95);
+    const improving = editorialCoveragePool(product, 'ecosystem', 'partial', .9, .8);
+    assert.deepEqual(withoutAdvance, falling);
+    assert.equal(improving.length, 20);
+    assert.equal(withoutAdvance.length, product === 'heraldo' ? 16 : 19);
+    const grave = editorialCoveragePool(product, 'ecosystem', 'grave', .54);
+    assert.equal(grave.length, product === 'heraldo' ? 16 : 19);
+    for (const id of grave) assert.notEqual(bank.find(row => row.id === id).guard, 'lessThanHalf');
+  }
+  assert.equal(editorialGeneralPool('QUAL-ALERT').length, 18);
+  assert.equal(editorialGeneralPool('QUAL-ALERT', 50).length, 18);
+  assert.equal(editorialGeneralPool('QUAL-ALERT', 60).length, 20);
+});
+
+test('Editorial: veinte IDs de estado se agotan antes de repetir, salvo familias recientes incompatibles', () => {
+  for (const product of ['heraldo', 'valle']) for (const sector of EDITORIAL_SECTORS) {
+    const ids = editorialCoveragePool(product, sector, 'complete', 1);
+    const ledger = createEditorialLedger();
+    let lastFamily;
+    for (let turn = 1; turn <= 20; turn++) {
+      const used = new Set(ledger.used.keys());
+      const freshCompatible = ids.filter(id => !used.has(id) && bank.find(row => row.id === id).family !== lastFamily);
+      const choice = pickEditorial(ids, turn, 'AULA', `${product}:${sector}`, ledger);
+      if (freshCompatible.length) assert.ok(!used.has(choice.id));
+      if (ids.some(id => bank.find(row => row.id === id).family !== lastFamily)) assert.notEqual(choice.family, lastFamily);
+      lastFamily = choice.family;
+    }
   }
 });
 test('Editorial: más cobertura no prueba más volumen; carpincho sólo en contexto del evento', () => {

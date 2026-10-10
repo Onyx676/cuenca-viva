@@ -21,6 +21,9 @@ const { firstGoalDistribution } = require('../src/models/SeasonalGoal.ts');
 const { SimulationEngine: BaselineEngine } = require('../artifacts/intro-balance/baseline/src/simulation/SimulationEngine.ts');
 const firstGoal = require('../src/data/seasonalGoals.json')[0];
 const sectors = ['population', 'agriculture', 'livestock', 'mining', 'ecosystem'];
+const editorialBank = require('../src/game/ApprovedEditorial.json');
+const isQualityDropArticle = article => editorialBank.some(row => row.topic === 'QUAL-DN'
+  && row.headline === article.headline && row.subhead === article.subhead);
 
 test('Fugas sin recursos: salida de emergencia resuelve sin sorteo ni campos JSON indefinidos', () => {
   const engine = new SimulationEngine('cuenca_central', 'FUGAS-SIN-RECURSOS', true);
@@ -425,7 +428,7 @@ test('Heraldo: caída de calidad precede reserva estable y festejo, sin cambiar 
     result.balance.waterQuality = 71;
     const edition = generateNewspaperEdition(result, previous);
     assert.equal(edition.kind, kind);
-    assert.match(edition.mainArticle.headline, /calidad.*(baj|cayó)/i);
+    assert.ok(isQualityDropArticle(edition.mainArticle));
     assert.ok(!edition.secondaryArticles.some(article => /calidad/i.test(article.headline)));
   }
   for (const kind of ['crisis', 'error']) {
@@ -434,8 +437,9 @@ test('Heraldo: caída de calidad precede reserva estable y festejo, sin cambiar 
     previous.balance.waterQuality = 90;
     const edition = generateNewspaperEdition(result, previous);
     assert.match(JSON.stringify(edition.mainArticle), kind === 'crisis' ? /Ciudad/ : /caudal|Río|Clara/);
-    if (kind === 'crisis') assert.match(edition.mainArticle.headline, /poca|grave/i);
-    assert.ok(edition.secondaryArticles.some(article => /calidad.*(baj|cayó)/i.test(article.headline)));
+    if (kind === 'crisis') assert.ok(editorialBank.some(row => row.sector === 'population' && row.band === 'grave'
+      && row.headline === edition.mainArticle.headline && row.subhead === edition.mainArticle.subhead));
+    assert.ok(edition.secondaryArticles.some(isQualityDropArticle));
   }
 });
 
@@ -447,13 +451,16 @@ test('Heraldo: recuperación y reservas conservan portada sólo ante caídas lev
     if (kind === 'recovery') previous.balance.satisfactions.population = 0.65;
     const edition = generateNewspaperEdition(result, previous);
     assert.equal(edition.kind, kind);
-    assert.match(JSON.stringify(edition.mainArticle), kind === 'recovery'
-      ? /Ciudad.*(mejora|recupera|cerca)/i : /embalse.*(reserva|reparto)/i);
-    assert.ok(edition.secondaryArticles.some(article => /calidad.*(baj|cayó)/i.test(article.headline)));
+    if (kind === 'recovery') assert.ok(editorialBank.some(row => row.headline === edition.mainArticle.headline
+      && row.subhead === edition.mainArticle.subhead
+      && (row.sector === 'population' && row.band === 'partial' || /^P-CIU-(09|15|16|22|23)$/.test(row.id))));
+    else assert.ok(editorialBank.some(row => row.topic === 'RES-DN'
+      && row.headline === edition.mainArticle.headline && row.subhead === edition.mainArticle.subhead));
+    assert.ok(edition.secondaryArticles.some(isQualityDropArticle));
     previous.balance.waterQuality = 83;
     const seriousDrop = generateNewspaperEdition(result, previous);
     assert.equal(seriousDrop.kind, kind);
-    assert.match(seriousDrop.mainArticle.headline, /calidad.*(baj|cayó)/i);
+    assert.ok(isQualityDropArticle(seriousDrop.mainArticle));
     assert.ok(!seriousDrop.secondaryArticles.some(article => /calidad/i.test(article.headline)));
   }
 });
@@ -476,15 +483,19 @@ test('Heraldo: no vuelve al tono genérico ni a expresiones técnicas prohibidas
   const previous = structuredClone(result);
   previous.balance.waterQuality = 90;
   const headlines = new Set();
+  const history = [];
   for (let turn = 1; turn <= 20; turn++) {
     result.turn = turn;
-    const edition = generateNewspaperEdition(result, previous);
+    result.balance.waterQuality = 90 - turn;
+    previous.balance.waterQuality = 91 - turn;
+    history.push(structuredClone(result));
+    const edition = generateNewspaperEdition(result, previous, undefined, history);
     headlines.add(edition.mainArticle.headline);
     assert.ok(edition.mainArticle.headline.length <= 120);
-    assert.deepEqual(edition, generateNewspaperEdition(result, previous));
-    assert.match(edition.mainArticle.headline, /calidad.*(baj|cayó)/i);
+    assert.deepEqual(edition, generateNewspaperEdition(result, previous, undefined, history));
+    assert.ok(isQualityDropArticle(edition.mainArticle));
   }
-  assert.equal(headlines.size, 3, 'La caída alterna las tres parejas aprobadas');
+  assert.ok(headlines.size > 3, 'La caída utiliza la ampliación; no queda restringida a las tres parejas anteriores');
   // El caudal aguas abajo ya contiene los retornos productivos y urbanos.
   const { result: flow } = editorialSnapshot('good');
   Object.assign(flow.balance.returns, { population: 2, agriculture: 3, livestock: 4, mining: 5, ecosystem: 99, reserve: 0 });

@@ -3,7 +3,7 @@ import { SEASONS_INFO } from '../models/Season';
 import { getSeasonVerdict, type SeasonVerdict, type SeasonVerdictKind } from '../seasonVerdict';
 import { SeededRandom } from '../simulation/RandomSystem';
 import { NEWSPAPER_HEADLINES } from './NewspaperHeadlines';
-import { EDITORIAL_SECTORS, pickEditorial, sectorArticle, eventArticle, createEditorialLedger, type EditorialLedger, type EditorialSector } from './EditorialSelection';
+import { EDITORIAL_SECTORS, pickEditorial, sectorArticle, eventArticle, createEditorialLedger, editorialGeneralPool, type EditorialLedger, type EditorialSector } from './EditorialSelection';
 
 export interface NewspaperArticle {
   headline: string;
@@ -419,13 +419,13 @@ function renderNewspaperEdition(
     !!previous && b.suppliedAllocations[id] > previous.balance.suppliedAllocations[id], ledger);
   const approvedTopic = (id: string) => {
     if (EDITORIAL_SECTORS.includes(id as EditorialSector)) return approvedSector(id as EditorialSector);
-    if (id === 'waterQuality') return general(b.waterQuality < 60 ? [8, 32, 42]
-      : !previous ? [12, 30, 40] : b.waterQuality < previous.balance.waterQuality ? [9, 33, 43]
-      : b.waterQuality > previous.balance.waterQuality ? [10, 34, 44] : [11, 31, 41], id);
+    if (id === 'waterQuality') return approved(editorialGeneralPool(b.waterQuality < 60 ? 'QUAL-ALERT'
+      : !previous ? 'QUAL-FIRST' : b.waterQuality < previous.balance.waterQuality ? 'QUAL-DN'
+      : b.waterQuality > previous.balance.waterQuality ? 'QUAL-UP' : 'QUAL-ST', previous?.balance.waterQuality), id);
     if (id === 'basinHealth') return general(b.basinHealth < 60 ? [13, 37, 47]
       : !previous ? [16, 35, 45] : b.basinHealth < previous.balance.basinHealth ? [29, 38, 48]
       : b.basinHealth > previous.balance.basinHealth ? [14, 39, 49] : [15, 36, 46], id);
-    if (id === 'reservoir') return general(delta > 0 ? [17, 55] : delta < 0 ? [18, 53] : [19, 54], id);
+    if (id === 'reservoir') return approved(editorialGeneralPool(delta > 0 ? 'RES-UP' : delta < 0 ? 'RES-DN' : 'RES-ST'), id);
     if (id === 'snow' && b.snowMelt > 0) return general([20], id);
     if (id === 'rain' && b.seasonRainfall > 0) return general([b.soilInfiltration > 0 ? 21 : 22], id);
     if (id === 'aquifer') return b.aquiferWithdrawal > 0 ? general([23], id)
@@ -439,10 +439,20 @@ function renderNewspaperEdition(
     : verdict.kind === 'crisis' && verdict.focus === 'population' ? approvedSector('population')
     : verdict.kind === 'crisis' || verdict.kind === 'error' || verdict.kind === 'recovery'
       ? approvedTopic(verdict.focus ?? '')
-    : verdict.kind === 'tradeoff' ? general(s[s.population >= .85 ? 'population' : 'agriculture'] >= 1 ? [5, 51] : [6, 52], 'reserve-draw')
-    : verdict.kind === 'good' ? general([1, 2], 'good')
+    : verdict.kind === 'tradeoff' && delta < 0 ? approvedTopic('reservoir')
+    : verdict.kind === 'good' ? approvedSector('population')
     : verdict.kind === 'opportunity' ? approvedTopic('event')
-    : s[lowest] < .8 ? approvedSector(lowest) : general([3, 4, 50], 'normal');
+    : approvedSector(lowest);
+  if (verdict.kind === 'good') {
+    covered.delete('ecosystem'); // La portada nueva habla de Ciudad; el río puede tener su breve.
+  }
+  if (verdict.kind === 'tradeoff' && delta < 0) {
+    covered.delete(s.population >= .85 ? 'population' : 'agriculture');
+  }
+  if (verdict.kind === 'normal' && mainPair) {
+    covered.delete('reservoir');
+    covered.add(lowest);
+  }
   if (mainPair?.headline && mainPair.subhead) {
     headline = mainPair.headline;
     subhead = mainPair.subhead;
