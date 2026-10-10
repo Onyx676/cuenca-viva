@@ -611,6 +611,20 @@ body {
   pointer-events: auto;
 }
 
+.final-evaluation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+.final-evaluation article { border: 1px solid #334155; border-radius: 10px; background: #172438; padding: 14px; }
+.final-evaluation h3 { color: #67e8f9; margin: 0 0 8px; font-size: 1rem; }
+.final-evaluation p { margin: 0 0 8px; line-height: 1.5; }
+.final-evaluation small { color: #cbd5e1; line-height: 1.5; display: block; }
+.final-table-scroll { overflow-x: auto; }
+.final-quiz fieldset { border: 1px solid #334155; border-radius: 8px; margin: 14px 0; padding: 12px; }
+.final-quiz legend { font-weight: 700; }
+.final-quiz button { white-space: normal; text-align: left; width: 100%; margin: 5px 0; }
+.final-quiz-feedback { font-weight: 700; }
+.final-coverage-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin: 14px 0; }
+.final-coverage-table th, .final-coverage-table td { padding: 8px; border-bottom: 1px solid #334155; text-align: left; }
+#fin-evaluation-detail p { line-height: 1.5; }
+@media (max-width: 640px) { .final-evaluation { grid-template-columns: 1fr; } }
 .fb-sector-impact { display: flex; gap: 8px; flex-wrap: wrap; font-size: .9rem; }
 .fb-sector-impact[hidden], #btn-return-summary[hidden], #btn-resolve-season[hidden] { display: none; }
 #valley-inspection-controls[hidden], .valley-results-panel[hidden] { display: none; }

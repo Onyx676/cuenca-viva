@@ -10,6 +10,8 @@ Primera mejora 2.6: misiones mixtas y variables desde primavera en nuevas partid
 
 Próximo orden: revisar cómo salud compuesta permite que caudal/calidad compensen acuífero crítico; evaluar objetivos de conservación acumulada y final de campaña; luego confirmar si Central debe seguir introductorio o sostener desafío intermedio durante 20 turnos. El candidato anterior de misión anual no está validado como regla universal ni demostrado alcanzable en toda la campaña. No endurecer automáticamente Árida o Lagos a partir del resultado de Central.
 
+Incorporado: cierre descriptivo con tres dimensiones (abastecimiento, río y reservas), trayectorias por sector y tres preguntas opcionales con respuestas y pistas basadas en la partida. El documento para guardar/imprimir incluye esas explicaciones. No se añadió nota global, criterio nuevo de victoria ni medición del aprendizaje; el balance de campaña y una evaluación escolar con usuarios siguen pendientes.
+
 Criterios de aceptación: las obras ayudan, pero pedir todo no domina en abastecimiento, reservas y recompensas; racionar en exceso tampoco representa victoria global; las semillas requieren decisiones distintas; conservar accesibilidad inicial, masa y determinismo. En 2.6 cambiaron las condiciones para recibir premios, no sus montos ni agua, costes, demandas o cifras de ingresos anuales. Falta QA visual final de los nuevos banners y evaluación humana de comprensión/diversión.
 
 ## Identidad visual de los escenarios

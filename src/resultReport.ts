@@ -21,7 +21,8 @@ export function createLearningReport(state: GameState, summaryHTML: string): str
   return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cuenca Viva — resultados de mi partida</title><style>
     body{font:16px/1.5 system-ui,sans-serif;color:#172033;max-width:1100px;margin:32px auto;padding:0 24px}
     h1,h2,h3{line-height:1.25}h1{font-size:28px}h2{margin-top:28px}p{margin:8px 0}
-    .final-reserves,.final-milestones,.report-grid{display:flex;flex-wrap:wrap;gap:16px;margin:16px 0}
+    .final-reserves,.final-milestones,.report-grid,.final-evaluation{display:flex;flex-wrap:wrap;gap:16px;margin:16px 0}
+    .final-evaluation>article{flex:1 1 220px;border:1px solid #bac4d0;padding:12px;border-radius:8px}
     .final-reserves>*,.final-milestones>*,.report-stat-box{flex:1 1 140px;border:1px solid #bac4d0;padding:12px;border-radius:8px}
     .final-reserves article{display:flex;flex-direction:column;gap:4px}.final-reserves strong{font-size:20px}
     .report-stat-value{font-weight:700;font-size:20px}.model-note{color:#475569;font-size:14px}

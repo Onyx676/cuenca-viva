@@ -21,6 +21,7 @@ import { getCharacterFeedback, SECTOR_CHARACTERS } from './game/Characters';
 import { generateNewspaperEdition, getEventRecap, NewspaperEdition } from './game/Newspaper';
 import { createEditorialSessionCounter, editorialSeed } from './game/EditorialSession';
 import { createLearningReport } from './resultReport';
+import { evaluateFinalHistory } from './game/FinalEvaluation';
 
 // --- INICIALIZACIÓN DE LA SIMULACIÓN Y TUTORIAL ---
 let currentScenario = 'cuenca_central';
@@ -2304,6 +2305,74 @@ function showFinalReport(): void {
   const yearHistory = st.yearHistory;
 
   const history = st.seasonHistory;
+  const evaluation = evaluateFinalHistory(st);
+  const evaluationCards = document.getElementById('fin-evaluation')!;
+  evaluationCards.replaceChildren();
+  const signedChange = (value: number | null) => value === null ? 'sin registro' : `${value > 0 ? '+' : ''}${value} gotas`;
+  const descriptions = evaluation.count ? [
+    ['Abastecimiento', `${evaluation.completeTurns}/${evaluation.count} estaciones cubrieron por completo los cuatro usos.`,
+      evaluation.zeroTurns ? `${evaluation.zeroTurns} estaciones dejaron algún sector sin agua.` : 'Ningún sector quedó sin agua; revisá las brechas en el detalle.'],
+    ['Río', `${evaluation.river.referenceTurns}/${evaluation.count} estaciones alcanzaron la referencia de caudal.`,
+      `Calidad al cierre: ${evaluation.river.qualityClose}/100, índice conceptual.`],
+    ['Reservas', evaluation.reservesFell ? 'Al menos una reserva terminó más baja que al comenzar.' : 'Las reservas cerraron sin bajar respecto del inicio.',
+      `Embalse: ${signedChange(evaluation.reservoir.change)} · Acuífero: ${signedChange(evaluation.aquifer.change)} desde el inicio.`],
+  ] : ['Abastecimiento', 'Río', 'Reservas'].map(label => [label, 'Sin registros estacionales.', '']);
+  for (const [label, description, data] of descriptions) {
+    const card = document.createElement('article');
+    for (const [tag, text] of [['h3', label], ['p', description], ['small', data]]) {
+      const item = document.createElement(tag); item.textContent = text; card.append(item);
+    }
+    evaluationCards.append(card);
+  }
+  const evaluationDetail = document.getElementById('fin-evaluation-detail')!;
+  evaluationDetail.replaceChildren();
+  const quizContainer = document.getElementById('fin-quiz')!;
+  quizContainer.replaceChildren();
+  for (const [index, question] of evaluation.quiz.entries()) {
+    const group = document.createElement('fieldset');
+    const legend = document.createElement('legend'); legend.textContent = `${index + 1}. ${question.question}`; group.append(legend);
+    const response = document.createElement('p'); response.className = 'final-quiz-feedback'; response.setAttribute('role', 'status'); response.setAttribute('aria-live', 'polite');
+    const answer = document.createElement('p'); answer.dataset.quizAnswer = ''; answer.hidden = true;
+    answer.textContent = `Respuesta: ${question.options[question.correct]} ${question.explanation}`;
+    for (const [optionIndex, option] of question.options.entries()) {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'btn-secondary-action'; button.textContent = option;
+      button.addEventListener('click', () => {
+        if (!canUseControl(button)) return;
+        response.textContent = optionIndex === question.correct ? 'Correcto. Leé la explicación debajo.' : 'Revisá esa idea: la explicación debajo distingue pedido, demanda y consecuencias.';
+        answer.hidden = false;
+      });
+      group.append(button);
+    }
+    group.append(response, answer); quizContainer.append(group);
+  }
+  const reveal = document.createElement('button'); reveal.type = 'button'; reveal.className = 'btn-secondary-action'; reveal.textContent = 'Ver respuestas y pistas';
+  reveal.addEventListener('click', () => {
+    if (!canUseControl(reveal)) return;
+    quizContainer.querySelectorAll<HTMLElement>('[data-quiz-answer]').forEach(answer => answer.hidden = false);
+  });
+  quizContainer.append(reveal);
+  if (evaluation.count) {
+    const table = document.createElement('table');
+    table.className = 'final-coverage-table';
+    const head = table.createTHead().insertRow();
+    for (const label of ['Sector', 'Media', 'Peor cobertura', 'Racha incompleta', 'Sin agua']) {
+      const cell = document.createElement('th'); cell.scope = 'col'; cell.textContent = label; head.append(cell);
+    }
+    const body = table.createTBody();
+    for (const sector of evaluation.coverage) {
+      const row = body.insertRow();
+      for (const value of [sector.name, `${Math.round(sector.mean * 100)}%`, `${Math.round(sector.worst * 100)}%`,
+        `${sector.incompleteRun} estaciones`, `${sector.zeroTurns} estaciones`]) row.insertCell().textContent = value;
+    }
+    const scroll = document.createElement('div'); scroll.className = 'final-table-scroll'; scroll.append(table); evaluationDetail.append(scroll);
+    const addLine = (text: string) => { const p = document.createElement('p'); p.textContent = text; evaluationDetail.append(p); };
+    addLine(`Río: mayor racha por debajo de la referencia, ${evaluation.river.belowReferenceRun} estaciones. Calidad: media ${Math.round(evaluation.river.qualityMean)}/100 · peor cierre ${evaluation.river.qualityWorst}/100 · al cierre ${evaluation.river.qualityClose}/100. Este índice no mide potabilidad.`);
+    for (const [name, reserve] of [['Embalse', evaluation.reservoir], ['Acuífero', evaluation.aquifer]] as const) {
+      addLine(`${name}: inicio ${reserve.initial} · final ${reserve.final} · menor cierre registrado ${reserve.lowestClose} gotas. Eventos extraordinarios: +${reserve.eventAdded} / −${reserve.eventRemoved} gotas, fuera del reparto normal.`);
+    }
+    addLine(`Acuífero: bombeo normal acumulado ${evaluation.recharge.pumping} gotas. Recarga: lluvia ${evaluation.recharge.rain} · río ${evaluation.recharge.river} · obra ${evaluation.recharge.work} gotas. Los reboses y los usos extraordinarios se detallan en el balance.`);
+    addLine('Son resultados descriptivos del modelo. Las misiones y el dinero no prueban sostenibilidad ni aprendizaje; clima, eventos, obras y reparto contribuyeron a esta trayectoria.');
+  }
   const mean = (id: SectorId) => Math.round(history.reduce((sum, r) => sum + r.balance.satisfactions[id], 0) / Math.max(1, history.length) * 100);
   const avgPop = mean('population');
   const avgAgri = mean('agriculture');
@@ -2339,8 +2408,8 @@ function showFinalReport(): void {
   const units = (value: number) => `${Math.round(value)} 💧`;
   const delta = (end: number, start: number | undefined) => start === undefined
     ? 'Sin registro inicial' : `${end >= start ? '+' : '−'}${Math.round(Math.abs(end - start))} desde el inicio`;
-  document.getElementById('fin-reserve-change')!.textContent = delta(st.reservoirVolume, first ? first.balance.reservoirStart - first.events.reduce((sum, e) => sum + (e.waterAdjustment?.reservoirChange ?? 0), 0) : undefined);
-  document.getElementById('fin-aquifer-change')!.textContent = delta(st.aquiferVolume, first ? first.balance.aquiferStart - first.events.reduce((sum, e) => sum + (e.waterAdjustment?.aquiferChange ?? 0), 0) : undefined);
+  document.getElementById('fin-reserve-change')!.textContent = delta(st.reservoirVolume, evaluation.reservoir.initial ?? undefined);
+  document.getElementById('fin-aquifer-change')!.textContent = delta(st.aquiferVolume, evaluation.aquifer.initial ?? undefined);
   document.getElementById('fin-river-close')!.textContent = last ? units(last.balance.downstreamFlow) : 'Sin registro';
   document.getElementById('fin-river-note')!.textContent = `Caudal al cierre · calidad ${waterQualityLabel(st.waterQuality)}`;
 
@@ -2383,26 +2452,19 @@ function showFinalReport(): void {
     worksList.appendChild(item);
   }
   document.getElementById('fin-economy')!.textContent = `Presupuesto anual neto acumulado: $${earned}. Restante: $${st.money}.`;
-  const reservesFell = first && (st.aquiferVolume < first.balance.aquiferStart || st.reservoirVolume < first.balance.reservoirStart);
+  const reservesFell = evaluation.reservesFell;
   const aquiferNeedsRecovery = st.aquiferStressLevel === 'STRESSED' || st.aquiferStressLevel === 'CRITICAL';
   const pumped = history.reduce((sum, result) => sum + result.balance.aquiferWithdrawal, 0);
   if (finHonorIcon) finHonorIcon.textContent = '🧭';
-  if (finHonorTitle) finHonorTitle.textContent = aquiferNeedsRecovery
-    ? 'Terminaste la partida; el acuífero necesita recuperarse'
-    : reservesFell ? 'Abastecimiento y reservas al cierre' : 'Reservas para el próximo ciclo';
+  if (finHonorTitle) finHonorTitle.textContent = evaluation.title;
   if (finHonorDesc) finHonorDesc.textContent = history.length
     ? aquiferNeedsRecovery
       ? `Completaste ${history.length} estaciones. El acuífero cerró ${st.aquiferStressLevel === 'CRITICAL' ? 'en estado crítico' : 'en estrés'}. ${pumped > 0 ? 'El bombeo sostuvo parte del abastecimiento usando agua de esa reserva. ' : ''}Una cobertura alta, la confianza y la salud ecológica no garantizan que quede agua guardada para el próximo ciclo.`
       : `El río alcanzó el caudal recomendado en ${ecoTurns}/${history.length} estaciones. ${reservesFell ? 'Al menos una reserva cerró por debajo de su inicio: sostener el abastecimiento y guardar agua son decisiones que conviene comparar.' : 'Embalse y acuífero cerraron sin disminuir respecto del inicio. La cobertura y la calidad completan esta historia.'}`
     : 'No hay historial suficiente para describir la trayectoria de esta partida.';
-  modalFinalReport.querySelector('details')?.removeAttribute('open');
+  modalFinalReport.querySelectorAll('details').forEach(detail => detail.removeAttribute('open'));
 
-  if (!aquiferNeedsRecovery) {
-    sound.fanfare();
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      confetti({ particleCount: 140, spread: 85, origin: { y: 0.6 } });
-    }
-  }
+  sound.pop();
 
   modalFinalReport.classList.add('open');
 }
@@ -2731,6 +2793,7 @@ function learningReportHTML(): string {
   const summary = modalFinalReport.querySelector('.final-report-window')!.cloneNode(true) as HTMLElement;
   summary.querySelector('.final-report-footer')?.remove();
   summary.querySelectorAll<HTMLDetailsElement>('details').forEach(details => { details.open = true; });
+  summary.querySelectorAll<HTMLElement>('[data-quiz-answer]').forEach(answer => { answer.hidden = false; });
   return createLearningReport(engine.getState(), summary.innerHTML);
 }
 document.querySelectorAll<HTMLButtonElement>('[data-save-results]').forEach(button => {
