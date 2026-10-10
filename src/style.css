@@ -3108,3 +3108,4 @@ button.map-network-label:focus-visible { outline: 2px solid #e0f2fe; outline-off
 .goal-requirements { border-top: 1px solid #ffffff24; padding-top: 6px; }
 .goal-requirements p { margin: 0; }
 .goal-requirements p + p { margin-top: 7px; }
+#app.valley-inspection-active .seasonal-goal-banner { display: none; }

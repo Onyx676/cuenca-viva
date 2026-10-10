@@ -10,7 +10,7 @@ const statements = source.statements.filter(s => ts.isExpressionStatement(s) && 
 const guards = source.statements.filter(s => ts.isFunctionDeclaration(s) && ['activeInteractionSurface', 'backgroundInteractionBlocked', 'canUseControl', 'showValleyInspection', 'openSeasonSummary', 'closeNewspaperToSummary'].includes(s.name?.text)).map(s => s.getText(source));
 assert.equal(statements.length, 3);
 function fixture() {
-  const names = new Set(['open']); const handlers = {};
+  const names = new Set(['open']); const appClasses = new Set(); const handlers = {};
   const state = { isSeasonResolved: true, turn: 3, money: 42 };
   const c = { engine: { getState: () => state }, canUseControl: () => true,
     btnViewValley: { closest: () => null, addEventListener: (_, fn) => handlers.view = fn },
@@ -21,7 +21,9 @@ function fixture() {
     valleyResultsPanel: { hidden: true },
     valleyInspectionControls: { hidden: true, contains: item => [c.btnReturnSummary, c.btnToggleValleyResults, ...c.valleyResults.cards].includes(item) },
     btnToggleValleyResults: { closest: () => null, addEventListener: (_, fn) => handlers.toggle = fn },
-    document: { querySelectorAll: () => [], createElement: () => ({ dataset: {}, append() {} }) },
+    app: { classList: { contains: n => appClasses.has(n), add: n => appClasses.add(n), remove: n => appClasses.delete(n) } },
+    goalDetails: { open: true }, seasonalGoalBanner: { style: { display: 'flex' } },
+    document: { getElementById: () => c.app, querySelectorAll: () => [], createElement: () => ({ dataset: {}, append() {} }) },
     positionValleyResultCards() {},
     tutorialManager: { isActive: () => false }, cancelPendingNewspaper() {}, revealBudget() {},
     modalNewspaper: { classList: { contains: () => true, remove() {} } },
@@ -42,11 +44,15 @@ test('Inspect valley and return to summary preserve the resolved result and perm
   assert.equal(c.valleyResults.cards.length, 5);
   assert.equal(c.valleyResults.cards.every(card => card.open), true);
   assert.equal(c.valleyResultsPanel.hidden, false);
+  assert.equal(c.app.classList.contains('valley-inspection-active'), true);
+  assert.equal(c.goalDetails.open, false);
+  assert.equal(c.seasonalGoalBanner.style.display, 'none');
   handlers.toggle(); assert.equal(c.valleyResults.cards.every(card => !card.open), true);
   assert.equal(c.btnToggleValleyResults.textContent, 'Expandir todos');
   handlers.toggle(); assert.equal(c.valleyResults.cards.every(card => card.open), true);
   handlers.view(); assert.equal(c.replays, 1);
   handlers.back(); assert.equal(c.cardSeasonFeedback.classList.contains('open'), true); assert.equal(c.cardSeasonFeedback.inert, false);
+  assert.equal(c.app.classList.contains('valley-inspection-active'), false);
   assert.equal(c.btnReturnSummary.hidden, true); assert.equal(JSON.stringify(state), before);
   assert.equal(c.valleyInspectionControls.hidden, true);
   assert.equal(c.btnResolveSeason.hidden, false);

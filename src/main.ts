@@ -858,7 +858,7 @@ function readableGoalProgress(goal: SeasonalGoal, balance: SeasonWaterBalance): 
 
 function updateSeasonalGoalDisplay(): void {
   const goal = getCurrentSeasonalGoal();
-  if (!goal) {
+  if (!goal || document.getElementById('app')!.classList.contains('valley-inspection-active')) {
     seasonalGoalBanner.style.display = 'none';
     return;
   }
@@ -876,11 +876,12 @@ function updateSeasonalGoalDisplay(): void {
   if (lines.length) {
     const c = goal.targetCondition;
     const reserve = c.type === 'COVERAGE_AND_AQUIFER' ? 'Agua bajo tierra' : 'Embalse';
-    goalDesc.textContent = `${goalSectorNames[c.sectorId!]}: al menos ${c.threshold}% de cobertura.${c.type === 'CITY_AND_SECTOR' ? '' : `\n${reserve}: guardar al menos ${c.reserveTarget} gotas.`}`;
+    goalDesc.textContent = `${goalSectorNames[c.sectorId!]}: al menos ${c.threshold}% de cobertura.${c.type === 'CITY_AND_SECTOR' ? '' : `\n${reserve}: guardar al menos ${c.reserveTarget} gotas.`}\nTodas las metas son obligatorias.`;
     const otherNames = (['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const)
       .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]);
-    goalDetails.querySelector('summary')!.textContent = `Ver más metas: ${otherNames.slice(0, -1).join(', ')} y ${otherNames.at(-1)}`;
-    for (const line of lines) {
+    goalDetails.querySelector('summary')!.textContent = `Ver las metas de ${otherNames.slice(0, -1).join(', ')} y ${otherNames.at(-1)}`;
+    // Foco y reserva ya están visibles; el detalle agrega los otros requisitos.
+    for (const line of [`Ciudad: al menos ${c.cityCoverageThreshold ?? 85}%.`, lines[1]]) {
       const paragraph = document.createElement('p');
       paragraph.textContent = line;
       goalRequirements.appendChild(paragraph);
@@ -2059,6 +2060,9 @@ btnViewValley.addEventListener('click', () => {
 });
 
 function showValleyInspection(): void {
+  document.getElementById('app')!.classList.add('valley-inspection-active');
+  goalDetails.open = false;
+  seasonalGoalBanner.style.display = 'none';
   cardSeasonFeedback.classList.remove('open');
   cardSeasonFeedback.inert = true;
   BasinScene.instance?.replayResultReactions();
@@ -2113,6 +2117,7 @@ btnToggleValleyResults.addEventListener('click', () => {
   const expand = !cards.some(card => card.open);
   cards.forEach(card => { card.open = expand; });
   btnToggleValleyResults.textContent = expand ? 'Colapsar todos' : 'Expandir todos';
+  positionValleyResultCards();
 });
 valleyResults.addEventListener('toggle', () => {
   btnToggleValleyResults.textContent = Array.from(valleyResults.querySelectorAll('details')).some(card => card.open)
@@ -2128,9 +2133,11 @@ function positionValleyResultCards(): void {
   const rect = canvas.getBoundingClientRect(), layout = scene.getMapLayout();
   const scaleX = rect.width / layout.width, scaleY = rect.height / scene.scale.height;
   const compact = rect.width <= 640;
-  valleyResultsPanel.style.setProperty('--valley-toggle-top', `${seasonalGoalBanner.getBoundingClientRect().bottom + 8}px`);
+  const visibleBottom = (element: Element) => element.getClientRects().length ? element.getBoundingClientRect().bottom : 0;
+  const overlayBottom = Math.max(visibleBottom(document.querySelector('.top-bar')!), visibleBottom(forecastPreview), visibleBottom(seasonalGoalBanner));
+  valleyResultsPanel.style.setProperty('--valley-toggle-top', `${overlayBottom + 8}px`);
   const width = compact ? Math.floor(rect.width * .44) : Math.min(240, Math.floor(rect.width * .23));
-  const top = rect.top + layout.top * scaleY + (compact ? 8 : 90);
+  const top = Math.max(rect.top + layout.top * scaleY + (compact ? 8 : 90), btnToggleValleyResults.getBoundingClientRect().bottom + 8);
   const bottom = Math.min(rect.top + (layout.top + layout.height) * scaleY,
     document.querySelector('.allocation-panel')!.getBoundingClientRect().top) - 8;
   for (const group of [['mining', 'agriculture', 'livestock'], ['population', 'ecosystem']] as const) {
@@ -2156,6 +2163,7 @@ function positionValleyResultCards(): void {
   }
 }
 function openSeasonSummary(): void {
+  document.getElementById('app')!.classList.remove('valley-inspection-active');
   btnReturnSummary.hidden = true;
   valleyResultsPanel.hidden = true;
   valleyInspectionControls.hidden = true;
@@ -2198,6 +2206,7 @@ btnFbContinue.addEventListener('click', () => {
 function continueResolvedSeason(): void {
   const st = engine.getState();
   if (tutorialManager.isActive() || !st.isSeasonResolved || st.activeInteractiveEvent) return;
+  document.getElementById('app')!.classList.remove('valley-inspection-active');
   sound.pop();
   cancelPendingNewspaper();
   modalNewspaper?.classList.remove('open');
