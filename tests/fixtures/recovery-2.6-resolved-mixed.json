@@ -1,0 +1,775 @@
+{
+  "recoverySchemaVersion": 1,
+  "session": {
+    "schemaVersion": 1,
+    "modelVersion": "2.6",
+    "exportedAt": "2026-10-10T00:00:00Z",
+    "metadata": {
+      "scenarioId": "cuenca_central",
+      "seed": "AULA-2026-001",
+      "isClassroomMode": true,
+      "context": "game",
+      "goalRulesVersion": "contextual-v1"
+    },
+    "recording": {
+      "kind": "complete-action-log",
+      "initialState": {
+        "scenarioId": "cuenca_central",
+        "scenarioName": "Cuenca del Valle Central",
+        "seed": "AULA-2026-001",
+        "isClassroomMode": true,
+        "turn": 1,
+        "year": 1,
+        "maxYears": 5,
+        "season": "WINTER",
+        "money": 120,
+        "publicTrust": 75,
+        "basinHealth": 80,
+        "climateState": "NORMAL",
+        "ensoState": "NEUTRAL",
+        "temperatureAnomaly": -4,
+        "nextSeasonForecast": {
+          "likelyState": "DRY",
+          "droughtRisk": "MEDIA",
+          "stormRisk": "BAJA",
+          "snowExpected": "BAJA",
+          "accuracy": 0.4
+        },
+        "seasonalRainfall": 12,
+        "rainfallIntensity": "MODERATE",
+        "snowReserve": 112,
+        "snowMelt": 0,
+        "riverFlow": 7,
+        "reservoirVolume": 65,
+        "reservoirCapacity": 100,
+        "aquiferVolume": 85,
+        "aquiferCapacity": 100,
+        "aquiferStressLevel": "HEALTHY",
+        "waterQuality": 85,
+        "availableWater": 62,
+        "currentAllocatedTotal": 32,
+        "unallocatedWater": 30,
+        "sectors": {
+          "population": {
+            "id": "population",
+            "name": "Población Urbana",
+            "shortName": "Ciudad",
+            "icon": "🏙️",
+            "description": "Hogares, escuelas, centros de salud y servicios básicos.",
+            "baseDemand": 16,
+            "currentDemand": 14,
+            "allocated": 14,
+            "consumed": 5,
+            "returned": 11,
+            "returnQuality": 40,
+            "satisfactionRate": 1,
+            "color": "#3b82f6",
+            "economicReturnPerUnit": 1.2,
+            "trustImpactDeficit": 3.5
+          },
+          "agriculture": {
+            "id": "agriculture",
+            "name": "Agricultura",
+            "shortName": "Cultivos",
+            "icon": "🌾",
+            "description": "Producción de alimentos, frutales y cultivos bajo riego.",
+            "baseDemand": 23,
+            "currentDemand": 9,
+            "allocated": 6,
+            "consumed": 16,
+            "returned": 7,
+            "returnQuality": 65,
+            "satisfactionRate": 1,
+            "color": "#10b981",
+            "economicReturnPerUnit": 1.4,
+            "trustImpactDeficit": 1.5
+          },
+          "livestock": {
+            "id": "livestock",
+            "name": "Ganadería",
+            "shortName": "Granja",
+            "icon": "🐄",
+            "description": "Abrevado y pasturas para animales de producción.",
+            "baseDemand": 7,
+            "currentDemand": 6,
+            "allocated": 4,
+            "consumed": 5,
+            "returned": 2,
+            "returnQuality": 60,
+            "satisfactionRate": 1,
+            "color": "#eab308",
+            "economicReturnPerUnit": 1,
+            "trustImpactDeficit": 1
+          },
+          "mining": {
+            "id": "mining",
+            "name": "Minería e Industria",
+            "shortName": "Mina",
+            "icon": "⛏️",
+            "description": "Extracción mineral, procesamiento y actividad productiva.",
+            "baseDemand": 13,
+            "currentDemand": 13,
+            "allocated": 8,
+            "consumed": 10,
+            "returned": 2,
+            "returnQuality": 50,
+            "satisfactionRate": 1,
+            "color": "#a855f7",
+            "economicReturnPerUnit": 1.8,
+            "trustImpactDeficit": 1.2
+          },
+          "ecosystem": {
+            "id": "ecosystem",
+            "name": "Ecosistema y Río",
+            "shortName": "Caudal Ecológico",
+            "icon": "🐟",
+            "description": "Caudal ambiental necesario para mantener el río vivo, humedales y peces.",
+            "baseDemand": 15,
+            "currentDemand": 12,
+            "allocated": 0,
+            "consumed": 2,
+            "returned": 13,
+            "returnQuality": 95,
+            "satisfactionRate": 1,
+            "color": "#06b6d4",
+            "economicReturnPerUnit": 0.5,
+            "trustImpactDeficit": 2
+          },
+          "reserve": {
+            "id": "reserve",
+            "name": "Reserva Natural",
+            "shortName": "Reserva",
+            "icon": "🛡️",
+            "description": "Agua no asignada que se conserva automáticamente en embalses y acuíferos.",
+            "baseDemand": 0,
+            "currentDemand": 0,
+            "allocated": 0,
+            "consumed": 0,
+            "returned": 0,
+            "returnQuality": 100,
+            "satisfactionRate": 1,
+            "color": "#64748b",
+            "economicReturnPerUnit": 0,
+            "trustImpactDeficit": 0
+          }
+        },
+        "upgrades": {},
+        "currentSeasonEvents": [],
+        "activeInteractiveEvent": null,
+        "seasonHistory": [],
+        "yearHistory": [],
+        "isSeasonResolved": false,
+        "isYearEndPhase": false,
+        "isGameOver": false,
+        "goalRulesVersion": "contextual-v1",
+        "currentSeasonalGoal": {
+          "id": "goal_y1_w",
+          "year": 1,
+          "season": "WINTER",
+          "title": "❄️ Ciudad y Reserva",
+          "description": "Cubrí al menos el 95% de Ciudad y conservá 30 gotas en el embalse.",
+          "hint": "Abastecé bien a Ciudad y revisá cuánto queda en el embalse al cerrar la estación.",
+          "targetCondition": {
+            "type": "CITY_AND_RESERVOIR_MIN",
+            "threshold": 30,
+            "cityCoverageThreshold": 95
+          },
+          "reward": {
+            "moneyBonus": 10,
+            "trustBonus": 3,
+            "message": "¡Excelente reserva invernal conservada!"
+          }
+        }
+      },
+      "actions": [
+        {
+          "type": "allocation",
+          "turn": 1,
+          "values": {
+            "population": 14,
+            "agriculture": 6,
+            "livestock": 4,
+            "mining": 8,
+            "ecosystem": 0
+          }
+        },
+        {
+          "type": "resolve",
+          "turn": 1
+        },
+        {
+          "type": "advance",
+          "turn": 1
+        },
+        {
+          "type": "event-choice",
+          "turn": 2,
+          "eventId": "ferrada_molienda",
+          "optionId": "enfriamiento_mina"
+        },
+        {
+          "type": "allocation",
+          "turn": 2,
+          "values": {
+            "population": 0,
+            "agriculture": 0,
+            "livestock": 7,
+            "mining": 0,
+            "ecosystem": 0
+          }
+        },
+        {
+          "type": "resolve",
+          "turn": 2
+        }
+      ]
+    },
+    "snapshot": {
+      "scenarioId": "cuenca_central",
+      "scenarioName": "Cuenca del Valle Central",
+      "seed": "AULA-2026-001",
+      "isClassroomMode": true,
+      "turn": 2,
+      "year": 1,
+      "maxYears": 5,
+      "season": "SPRING",
+      "money": 190,
+      "publicTrust": 51,
+      "basinHealth": 88,
+      "climateState": "NORMAL",
+      "ensoState": "NEUTRAL",
+      "temperatureAnomaly": 0.5,
+      "nextSeasonForecast": {
+        "likelyState": "VERY_WET",
+        "droughtRisk": "BAJA",
+        "stormRisk": "ALTA",
+        "snowExpected": "ALTA",
+        "accuracy": 0.4
+      },
+      "seasonalRainfall": 22,
+      "rainfallIntensity": "MODERATE",
+      "snowReserve": 53,
+      "snowMelt": 71,
+      "riverFlow": 86,
+      "reservoirVolume": 84,
+      "reservoirCapacity": 100,
+      "aquiferVolume": 100,
+      "aquiferCapacity": 100,
+      "aquiferStressLevel": "HEALTHY",
+      "waterQuality": 80,
+      "availableWater": 105,
+      "currentAllocatedTotal": 7,
+      "unallocatedWater": 98,
+      "sectors": {
+        "population": {
+          "id": "population",
+          "name": "Población Urbana",
+          "shortName": "Ciudad",
+          "icon": "🏙️",
+          "description": "Hogares, escuelas, centros de salud y servicios básicos.",
+          "baseDemand": 16,
+          "currentDemand": 16,
+          "allocated": 0,
+          "consumed": 0,
+          "returned": 0,
+          "returnQuality": 35,
+          "satisfactionRate": 0,
+          "color": "#3b82f6",
+          "economicReturnPerUnit": 1.2,
+          "trustImpactDeficit": 3.5
+        },
+        "agriculture": {
+          "id": "agriculture",
+          "name": "Agricultura",
+          "shortName": "Cultivos",
+          "icon": "🌾",
+          "description": "Producción de alimentos, frutales y cultivos bajo riego.",
+          "baseDemand": 23,
+          "currentDemand": 23,
+          "allocated": 0,
+          "consumed": 0,
+          "returned": 0,
+          "returnQuality": 65,
+          "satisfactionRate": 0,
+          "color": "#10b981",
+          "economicReturnPerUnit": 1.4,
+          "trustImpactDeficit": 1.5
+        },
+        "livestock": {
+          "id": "livestock",
+          "name": "Ganadería",
+          "shortName": "Granja",
+          "icon": "🐄",
+          "description": "Abrevado y pasturas para animales de producción.",
+          "baseDemand": 7,
+          "currentDemand": 7,
+          "allocated": 7,
+          "consumed": 5,
+          "returned": 2,
+          "returnQuality": 60,
+          "satisfactionRate": 1,
+          "color": "#eab308",
+          "economicReturnPerUnit": 1,
+          "trustImpactDeficit": 1
+        },
+        "mining": {
+          "id": "mining",
+          "name": "Minería e Industria",
+          "shortName": "Mina",
+          "icon": "⛏️",
+          "description": "Extracción mineral, procesamiento y actividad productiva.",
+          "baseDemand": 13,
+          "currentDemand": 13,
+          "allocated": 0,
+          "consumed": 0,
+          "returned": 0,
+          "returnQuality": 50,
+          "satisfactionRate": 0,
+          "color": "#a855f7",
+          "economicReturnPerUnit": 1.8,
+          "trustImpactDeficit": 1.2
+        },
+        "ecosystem": {
+          "id": "ecosystem",
+          "name": "Ecosistema y Río",
+          "shortName": "Caudal Ecológico",
+          "icon": "🐟",
+          "description": "Caudal ambiental necesario para mantener el río vivo, humedales y peces.",
+          "baseDemand": 15,
+          "currentDemand": 18,
+          "allocated": 0,
+          "consumed": 0,
+          "returned": 0,
+          "returnQuality": 100,
+          "satisfactionRate": 1,
+          "color": "#06b6d4",
+          "economicReturnPerUnit": 0.5,
+          "trustImpactDeficit": 2
+        },
+        "reserve": {
+          "id": "reserve",
+          "name": "Reserva Natural",
+          "shortName": "Reserva",
+          "icon": "🛡️",
+          "description": "Agua no asignada que se conserva automáticamente en embalses y acuíferos.",
+          "baseDemand": 0,
+          "currentDemand": 0,
+          "allocated": 0,
+          "consumed": 0,
+          "returned": 0,
+          "returnQuality": 100,
+          "satisfactionRate": 1,
+          "color": "#64748b",
+          "economicReturnPerUnit": 0,
+          "trustImpactDeficit": 0
+        }
+      },
+      "upgrades": {},
+      "currentSeasonEvents": [
+        {
+          "event": {
+            "id": "subsidio_verde",
+            "name": "Fondo Internacional de Transición Hídrica",
+            "type": "OPPORTUNITY",
+            "description": "La cuenca fue seleccionada para un programa de financiamiento de infraestructura y eficiencia.",
+            "conditions": {
+              "minTrust": 60,
+              "probability": 0.35
+            },
+            "effects": {
+              "moneyBonus": 35,
+              "trustBonus": 5
+            },
+            "narrativeMitigated": "¡Llegaron $35 para nuevas obras! Elegí qué pendiente atender."
+          },
+          "wasMitigated": true,
+          "impactSummary": "¡Llegaron $35 para nuevas obras! Elegí qué pendiente atender.",
+          "appliedEffects": {
+            "moneyDelta": 35,
+            "trustDelta": 5,
+            "basinHealthDelta": 0,
+            "waterQualityDelta": 0
+          }
+        },
+        {
+          "event": {
+            "id": "ferrada_molienda",
+            "name": "👷‍♂️ Demanda de Enfriamiento en la Mina",
+            "type": "SECTOR_DILEMMA",
+            "description": "El Ing. Ferrada descubrió una veta rica de cobre, pero los molinos necesitan enfriarse para no trabarse.",
+            "conditions": {
+              "probability": 0.36
+            },
+            "isInteractive": true,
+            "options": [
+              {
+                "id": "enfriamiento_mina",
+                "label": "⚙️ Autorizar agua adicional para acelerar la producción",
+                "description": "Entrega caudal extra a cambio de mayores regalías económicas para el valle.",
+                "effects": {
+                  "reservoirDelta": -8,
+                  "moneyDelta": 25,
+                  "trustDelta": 2
+                },
+                "consequenceText": "La mina batió récords de extracción y aportó $25 en regalías a las arcas de la cuenca."
+              },
+              {
+                "id": "recirculacion_mina",
+                "label": "♻️ Usar la obra de recirculación de agua",
+                "description": "Usá la obra de recirculación para responder al pedido sin retiro extra. La mina sigue necesitando agua fresca según el nivel de la obra.",
+                "requiresUpgrade": "recirculacion_minera",
+                "effects": {
+                  "moneyDelta": 20,
+                  "basinHealthDelta": 4,
+                  "trustDelta": 5
+                },
+                "consequenceText": "¡La obra ayudó a responder al pedido! +$20, salud +4 y confianza +5, sin retiro extra de reserva. Revisá también la cobertura normal de la mina."
+              },
+              {
+                "id": "freno_mina",
+                "label": "🛑 Operar a velocidad normal sin agua extra",
+                "description": "Exige a la mina no exceder su dotación para no quitarle agua a otros usuarios.",
+                "effects": {
+                  "trustDelta": -2
+                },
+                "consequenceText": "Ferrada refunfuñó pero mantuvo el ritmo seguro sin recalentar motores ni gastar reservas."
+              }
+            ]
+          },
+          "wasMitigated": true,
+          "impactSummary": "Elegiste «⚙️ Autorizar agua adicional para acelerar la producción». Cambios reales: presupuesto 25; confianza 2; salud de cuenca 0; calidad 0; embalse -8; acuífero +0. El agua se ajusta fuera del reparto normal.",
+          "chosenOptionId": "enfriamiento_mina",
+          "appliedEffects": {
+            "moneyDelta": 25,
+            "trustDelta": 2,
+            "basinHealthDelta": 0,
+            "waterQualityDelta": 0
+          },
+          "waterAdjustment": {
+            "reservoirChange": -8,
+            "aquiferChange": 0,
+            "externalInflow": 0,
+            "externalOutflow": 8
+          }
+        }
+      ],
+      "activeInteractiveEvent": null,
+      "seasonHistory": [
+        {
+          "turn": 1,
+          "year": 1,
+          "season": "WINTER",
+          "climateState": "NORMAL",
+          "ensoState": "NEUTRAL",
+          "balance": {
+            "seasonRainfall": 12,
+            "rainfallIntensity": "MODERATE",
+            "soilInfiltration": 5,
+            "surfaceRunoff": 4,
+            "evaporatedRain": 3,
+            "snowReserveStart": 60,
+            "snowAccumulated": 52,
+            "snowMelt": 0,
+            "snowReserveEnd": 112,
+            "riverInflow": 7,
+            "riverFlowTotal": 7,
+            "baseFlow": 5,
+            "directRiverIntake": 5,
+            "downstreamFlow": 17,
+            "runoffBypass": 2,
+            "soilEvaporation": 1,
+            "reservoirStart": 65,
+            "reservoirInflow": 1,
+            "reservoirWithdrawal": 27,
+            "reservoirEvaporation": 1,
+            "reservoirSpill": 0,
+            "reservoirEnd": 38,
+            "aquiferStart": 85,
+            "aquiferNaturalRecharge": 4,
+            "aquiferRiverRecharge": 0,
+            "aquiferArtificialRecharge": 0,
+            "aquiferWithdrawal": 0,
+            "aquiferEnd": 89,
+            "aquiferOverflow": 0,
+            "allocations": {
+              "population": 14,
+              "agriculture": 6,
+              "livestock": 4,
+              "mining": 8,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "suppliedAllocations": {
+              "population": 14,
+              "agriculture": 6,
+              "livestock": 4,
+              "mining": 8,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "returnQualities": {
+              "population": 35,
+              "agriculture": 65,
+              "livestock": 60,
+              "mining": 50,
+              "ecosystem": 100,
+              "reserve": 100
+            },
+            "consumptions": {
+              "population": 4,
+              "agriculture": 4,
+              "livestock": 3,
+              "mining": 7,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "returns": {
+              "population": 10,
+              "agriculture": 2,
+              "livestock": 1,
+              "mining": 1,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "satisfactions": {
+              "population": 1,
+              "agriculture": 0.6666666666666666,
+              "livestock": 0.6666666666666666,
+              "mining": 0.6153846153846154,
+              "ecosystem": 1,
+              "reserve": 1
+            },
+            "totalWaterAvailable": 62,
+            "totalWaterSupplied": 32,
+            "unallocatedStored": 4,
+            "unmetAllocation": 0,
+            "massBalanceError": 0,
+            "waterQuality": 73,
+            "basinHealth": 83,
+            "publicTrust": 74
+          },
+          "events": [],
+          "adviceMessage": "💧 La cuenca sigue en marcha. Se bombearon 0 gotas; compara los abastecimientos y las reservas antes de la próxima estación.",
+          "goalAchieved": true
+        },
+        {
+          "turn": 2,
+          "year": 1,
+          "season": "SPRING",
+          "climateState": "NORMAL",
+          "ensoState": "NEUTRAL",
+          "balance": {
+            "seasonRainfall": 22,
+            "rainfallIntensity": "MODERATE",
+            "soilInfiltration": 10,
+            "surfaceRunoff": 7,
+            "evaporatedRain": 5,
+            "snowReserveStart": 112,
+            "snowAccumulated": 12,
+            "snowMelt": 71,
+            "snowReserveEnd": 53,
+            "riverInflow": 86,
+            "riverFlowTotal": 86,
+            "baseFlow": 12,
+            "directRiverIntake": 7,
+            "downstreamFlow": 28,
+            "runoffBypass": 4,
+            "soilEvaporation": 1,
+            "reservoirStart": 30,
+            "reservoirInflow": 55,
+            "reservoirWithdrawal": 0,
+            "reservoirEvaporation": 1,
+            "reservoirSpill": 0,
+            "reservoirEnd": 84,
+            "aquiferStart": 89,
+            "aquiferNaturalRecharge": 9,
+            "aquiferRiverRecharge": 2,
+            "aquiferArtificialRecharge": 0,
+            "aquiferWithdrawal": 0,
+            "aquiferEnd": 100,
+            "aquiferOverflow": 0,
+            "allocations": {
+              "population": 0,
+              "agriculture": 0,
+              "livestock": 7,
+              "mining": 0,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "suppliedAllocations": {
+              "population": 0,
+              "agriculture": 0,
+              "livestock": 7,
+              "mining": 0,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "returnQualities": {
+              "population": 35,
+              "agriculture": 65,
+              "livestock": 60,
+              "mining": 50,
+              "ecosystem": 100,
+              "reserve": 100
+            },
+            "consumptions": {
+              "population": 0,
+              "agriculture": 0,
+              "livestock": 5,
+              "mining": 0,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "returns": {
+              "population": 0,
+              "agriculture": 0,
+              "livestock": 2,
+              "mining": 0,
+              "ecosystem": 0,
+              "reserve": 0
+            },
+            "satisfactions": {
+              "population": 0,
+              "agriculture": 0,
+              "livestock": 1,
+              "mining": 0,
+              "ecosystem": 1,
+              "reserve": 1
+            },
+            "totalWaterAvailable": 105,
+            "totalWaterSupplied": 7,
+            "unallocatedStored": 65,
+            "unmetAllocation": 0,
+            "massBalanceError": 0,
+            "waterQuality": 80,
+            "basinHealth": 88,
+            "publicTrust": 51
+          },
+          "events": [
+            {
+              "event": {
+                "id": "subsidio_verde",
+                "name": "Fondo Internacional de Transición Hídrica",
+                "type": "OPPORTUNITY",
+                "description": "La cuenca fue seleccionada para un programa de financiamiento de infraestructura y eficiencia.",
+                "conditions": {
+                  "minTrust": 60,
+                  "probability": 0.35
+                },
+                "effects": {
+                  "moneyBonus": 35,
+                  "trustBonus": 5
+                },
+                "narrativeMitigated": "¡Llegaron $35 para nuevas obras! Elegí qué pendiente atender."
+              },
+              "wasMitigated": true,
+              "impactSummary": "¡Llegaron $35 para nuevas obras! Elegí qué pendiente atender.",
+              "appliedEffects": {
+                "moneyDelta": 35,
+                "trustDelta": 5,
+                "basinHealthDelta": 0,
+                "waterQualityDelta": 0
+              }
+            },
+            {
+              "event": {
+                "id": "ferrada_molienda",
+                "name": "👷‍♂️ Demanda de Enfriamiento en la Mina",
+                "type": "SECTOR_DILEMMA",
+                "description": "El Ing. Ferrada descubrió una veta rica de cobre, pero los molinos necesitan enfriarse para no trabarse.",
+                "conditions": {
+                  "probability": 0.36
+                },
+                "isInteractive": true,
+                "options": [
+                  {
+                    "id": "enfriamiento_mina",
+                    "label": "⚙️ Autorizar agua adicional para acelerar la producción",
+                    "description": "Entrega caudal extra a cambio de mayores regalías económicas para el valle.",
+                    "effects": {
+                      "reservoirDelta": -8,
+                      "moneyDelta": 25,
+                      "trustDelta": 2
+                    },
+                    "consequenceText": "La mina batió récords de extracción y aportó $25 en regalías a las arcas de la cuenca."
+                  },
+                  {
+                    "id": "recirculacion_mina",
+                    "label": "♻️ Usar la obra de recirculación de agua",
+                    "description": "Usá la obra de recirculación para responder al pedido sin retiro extra. La mina sigue necesitando agua fresca según el nivel de la obra.",
+                    "requiresUpgrade": "recirculacion_minera",
+                    "effects": {
+                      "moneyDelta": 20,
+                      "basinHealthDelta": 4,
+                      "trustDelta": 5
+                    },
+                    "consequenceText": "¡La obra ayudó a responder al pedido! +$20, salud +4 y confianza +5, sin retiro extra de reserva. Revisá también la cobertura normal de la mina."
+                  },
+                  {
+                    "id": "freno_mina",
+                    "label": "🛑 Operar a velocidad normal sin agua extra",
+                    "description": "Exige a la mina no exceder su dotación para no quitarle agua a otros usuarios.",
+                    "effects": {
+                      "trustDelta": -2
+                    },
+                    "consequenceText": "Ferrada refunfuñó pero mantuvo el ritmo seguro sin recalentar motores ni gastar reservas."
+                  }
+                ]
+              },
+              "wasMitigated": true,
+              "impactSummary": "Elegiste «⚙️ Autorizar agua adicional para acelerar la producción». Cambios reales: presupuesto 25; confianza 2; salud de cuenca 0; calidad 0; embalse -8; acuífero +0. El agua se ajusta fuera del reparto normal.",
+              "chosenOptionId": "enfriamiento_mina",
+              "appliedEffects": {
+                "moneyDelta": 25,
+                "trustDelta": 2,
+                "basinHealthDelta": 0,
+                "waterQualityDelta": 0
+              },
+              "waterAdjustment": {
+                "reservoirChange": -8,
+                "aquiferChange": 0,
+                "externalInflow": 0,
+                "externalOutflow": 8
+              }
+            }
+          ],
+          "adviceMessage": "⚠️ La ciudad sufrió cortes de agua potable. Se dispararon los reclamos ciudadanos y cayó la confianza pública.",
+          "goalAchieved": false
+        }
+      ],
+      "yearHistory": [],
+      "isSeasonResolved": true,
+      "isYearEndPhase": false,
+      "isGameOver": false,
+      "goalRulesVersion": "contextual-v1",
+      "currentSeasonalGoal": {
+        "id": "mission-v1-2-livestock-reservoir",
+        "year": 1,
+        "season": "SPRING",
+        "title": "🏞️ Granja y reserva para después",
+        "description": "Ciudad ≥85% · Granja ≥80% · otros usos productivos ≥70% · río ≥80%. Embalse al cierre: al menos 56 gotas (+18 desde el inicio).",
+        "hint": "La meta se fijó al comenzar la estación. Compará cobertura y reserva final; comprar una obra no aumenta esta meta.",
+        "targetCondition": {
+          "type": "COVERAGE_AND_RESERVOIR",
+          "threshold": 80,
+          "cityCoverageThreshold": 85,
+          "sectorId": "livestock",
+          "riverCoverageThreshold": 80,
+          "minimumProductiveCoverage": 70,
+          "reserveTarget": 56
+        },
+        "reward": {
+          "moneyBonus": 10,
+          "trustBonus": 3,
+          "message": "Se cumplió el desafío de abastecimiento y cuidado del valle."
+        }
+      }
+    },
+    "limitations": [
+      "Replay requiere las mismas fuentes y datos del modelo; no se garantiza compatibilidad futura.",
+      "El historial de balances y las obras actuales no reconstruyen compras anteriores ni prueban causalidad.",
+      "El log guarda decisiones del motor y repartos en sus límites; no movimientos de sliders ni vistas previas.",
+      "Modelo educativo conceptual, no una herramienta profesional de predicción."
+    ]
+  }
+}

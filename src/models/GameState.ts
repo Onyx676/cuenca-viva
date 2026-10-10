@@ -41,7 +41,7 @@ export interface GameState {
   seed: string;
   isClassroomMode: boolean;
   // Absent in preserved model-2.5 games. New missions are frozen at turn entry.
-  goalRulesVersion?: 'contextual-v1';
+  goalRulesVersion?: 'contextual-v1' | 'contextual-v2';
   currentSeasonalGoal?: SeasonalGoal;
 
   // Progresión temporal (5 años x 4 estaciones = 20 turnos)

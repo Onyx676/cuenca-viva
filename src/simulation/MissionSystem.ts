@@ -26,8 +26,8 @@ export function selectSeasonalGoal(state: GameState, preview: (requests: Request
     id === 'ecosystem' ? 0 : state.sectors[id as keyof typeof state.sectors].currentDemand])) as Requests;
   const full = preview(baselineRequests);
   const feasible: SeasonWaterBalance[] = [];
-  // Look for witnesses respecting every productive sector. Mission generation
-  // does not recommend a distribution or silently apply the witness to the player.
+  // Keep the historical conservative witnesses, so v2 changes neither targets nor RNG.
+  // These witness floors are not additional requirements of v2 focus/reserve missions.
   for (const city of [.85, 1]) for (const productive of [.7, .8, 1]) {
     const requests: Requests = { population: Math.ceil(state.sectors.population.currentDemand * city), agriculture: 0, livestock: 0, mining: 0, ecosystem: 0 };
     for (const id of FOCI) requests[id] = Math.ceil(state.sectors[id].currentDemand * Math.max(productive, id === focus ? .8 : 0));
@@ -57,9 +57,10 @@ export function selectSeasonalGoal(state: GameState, preview: (requests: Request
     const target = Math.min(max, Math.max(wanted, full[field] + 1));
     if (target < lower) continue;
     mixed.push({ ...base, id: `${base.id}-${aquifer ? 'aquifer' : 'reservoir'}`, title: aquifer ? `💧 ${LABELS[focus]} y agua bajo tierra` : `🏞️ ${LABELS[focus]} y reserva para después`,
-      description: `${coverage} ${aquifer ? 'Acuífero' : 'Embalse'} al cierre: al menos ${target} gotas${target > start ? ` (+${target - start} desde el inicio)` : ''}.`,
+      description: `${state.goalRulesVersion === 'contextual-v2' ? `${LABELS[focus]} ≥80%.` : coverage} ${aquifer ? 'Acuífero' : 'Embalse'} al cierre: al menos ${target} gotas${target > start ? ` (+${target - start} desde el inicio)` : ''}.`,
       hint: 'La meta se fijó al comenzar la estación. Compará cobertura y reserva final; comprar una obra no aumenta esta meta.',
-      targetCondition: { ...base.targetCondition, type: aquifer ? 'COVERAGE_AND_AQUIFER' : 'COVERAGE_AND_RESERVOIR', reserveTarget: target } });
+      targetCondition: { ...(state.goalRulesVersion === 'contextual-v2' ? { threshold: 80, sectorId: focus } : base.targetCondition),
+        type: aquifer ? 'COVERAGE_AND_AQUIFER' : 'COVERAGE_AND_RESERVOIR', reserveTarget: target } });
   }
   if (mixed.length) return mixed.find(goal => goal.targetCondition.reserveTarget! >
     full[goal.targetCondition.type === 'COVERAGE_AND_AQUIFER' ? 'aquiferEnd' : 'reservoirEnd']) ?? mixed[0];
@@ -70,11 +71,13 @@ export function selectSeasonalGoal(state: GameState, preview: (requests: Request
       : 'Con las reservas actuales, los repartos comprobados al inicio no alcanzan estas coberturas; revisá la vista previa. No se garantiza que otra inversión sea asequible.' };
 }
 
-export function goalProgress(goal: SeasonalGoal, b: SeasonWaterBalance): string {
+export function goalProgress(goal: SeasonalGoal, b: SeasonWaterBalance, rules: GameState['goalRulesVersion'] = 'contextual-v2'): string {
   const c = goal.targetCondition;
   if (!['COVERAGE_AND_AQUIFER', 'COVERAGE_AND_RESERVOIR', 'CITY_AND_SECTOR'].includes(c.type) || !c.sectorId) return '';
   const names = { population: 'Ciudad', agriculture: 'Cultivos', livestock: 'Granja', mining: 'Mina', ecosystem: 'Río' };
-  const checks = [`Ciudad ${Math.floor(b.satisfactions.population * 100)}/85%`,
+  const checks = rules === 'contextual-v2' && c.type !== 'CITY_AND_SECTOR'
+    ? [`${names[c.sectorId]} ${Math.floor(b.satisfactions[c.sectorId] * 100)}/${c.threshold}%`]
+    : [`Ciudad ${Math.floor(b.satisfactions.population * 100)}/85%`,
     `${names[c.sectorId]} ${Math.floor(b.satisfactions[c.sectorId] * 100)}/${c.threshold}%`,
     `otros ${Math.floor(Math.min(...FOCI.filter(id => id !== c.sectorId).map(id => b.satisfactions[id])) * 100)}/70%`,
     `río ${Math.floor(b.satisfactions.ecosystem * 100)}/80%`];

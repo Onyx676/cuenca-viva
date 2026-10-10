@@ -17,7 +17,7 @@ import { WaterSystem } from './WaterSystem';
 import { legacySeasonalGoal, selectSeasonalGoal } from './MissionSystem';
 
 export class SimulationEngine {
-  public static readonly MODEL_VERSION = '2.6';
+  public static readonly MODEL_VERSION = '2.7';
   private rng: SeededRandom;
   private climateSys: ClimateSystem;
   private rainSys: RainSystem;
@@ -37,7 +37,7 @@ export class SimulationEngine {
   private plannedEnso?: GameState['ensoState'];
 
   constructor(scenarioId: string = 'cuenca_central', seed: string = 'AULA-2026-001', isClassroomMode: boolean = false,
-    private readonly goalRules: 'legacy' | 'contextual-v1' = 'contextual-v1') {
+    private goalRules: 'legacy' | 'contextual-v1' | 'contextual-v2' = 'contextual-v2') {
     this.rng = new SeededRandom(seed);
     this.climateSys = new ClimateSystem(this.rng, new SeededRandom(`${seed}:forecast:v2`));
     this.rainSys = new RainSystem(this.rng);
@@ -56,7 +56,14 @@ export class SimulationEngine {
     return this.state;
   }
 
-  public getModelVersion(): string { return this.goalRules === 'legacy' ? '2.5' : SimulationEngine.MODEL_VERSION; }
+  public getModelVersion(): string { return this.goalRules === 'legacy' ? '2.5' : this.goalRules === 'contextual-v1' ? '2.6' : SimulationEngine.MODEL_VERSION; }
+  /** Explicit, logged boundary: preserve frozen goals, history, rewards and all RNGs. */
+  public upgradeGoalRules(): boolean {
+    if (this.goalRules !== 'contextual-v1' || this.state.isGameOver) return false;
+    this.goalRules = 'contextual-v2';
+    this.state.goalRulesVersion = 'contextual-v2';
+    return true;
+  }
   public getCurrentSeasonalGoal(): SeasonalGoal | undefined {
     return this.goalRules === 'legacy' ? legacySeasonalGoal(this.state) : this.state.currentSeasonalGoal;
   }
@@ -287,7 +294,7 @@ export class SimulationEngine {
       isGameOver: false
     };
 
-    if (this.goalRules !== 'legacy') this.state.goalRulesVersion = 'contextual-v1';
+    if (this.goalRules !== 'legacy') this.state.goalRulesVersion = this.goalRules;
 
     this.prepareSeasonStart();
   }

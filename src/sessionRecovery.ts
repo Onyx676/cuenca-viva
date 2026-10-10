@@ -21,7 +21,7 @@ export function createRecoveryPacket(state: GameState, log: SessionLog | null, s
   if (!log || state.turn < 1 || state.year < 1) return null;
   return { recoverySchemaVersion: 1,
     ...(validEditorialSession(editorialSession) ? { editorialSession } : {}),
-    session: createSessionExport(state, state.goalRulesVersion === 'contextual-v1' ? SimulationEngine.MODEL_VERSION : '2.5', log, savedAt) };
+    session: createSessionExport(state, state.goalRulesVersion === 'contextual-v2' ? SimulationEngine.MODEL_VERSION : state.goalRulesVersion === 'contextual-v1' ? '2.6' : '2.5', log, savedAt) };
 }
 
 function object(value: unknown): value is Record<string, unknown> {
@@ -49,7 +49,7 @@ function validAction(value: unknown): value is SessionAction {
     }
     case 'event-choice': return typeof value.eventId === 'string' && typeof value.optionId === 'string';
     case 'purchase': return typeof value.upgradeId === 'string';
-    case 'resolve': case 'advance': return true;
+    case 'resolve': case 'advance': case 'upgrade-goal-rules': return true;
     default: return false;
   }
 }
@@ -63,7 +63,7 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
       return { ok: false, reason: 'Formato de copia local no compatible.' };
     }
     const data = packet.session;
-    if (data.schemaVersion !== 1 || !['2.5', SimulationEngine.MODEL_VERSION].includes(data.modelVersion as string)) {
+    if (data.schemaVersion !== 1 || !['2.5', '2.6', SimulationEngine.MODEL_VERSION].includes(data.modelVersion as string)) {
       return { ok: false, reason: 'La copia pertenece a otra versión del modelo. Se conserva sin reemplazarla.' };
     }
     const meta = data.metadata;
@@ -75,12 +75,15 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
       || recording.actions.length > MAX_ACTIONS || !recording.actions.every(validAction)) {
       return { ok: false, reason: 'La copia no contiene un registro de partida válido y completo.' };
     }
-    const contextual = data.modelVersion === SimulationEngine.MODEL_VERSION;
-    if (!object(recording.initialState) || (contextual ? recording.initialState.goalRulesVersion !== 'contextual-v1' || meta.goalRulesVersion !== 'contextual-v1'
+    const contextual = data.modelVersion !== '2.5';
+    const finalRules = data.modelVersion === '2.6' ? 'contextual-v1' : 'contextual-v2';
+    if (!object(recording.initialState) || (contextual ? !['contextual-v1', 'contextual-v2'].includes(recording.initialState.goalRulesVersion as string)
+      || meta.goalRulesVersion !== finalRules || (data.modelVersion === '2.6' && recording.initialState.goalRulesVersion !== 'contextual-v1')
       : Object.hasOwn(recording.initialState, 'goalRulesVersion') || Object.hasOwn(recording.initialState, 'currentSeasonalGoal') || Object.hasOwn(meta, 'goalRulesVersion'))) {
       return { ok: false, reason: 'Las reglas de misiones no corresponden a la versión guardada. Se conserva la copia original.' };
     }
-    const engine = new SimulationEngine(meta.scenarioId, meta.seed, meta.isClassroomMode, contextual ? 'contextual-v1' : 'legacy');
+    const initialRules = contextual ? recording.initialState.goalRulesVersion as 'contextual-v1' | 'contextual-v2' : 'legacy';
+    const engine = new SimulationEngine(meta.scenarioId, meta.seed, meta.isClassroomMode, initialRules);
     if (engine.getState().scenarioId !== meta.scenarioId || !equalJSON(engine.getState(), recording.initialState)) {
       return { ok: false, reason: 'Las fuentes o datos del modelo cambiaron; se conserva la copia original.' };
     }
@@ -119,9 +122,13 @@ export function replayRecovery(packet: unknown): Recovered | Rejected {
           if (state.turn !== action.turn + 1) throw new Error('Avance incompleto');
           log.record(action);
           break;
+        case 'upgrade-goal-rules':
+          if (!engine.upgradeGoalRules()) throw new Error('Cambio de reglas no válido');
+          log.record(action);
+          break;
       }
     }
-    if (!equalJSON(engine.getState(), data.snapshot)) {
+    if (engine.getModelVersion() !== data.modelVersion || !equalJSON(engine.getState(), data.snapshot)) {
       return { ok: false, reason: 'El replay no coincide con el estado guardado. Se conserva la copia original.' };
     }
     return { ok: true, engine, log, savedAt: data.exportedAt,

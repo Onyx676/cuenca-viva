@@ -18,7 +18,7 @@ function event(engine, log) {
   log?.record({type:'event-choice',turn:engine.getState().turn,eventId:e.id,optionId:option.id});
 }
 function spring(seed) {
-  const engine = new SimulationEngine('cuenca_central',seed,true);
+  const engine = new SimulationEngine('cuenca_central',seed,true,'contextual-v1');
   engine.resolveSeason(); engine.advanceToNextTurn();
   return engine;
 }
@@ -40,7 +40,7 @@ test('Misiones 2.6: variedad mecánica desde primavera, meta fija y consultas si
 });
 
 test('Recompensa 2.6 se entrega sólo una vez y mantiene el crédito original de la primera misión', () => {
-  const engine = new SimulationEngine();
+  const engine = new SimulationEngine('cuenca_central','AULA-2026-001',false,'contextual-v1');
   const st = engine.getState();
   const money = st.money;
   const result = engine.resolveSeason();
@@ -52,7 +52,7 @@ test('Recompensa 2.6 se entrega sólo una vez y mantiene el crédito original de
 });
 
 test('Misiones: preview evalúa necesidades reales y reservas finales; omitir pedidos no borra déficit', () => {
-  const engine = new SimulationEngine();
+  const engine = new SimulationEngine('cuenca_central','AULA-2026-001',false,'contextual-v1');
   const st = engine.getState();
   const b = engine.previewSeason().balance;
   const final = {targetCondition:{type:'PUBLIC_TRUST',threshold:0,requireNoDeficit:true}};
@@ -71,7 +71,7 @@ test('Misiones: preview evalúa necesidades reales y reservas finales; omitir pe
 });
 
 test('Misiones 2.6 y legado 2.5: replay veinte turnos, versiones fieles, reglas distintas sin cambiar clima', () => {
-  for (const rules of ['legacy','contextual-v1']) for (const scenario of ['cuenca_central','cuenca_arida','cuenca_abundante']) {
+  for (const rules of ['legacy','contextual-v1','contextual-v2']) for (const scenario of ['cuenca_central','cuenca_arida','cuenca_abundante']) {
     const e = new SimulationEngine(scenario,'MISSIONS-REPLAY',true,rules);
     const log = new SessionLog(e.getState());
     for(let turn=1;turn<=20;turn++) {
@@ -84,7 +84,7 @@ test('Misiones 2.6 y legado 2.5: replay veinte turnos, versiones fieles, reglas 
       const r = e.resolveSeason();
       assert.equal(r.balance.massBalanceError,0);
       // Legacy historical PUBLIC_TRUST checks after reward-independent hydrology.
-      if(rules==='contextual-v1' && scenario==='cuenca_central') assert.equal(r.goalAchieved,expected);
+      if(rules!=='legacy' && scenario==='cuenca_central') assert.equal(r.goalAchieved,expected);
       log.record({type:'resolve',turn});
       if([1,2,13,20].includes(turn)) {
         const packet = createRecoveryPacket(st,log,'2026-10-09T00:00:00Z');
@@ -93,8 +93,8 @@ test('Misiones 2.6 y legado 2.5: replay veinte turnos, versiones fieles, reglas 
         assert.ok(replay.ok,replay.reason);
         assert.deepEqual(replay.engine.getState(),st);
         assert.deepEqual(replay.engine.getCurrentSeasonalGoal(),e.getCurrentSeasonalGoal());
-        assert.equal(replay.engine.getModelVersion(),rules==='legacy'?'2.5':'2.6');
-        if(rules==='contextual-v1') {
+        assert.equal(replay.engine.getModelVersion(),rules==='legacy'?'2.5':rules==='contextual-v1'?'2.6':'2.7');
+        if(rules!=='legacy') {
           const wrong = structuredClone(packet);
           wrong.session.metadata.goalRulesVersion='inventada';
           assert.equal(replayRecovery(wrong).ok,false);

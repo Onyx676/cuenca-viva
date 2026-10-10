@@ -43,8 +43,18 @@ function createRecordedEngine(): SimulationEngine {
 }
 let engine = createRecordedEngine();
 
+function upgradeRecordedGoalRules(): boolean {
+  if (engine.getState().goalRulesVersion !== 'contextual-v1' || engine.getState().isGameOver) return false;
+  sessionLog?.captureAllocations(engine.getState());
+  if (!engine.upgradeGoalRules()) return false;
+  sessionLog?.record({ type: 'upgrade-goal-rules', turn: engine.getState().turn });
+  return true;
+}
+
 function advanceRecordedTurn(): void {
   const turn = engine.getState().turn;
+  // A recovered resolved season keeps its historical verdict until the next turn.
+  if (engine.getState().isSeasonResolved && !engine.getState().isGameOver) upgradeRecordedGoalRules();
   engine.advanceToNextTurn();
   if (engine.getState().turn !== turn) {
     sessionLog?.record({ type: 'advance', turn });
@@ -505,6 +515,7 @@ function selectMapSector(id: PlayableSectorId, focusSlider = true): void {
   if (backgroundInteractionBlocked()) return;
   if (tutorialManager.isActive() && !tutorialManager.getPhaseData().enabledSectors.includes(id)) return;
   contextualCard.classList.remove('open');
+  const changingSector = selectedSector !== id;
   selectedSector = id;
   previousGatePreview = undefined;
   if (tutorialManager.isActive() && window.innerWidth <= 800) setTutorialCollapsed(true);
@@ -527,6 +538,7 @@ function selectMapSector(id: PlayableSectorId, focusSlider = true): void {
   PLAYABLE_SECTORS.forEach(updateSectorDisplay);
   updateGateDecision();
   positionMapControls();
+  if (changingSector) sectorEditor.scrollTop = 0;
   if (focusSlider) sectorUI[id].slider.focus({ preventScroll: true });
 }
 
@@ -567,10 +579,16 @@ function positionMapControls(): void {
     const panel=document.querySelector('.allocation-panel')!.getBoundingClientRect();
     const editorWidth=sectorEditor.offsetWidth;
     sectorEditor.style.left=`${compact?8:Math.max(8,gate.left-editorWidth-18)}px`;
+    const editorBounds = sectorEditor.getBoundingClientRect();
     const baseAvailableTop=tutorialManager.isActive() && window.innerWidth <= 800
       ? Math.max(headerBottom + 64, tutorialGuideBanner.getBoundingClientRect().bottom + 8)
       : headerBottom+(compact?64:8);
-    const visibleBannerBottom = (element: HTMLElement) => element.getClientRects().length ? element.getBoundingClientRect().bottom + 8 : 0;
+    // Sólo reservar espacio para carteles que cruzan el ancho de esta ficha.
+    const visibleBannerBottom = (element: HTMLElement) => {
+      if (!element.getClientRects().length) return 0;
+      const bounds = element.getBoundingClientRect();
+      return bounds.left < editorBounds.right + 8 && bounds.right > editorBounds.left - 8 ? bounds.bottom + 8 : 0;
+    };
     const availableTop = Math.max(baseAvailableTop, visibleBannerBottom(forecastPreview), visibleBannerBottom(seasonalGoalBanner));
     const below=gate.bottom+14,above=gate.top-availableTop-14,spaceBelow=panel.top-below-8;
     const useBelow=compact&&spaceBelow>above;
@@ -830,6 +848,10 @@ const goalSectorNames: Record<PlayableSectorId, string> = {
 function contextualGoalLines(goal: SeasonalGoal): string[] {
   const c = goal.targetCondition;
   if (!['COVERAGE_AND_AQUIFER', 'COVERAGE_AND_RESERVOIR', 'CITY_AND_SECTOR'].includes(c.type) || !c.sectorId) return [];
+  if (engine.getState().goalRulesVersion === 'contextual-v2' && c.type !== 'CITY_AND_SECTOR') return [
+    `${goalSectorNames[c.sectorId]}: al menos ${c.threshold}%.`,
+    `${c.type === 'COVERAGE_AND_AQUIFER' ? 'Agua bajo tierra' : 'Embalse'}: al menos ${c.reserveTarget} gotas al cierre.`
+  ];
   const otherSectors = (['agriculture', 'livestock', 'mining'] as const)
     .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]).join(' y ');
   const lines = [
@@ -846,12 +868,15 @@ function readableGoalProgress(goal: SeasonalGoal, balance: SeasonWaterBalance): 
   const addCoverage = (id: PlayableSectorId, target: number) => {
     if (balance.satisfactions[id] < target / 100) progress.push(`${goalSectorNames[id]} ${Math.floor(balance.satisfactions[id] * 100)}% (meta: ${target}%)`);
   };
-  addCoverage('population', c.cityCoverageThreshold ?? 85);
+  const focusOnly = engine.getState().goalRulesVersion === 'contextual-v2' && c.type !== 'CITY_AND_SECTOR';
+  if (!focusOnly) addCoverage('population', c.cityCoverageThreshold ?? 85);
   addCoverage(c.sectorId, c.threshold);
-  for (const id of ['agriculture', 'livestock', 'mining'] as const) {
-    if (id !== c.sectorId) addCoverage(id, c.minimumProductiveCoverage ?? 70);
+  if (!focusOnly) {
+    for (const id of ['agriculture', 'livestock', 'mining'] as const) {
+      if (id !== c.sectorId) addCoverage(id, c.minimumProductiveCoverage ?? 70);
+    }
+    addCoverage('ecosystem', c.riverCoverageThreshold ?? 80);
   }
-  addCoverage('ecosystem', c.riverCoverageThreshold ?? 80);
   if (c.type === 'COVERAGE_AND_AQUIFER' && balance.aquiferEnd < c.reserveTarget!) progress.push(`Agua bajo tierra ${balance.aquiferEnd} gotas (meta: ${c.reserveTarget})`);
   if (c.type === 'COVERAGE_AND_RESERVOIR' && balance.reservoirEnd < c.reserveTarget!) progress.push(`Embalse ${balance.reservoirEnd} gotas (meta: ${c.reserveTarget})`);
   return progress.length ? `Faltó: ${progress.join('; ')}` : '';
@@ -866,7 +891,7 @@ function updateSeasonalGoalDisplay(): void {
   seasonalGoalBanner.style.display = 'flex';
   goalTitle.textContent = goal.title;
   const st = engine.getState();
-  const lines = st.goalRulesVersion === 'contextual-v1' ? contextualGoalLines(goal) : [];
+  const lines = st.goalRulesVersion ? contextualGoalLines(goal) : [];
   const displayKey = `${st.turn}:${goal.id}`;
   if (goalDetails.dataset.goalId !== displayKey) goalDetails.open = false;
   goalDetails.dataset.goalId = displayKey;
@@ -877,15 +902,19 @@ function updateSeasonalGoalDisplay(): void {
   if (lines.length) {
     const c = goal.targetCondition;
     const reserve = c.type === 'COVERAGE_AND_AQUIFER' ? 'Agua bajo tierra' : 'Embalse';
-    goalDesc.textContent = `${goalSectorNames[c.sectorId!]}: al menos ${c.threshold}% de cobertura.${c.type === 'CITY_AND_SECTOR' ? '' : `\n${reserve}: guardar al menos ${c.reserveTarget} gotas.`}\nTodas las metas son obligatorias.`;
-    const otherNames = (['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const)
-      .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]);
-    goalDetails.querySelector('summary')!.textContent = `Ver las metas de ${otherNames.slice(0, -1).join(', ')} y ${otherNames.at(-1)}`;
-    // Foco y reserva ya están visibles; el detalle agrega los otros requisitos.
-    for (const line of [`Ciudad: al menos ${c.cityCoverageThreshold ?? 85}%.`, lines[1]]) {
-      const paragraph = document.createElement('p');
-      paragraph.textContent = line;
-      goalRequirements.appendChild(paragraph);
+    const focusOnly = st.goalRulesVersion === 'contextual-v2' && c.type !== 'CITY_AND_SECTOR';
+    goalDesc.textContent = `${goalSectorNames[c.sectorId!]}: al menos ${c.threshold}% de cobertura.${c.type === 'CITY_AND_SECTOR' ? '' : `\n${reserve}: guardar al menos ${c.reserveTarget} gotas.`}${focusOnly ? '' : '\nTodas las metas son obligatorias.'}`;
+    goalDetails.hidden = focusOnly;
+    if (!focusOnly) {
+      const otherNames = (['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const)
+        .filter(id => id !== c.sectorId).map(id => goalSectorNames[id]);
+      goalDetails.querySelector('summary')!.textContent = `Ver las metas de ${otherNames.slice(0, -1).join(', ')} y ${otherNames.at(-1)}`;
+      // Foco y reserva ya están visibles; el detalle agrega los otros requisitos.
+      for (const line of [`Ciudad: al menos ${c.cityCoverageThreshold ?? 85}%.`, lines[1]]) {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = line;
+        goalRequirements.appendChild(paragraph);
+      }
     }
   }
   if (isFirstWinterDecision() && goal.targetCondition.type === 'CITY_AND_RESERVOIR_MIN') {
@@ -2928,13 +2957,14 @@ btnContinueRecovery.addEventListener('click', () => {
   cancelPendingNewspaper();
   engine = saved.engine;
   sessionLog = saved.log;
+  const migratedGoalRules = !engine.getState().isSeasonResolved && upgradeRecordedGoalRules();
   editorialSession = saved.editorialSession;
   BasinScene.editorialSession = editorialSession;
   currentSeed = engine.getState().seed;
   currentScenario = engine.getState().scenarioId;
   tutorialManager.exitTutorial();
   recoveryWritesEnabled = true;
-  preserveRecoveryOriginal = false;
+  preserveRecoveryOriginal = migratedGoalRules;
   dismissRecoveryChoice();
   modalWelcome.classList.remove('open');
   const state = engine.getState();
@@ -2951,6 +2981,7 @@ btnContinueRecovery.addEventListener('click', () => {
   }
   syncInteractionLock();
   setRecoveryStatus('Partida recuperada desde la copia local verificada.');
+  if (migratedGoalRules) saveRecovery();
 });
 
 btnRestartRecovery.addEventListener('click', () => {

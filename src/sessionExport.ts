@@ -7,6 +7,7 @@ export type SessionAction =
   | { type: 'event-choice'; turn: number; eventId: string; optionId: string }
   | { type: 'purchase'; turn: number; upgradeId: string }
   | { type: 'resolve'; turn: number }
+  | { type: 'upgrade-goal-rules'; turn: number }
   | { type: 'advance'; turn: number };
 
 function allocationAction(state: GameState): SessionAction {
@@ -57,6 +58,7 @@ export function createSessionExport(state: GameState, modelVersion: string,
         : 'No se registraron acciones desde el inicio de esta partida.' },
     snapshot: structuredClone(state),
     limitations: [
+      ...(state.goalRulesVersion === 'contextual-v2' ? ['En misiones COVERAGE_AND_RESERVOIR/AQUIFER rigen sólo foco y reserva; campos o descripciones de una meta congelada antes de migrar pueden conservar pisos históricos que ya no se evalúan.'] : []),
       'Replay requiere las mismas fuentes y datos del modelo; no se garantiza compatibilidad futura.',
       'El historial de balances y las obras actuales no reconstruyen compras anteriores ni prueban causalidad.',
       'El log guarda decisiones del motor y repartos en sus límites; no movimientos de sliders ni vistas previas.',

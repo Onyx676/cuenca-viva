@@ -42,10 +42,14 @@ export interface SeasonalGoal {
 }
 
 export function checkSeasonalGoal(goal: SeasonalGoal, state: GameState, preview?: SeasonWaterBalance): boolean {
-  if (state.goalRulesVersion !== 'contextual-v1' || state.scenarioId !== 'cuenca_central') return checkLegacySeasonalGoal(goal, state, preview);
+  if (!state.goalRulesVersion || state.scenarioId !== 'cuenca_central') return checkLegacySeasonalGoal(goal, state, preview);
   const b = preview ?? state.seasonHistory.at(-1)?.balance;
   const rate = (id: 'population' | 'agriculture' | 'livestock' | 'mining' | 'ecosystem') => b?.satisfactions[id] ?? state.sectors[id].satisfactionRate;
   const cond = goal.targetCondition;
+  if (state.goalRulesVersion === 'contextual-v2' && ['COVERAGE_AND_AQUIFER', 'COVERAGE_AND_RESERVOIR'].includes(cond.type)) {
+    const reserve = cond.type === 'COVERAGE_AND_AQUIFER' ? b?.aquiferEnd ?? state.aquiferVolume : b?.reservoirEnd ?? state.reservoirVolume;
+    return !!cond.sectorId && rate(cond.sectorId) >= cond.threshold / 100 && reserve >= (cond.reserveTarget ?? 0);
+  }
   if (cond.requireNoDeficit && !(['population', 'agriculture', 'livestock', 'mining', 'ecosystem'] as const).every(id => rate(id) >= 1)) return false;
   const coverage = () => !!cond.sectorId && rate('population') >= (cond.cityCoverageThreshold ?? 85) / 100
     && rate(cond.sectorId) >= cond.threshold / 100
