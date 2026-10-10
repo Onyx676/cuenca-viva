@@ -18,6 +18,14 @@ Representar Valle Central, Oasis Cordillerano Árido y Lagos del Sur con mapas d
 
 Criterios de aceptación: distinguir los escenarios visualmente y explicar sus condiciones sin sugerir una cuenca real calibrada; conservar controles contextuales y espacios legibles para las reacciones de los sectores. El cambio visual no debe alterar la simulación ni consumir su PRNG.
 
+## Semilla al azar y mapas procedurales
+
+Pendiente solicitado: ofrecer al iniciar una partida la elección entre una semilla conocida y una semilla al azar. Mostrar el código generado y permitir copiarlo para compartir o repetir la partida. Esto reutiliza los escenarios y mapas actuales: igual semilla, escenario, versión del modelo y acciones debe reproducir clima, eventos y las misiones que ya se generan por semilla. No prometer que distintas decisiones activan los mismos eventos condicionales.
+
+Como trabajo posterior separado, evaluar una partida con mapa generado proceduralmente desde la semilla y el escenario, coordinada con la identidad visual de los escenarios. La generación debe conservar conexiones hidrológicas, sectores y oportunidades de aprendizaje; mantener controles accesibles, etiquetas legibles y espacio libre para reacciones, sin obstrucciones. Usar un PRNG visual separado del de gameplay para que variar el mapa no cambie clima, eventos o balance accidentalmente.
+
+Criterios de aceptación: el código queda visible y recuperable; una partida puede repetirse con la misma configuración y acciones; la opción al azar no reemplaza las semillas compartidas del aula. Para mapas procedurales, verificar reproducibilidad visual y accesibilidad en equipos escolares, sin alterar conservación del agua ni progresión. Ambas opciones están documentadas como pendientes: no se implementaron al registrar esta tarea.
+
 ## Variación de misiones entre partidas
 
 La primera iteración 2.6 varía foco productivo, tipo de reserva y meta desde primavera en nuevas partidas de Valle Central; el primer invierno conserva la introducción. Partidas recuperadas 2.5, Árida y Lagos todavía usan misiones fijas por año/estación. Falta extender la variedad de forma defendible a esos escenarios y revisar metas de largo plazo, sin endurecerlos automáticamente.
